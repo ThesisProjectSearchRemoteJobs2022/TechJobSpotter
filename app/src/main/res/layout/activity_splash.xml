@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/pattern_background"
+    tools:context=".ui.splash.SplashActivity">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="WELCOME TO JOBS SPOT"
+        android:adjustViewBounds="true"
+
+        app:srcCompat="@drawable/job_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
