@@ -101,5 +101,7 @@
         <item name="android:background">@drawable/bg_rounded_top</item>
     </style>
 
-
+    <style name="viewParent.typeJobText" >
+        <item name="android:textColor">@color/blue_050</item>
+    </style>
 </resources>

@@ -8,4 +8,9 @@
     <string name="message_show_all">Show all</string>
     <string name="title_recommend_jobs">Recommended Job</string>
     <string name="message_data_not_found">No Data Found</string>
+    <string name="type_text">type</string>
+    <string name="title_text">title</string>
+    <string name="company_name_text">company name</string>
+    <string name="location_text">location</string>
+    <string name="format_date_text">date</string>
 </resources>

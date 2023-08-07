@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
     android:id="@+id/mCardViewContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +11,6 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     app:strokeColor="#F1F1F1"
-    app:cardBackgroundColor="?attr/colorOnPrimary"
     app:strokeWidth="1dp"
     >
 
@@ -42,6 +41,7 @@
                 app:strokeColor="#F1F1F1">
 
                 <ImageView
+
                     android:id="@+id/photoPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -82,7 +82,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/bold"
                     android:maxLines="2"
-                    android:text="title"
+                    android:text="@string/title_text"
                     android:textColor="?attr/colorControlNormal"
                     android:textSize="18sp" />
 
@@ -97,7 +97,8 @@
                         android:layout_height="16dp"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_round_business_24"
-                        app:tint="@color/gray_300" />
+                        app:tint="@color/gray_300"
+                        android:contentDescription="@null" />
 
                     <TextView
                         android:id="@+id/tvCompany"
@@ -107,8 +108,8 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/book"
                         android:singleLine="true"
-                        android:text="company name"
-                        android:textColor="@color/gray_400"
+                        android:text="@string/company_name_text"
+                        android:textColor="?attr/colorControlNormal"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
@@ -123,7 +124,8 @@
                         android:layout_height="16dp"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_outline_location_on_24"
-                        app:tint="@color/gray_300" />
+                        app:tint="@color/gray_300"
+                        android:contentDescription="@null" />
 
                     <TextView
                         android:id="@+id/tvLocation"
@@ -133,7 +135,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/book"
                         android:singleLine="true"
-                        android:text="location"
+                        android:text="@string/location_text"
                         android:textColor="@color/gray_400"
                         android:textSize="12sp" />
 
@@ -147,8 +149,6 @@
 
                     <TextView
                         android:id="@+id/tvType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:background="@drawable/bg_job_type"
                         android:ellipsize="end"
                         android:fontFamily="@font/book"
@@ -157,8 +157,8 @@
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
                         android:singleLine="true"
-                        android:text="type"
-                        android:textColor="@color/green_200"
+                        android:text="@string/type_text"
+                        style="@style/viewParent.typeJobText"
                         android:textSize="11sp" />
 
                     <TextView
@@ -173,7 +173,7 @@
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
                         android:singleLine="true"
-                        android:text="{formatDate(item.createdAt)}"
+                        android:text="@string/format_date_text"
                         android:textColor="@color/gray_300"
                         android:textSize="11sp" />
                 </RelativeLayout>
@@ -196,4 +196,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

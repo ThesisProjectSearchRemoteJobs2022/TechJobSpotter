@@ -187,19 +187,12 @@
 
                     <TextView
                         android:id="@+id/showAllMarked"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/viewParent.moreText"
+                        android:paddingTop="6dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="21dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/book"
                         android:text="@string/message_show_all"
-                        android:textColor="@color/gray_300"
-                        android:textSize="17sp" />
+                        />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewMarked"
@@ -228,21 +221,15 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        style="@style/viewParent.moreText"
                         android:id="@+id/showAllRecommended"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_below="@id/recyclerViewMarked"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="21dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/book"
                         android:text="@string/message_show_all"
-                        android:textColor="@color/gray_300"
-                        android:textSize="17sp" />
+                        />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"

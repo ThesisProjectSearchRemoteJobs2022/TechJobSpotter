@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_elevation">0dp</dimen>
+    <dimen name="x_small_padding">4dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="mid_padding_1">10dp</dimen>
+    <dimen name="mid_padding_2">16dp</dimen>
+    <dimen name="large_padding">32dp</dimen>
+    <dimen name="x_large_padding">42dp</dimen>
+
+    <dimen name="x_small_margin">4dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="mid_margin">16dp</dimen>
+    <dimen name="large_margin">32dp</dimen>
+    <dimen name="x_large_margin">42dp</dimen>
+
+
+</resources>
