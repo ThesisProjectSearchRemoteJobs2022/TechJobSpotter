@@ -6,6 +6,11 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+def getDateTime() {
+    def formattedDate = new Date().format('yyyy-MM-dd\'T\'HH.mm')
+    return formattedDate
+}
+
 android {
     namespace 'com.rogergcc.techjobspotter'
     compileSdk 33
@@ -19,11 +24,23 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
     def baseUrl = '\"https://remotive.com/api/remote-jobs?limit=10\"'
     //https://remotive.com/
     buildTypes {
         debug {
-            versionNameSuffix "_Debug"
+//            versionNameSuffix '_Debug' + '_' + getDateTime()
+//            versionNameSuffix "_Debug"
+            // Configuración para incluir la fecha en el nombre del archivo APK generado
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def formattedDate = new Date().format('yyyy-MM-dd\'T\'HH.mm')
+//                    outputFileName = "${variant.name}-${variant.versionName}.apk"
+                    outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
+                }
+            }
+
             debuggable true
 //            shrinkResources false
             minifyEnabled false
