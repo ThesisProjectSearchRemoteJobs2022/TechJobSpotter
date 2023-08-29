@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.data.cloud.RemoteJobDataSourceImpl
-import com.rogergcc.techjobspotter.data.cloud.RemoteJobsResponse
+import com.rogergcc.techjobspotter.data.cloud.model.RemoteJobsResponse
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.GetJobsUseCase
 import com.rogergcc.techjobspotter.domain.Job
@@ -54,7 +54,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -98,7 +97,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     private fun goToMovieDetailsView(jobModel: Job) {
-        Log.d(Companion.TAG, "prevention $jobModel")
+        Log.d(TAG, "prevention $jobModel")
         //showToast(requireContext(), "prevention $jobModel")
 
 //        onMark(0, jobModel.title ?: "x")
@@ -146,7 +145,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
     private fun getJobsFromAssets(): List<Job> {
-        var jobsDomainList: MutableList<Job> = mutableListOf()
+        val jobsDomainList: MutableList<Job> = mutableListOf()
         try {
             // Carga el JSON desde assets y lo convierte en un objeto RemoteJobsResponse
             val remoteJobsResponse: RemoteJobsResponse? = context?.loadJSONFromAsset("mock_response.json")

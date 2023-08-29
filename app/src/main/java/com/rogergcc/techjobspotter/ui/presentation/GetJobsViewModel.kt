@@ -8,6 +8,7 @@ import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.domain.GetJobsUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 
 /**
  * Created on agosto.
@@ -26,6 +27,7 @@ class GetJobsViewModel(private val getJobsUseCase: GetJobsUseCase): ViewModel() 
     fun fetchJobs() = liveData(viewModelScope.coroutineContext + Dispatchers.IO + coroutineExceptionHandler) {
         emit(Resource.Loading())
         try {
+            delay(1000)
             emit(Resource.Success(getJobsUseCase()))
         } catch (e: Exception) {
             emit(Resource.Failure(e))

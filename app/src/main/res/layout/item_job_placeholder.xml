@@ -9,6 +9,7 @@
     android:layout_marginEnd="@dimen/mid_padding_1"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
+    app:cardBackgroundColor="?attr/shimmerColor"
     app:strokeWidth="1dp">
 
     <RelativeLayout

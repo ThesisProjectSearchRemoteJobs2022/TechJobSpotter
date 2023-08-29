@@ -14,10 +14,10 @@
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="snackbarStyle">@style/SnackbarStyle</item>
-        <!--        <item name="android:windowBackground">@color/color_hint</item>-->
+                <item name="android:windowBackground">@color/gray_600</item>
         <!--        <item name="android:textColorPrimary">@color/colorPrimary</item>-->
         <item name="android:windowContentTransitions">true</item>
-
+        <item name="shimmerColor">@color/greyShimmerLight</item>
 
         <!--        <item name="colorOnSurface">@color/blue_050</item>-->
 <!--        <item name="colorSurface">@color/blue_050</item>-->
@@ -26,6 +26,17 @@
 <!--        <item name="colorAccent">@color/green_100</item>-->
 <!--        <item name="colorPrimaryDark">@color/blue_500</item>-->
 
+    </style>
+
+    <style name="CardViewStyle" parent="Base.CardView">
+        <!--<item name="android:foreground">@drawable/ripple_custom</item>-->
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@color/gray_100</item>
+        <!--<item name="cardUseCompatPadding">true</item>-->
     </style>
 
     <style name="Theme.TechJobSpotter.FullScreen">
@@ -103,7 +114,6 @@
     </style>
 
     <style name="viewParent.typeJobText" >
-        <item name="android:textColor">@color/green_200</item>
     </style>
 
 </resources>

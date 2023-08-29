@@ -1,6 +1,5 @@
-package com.rogergcc.techjobspotter.data.cloud
+package com.rogergcc.techjobspotter.data.cloud.model
 import com.google.gson.annotations.SerializedName
-import com.rogergcc.techjobspotter.data.cloud.model.JobDto
 
 
 /**

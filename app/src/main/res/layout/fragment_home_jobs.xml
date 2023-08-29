@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_200"
     tools:context=".ui.home.HomeJobsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -159,6 +158,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -175,6 +175,7 @@
 
                     <TextView
                         android:id="@+id/markedTitle"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="21dp"
@@ -186,6 +187,7 @@
                         android:textSize="17sp" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/showAllMarked"
                         style="@style/viewParent.moreText"
                         android:paddingTop="6dp"
@@ -195,6 +197,7 @@
                         />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:visibility="gone"
                         android:id="@+id/recyclerViewMarked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
