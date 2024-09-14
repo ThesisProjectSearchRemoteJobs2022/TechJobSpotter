@@ -75,6 +75,7 @@ class JobsOkAdapter(
 
                 coroutineScope.launch {
                     photoPreview.load(item.companyLogo) {
+
                         crossfade(true)
                         crossfade(1000)
                         delay(1500)

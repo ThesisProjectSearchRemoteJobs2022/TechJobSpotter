@@ -18,8 +18,8 @@
             android:layout_height="280dp"
             app:collapsedTitleTextAppearance="@style/collapsedTitleStyle"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginBottom="26dp"
-            app:expandedTitleMarginStart="26dp"
+            app:expandedTitleMarginBottom="@dimen/size_26dp"
+            app:expandedTitleMarginStart="@dimen/size_26dp"
             app:expandedTitleTextAppearance="@style/expandedTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:title="Tech Jobs"
@@ -42,21 +42,21 @@
                     android:id="@+id/welcomeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="26dp"
+                    android:layout_marginStart="@dimen/size_26dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginEnd="@dimen/mid_padding_1"
                     android:layout_toStartOf="@id/notifyOptions"
                     android:fontFamily="@font/book"
                     android:text="@string/message_welcome"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textColor="@color/blue_025"
+                    android:textSize="@dimen/size_16sp" />
 
                 <TextView
                     android:id="@+id/secondaryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/welcomeText"
-                    android:layout_marginStart="26dp"
+                    android:layout_marginStart="@dimen/size_26dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="@dimen/mid_padding_1"
                     android:layout_toStartOf="@id/notifyOptions"
@@ -65,17 +65,16 @@
                     android:textColor="@color/white"
                     android:textSize="26sp" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/notifyOptions"
-                    android:layout_width="26dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="42dp"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="@string/app_name"
-                    android:paddingBottom="10dp"
-                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:layout_marginEnd="@dimen/size_16dp"
+                    android:paddingBottom="@dimen/size_10dp"
+                    app:srcCompat="@drawable/ic_baseline_more_vert_24"
                     app:tint="@color/white" />
 
                 <LinearLayout
@@ -89,8 +88,7 @@
                         android:id="@+id/card_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginHorizontal="20dp"
                         android:layout_marginBottom="60dp"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
@@ -109,19 +107,18 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
+                                android:layout_marginHorizontal="@dimen/size_16dp"
                                 android:fontFamily="@font/book"
                                 android:singleLine="true"
                                 android:text="@string/message_search"
-                                android:textColor="@color/blue_050"
-                                android:textSize="16sp" />
+                                android:textColor="@color/blue_025"
+                                android:textSize="@dimen/size_16sp" />
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="60dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="16dp"
+                                android:layout_marginEnd="@dimen/size_16dp"
                                 android:contentDescription="@null"
                                 android:src="@drawable/ic_round_search_24"
                                 app:tint="@color/blue_050" />
@@ -165,7 +162,7 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/size_16dp"
                 android:fillViewport="true">
 
                 <RelativeLayout
@@ -182,7 +179,7 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginEnd="21dp"
                         android:fontFamily="@font/medium"
-                        android:text="@string/txt_markedjobs"
+                        android:text="@string/txt_marked_jobs"
                         android:textColor="@color/gray_600"
                         android:textSize="17sp" />
 
@@ -203,7 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/markedTitle"
                         android:layout_marginTop="6dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/size_10dp"
                         android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -211,21 +208,27 @@
                         tools:listitem="@layout/item_job_marked" />
 
                     <TextView
+
                         android:id="@+id/recommendedTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/recyclerViewMarked"
                         android:layout_marginStart="21dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="@dimen/x_large_margin"
                         android:layout_marginEnd="21dp"
                         android:fontFamily="@font/medium"
                         android:text="@string/title_recommend_jobs"
-                        android:textColor="@color/gray_600"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/size_18sp" />
 
                     <TextView
-                        style="@style/viewParent.moreText"
+                        style="@style/viewParent"
                         android:id="@+id/showAllRecommended"
+                        android:layout_marginTop="@dimen/x_large_margin"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/book"
+                        android:textSize="@dimen/size_16sp"
+                        android:paddingHorizontal="@dimen/mid_padding_2"
+
                         android:layout_below="@id/recyclerViewMarked"
                         android:layout_alignParentEnd="true"
                         android:clickable="true"
@@ -238,8 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/recommendedTitle"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:layout_marginBottom="20dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -254,7 +256,7 @@
                 android:id="@+id/shimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/size_16dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -306,7 +308,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="100dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_undraw_empty" />
+                    android:src="@drawable/empty_svg" />
 
                 <TextView
                     android:id="@+id/textEmpty"
@@ -314,9 +316,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/medium"
                     android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="16dp"
+                    android:paddingStart="@dimen/size_16dp"
+                    android:paddingEnd="@dimen/size_16dp"
+                    android:paddingTop="@dimen/size_16dp"
                     android:text="@string/message_data_not_found" />
 
                 <TextView
@@ -325,22 +327,22 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/book"
                     android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="16dp" />
+                    android:paddingStart="@dimen/size_16dp"
+                    android:paddingEnd="@dimen/size_16dp"
+                    android:paddingBottom="@dimen/size_16dp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/shadow"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/size_16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/bg_shadow_up_to_down"
                 android:visibility="visible" />
 
             <ImageView
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/small_margin"

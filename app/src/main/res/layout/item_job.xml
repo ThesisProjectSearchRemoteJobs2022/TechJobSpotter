@@ -41,19 +41,18 @@
                 app:cardElevation="0dp"
                 app:strokeColor="#F1F1F1">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
 
                     android:id="@+id/photoPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside" />
+                    android:scaleType="centerCrop" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/progress"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:shimmer_auto_start="true"
                     app:shimmer_duration="800">
 

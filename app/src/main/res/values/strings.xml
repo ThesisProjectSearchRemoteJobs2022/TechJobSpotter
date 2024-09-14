@@ -4,7 +4,7 @@
     <string name="message_welcome">Hi, Welcome back</string>
     <string name="message_find_job">Find your perfect job</string>
     <string name="message_search">What are you looking for?</string>
-    <string name="txt_markedjobs">Marked Job</string>
+    <string name="txt_marked_jobs">Marked Job</string>
     <string name="message_show_all">Show all</string>
     <string name="title_recommend_jobs">Recommended Job</string>
     <string name="message_data_not_found">No Data Found</string>

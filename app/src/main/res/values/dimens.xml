@@ -8,12 +8,18 @@
     <dimen name="large_padding">32dp</dimen>
     <dimen name="x_large_padding">42dp</dimen>
 
+    <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_26dp">26dp</dimen>
+
     <dimen name="x_small_margin">4dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="mid_margin_1">10dp</dimen>
     <dimen name="mid_margin_2">16dp</dimen>
     <dimen name="large_margin">32dp</dimen>
     <dimen name="x_large_margin">42dp</dimen>
+    <dimen name="size_16sp">16sp</dimen>
+    <dimen name="size_18sp">18sp</dimen>
 
 
 </resources>
