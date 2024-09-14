@@ -22,6 +22,7 @@ import com.rogergcc.techjobspotter.domain.JobsMapper
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
 import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
+import com.rogergcc.techjobspotter.ui.utils.txt
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
@@ -96,6 +97,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
     private fun goToMovieDetailsView(jobModel: Job) {
         Log.d(TAG, "prevention $jobModel")
         //showToast(requireContext(), "prevention $jobModel")
@@ -108,6 +110,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun observePopularMoviesList() {
 
+        val message = txt("observePopularMoviesList ddd")
+        Log.d(TAG, "observePopularMoviesLis xxx t: $message")
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(context, it.asString(requireContext() ), Toast.LENGTH_SHORT).show()
+
+        }
 
         viewModel.fetchJobs().observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -118,10 +127,11 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                     binding.shimmer.startShimmer()
                     binding.contentLayout.visibility = View.GONE
                 }
+
                 is Resource.Success -> {
                     hideSearch()
                     val list = result.data
-                    Log.e("HomeJob", "observePopularMoviesList ${list.count()}")
+                    Log.i("HomeJob", "observePopularMoviesList ${list.count()}")
                     //                    binding.rvMovies.adapter = concatAdapter
                     mAdapterRecommendJobs.mItems = jobsMocks ?: emptyList()
 
@@ -132,12 +142,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         binding.emptyView.visibility = View.GONE
                     }
                 }
+
                 is Resource.Failure -> {
                     hideSearch()
 
-                    binding.textEmptyErr.text = "No Jobs Found"
+                    binding.textEmptyErr.text = resources.getString(R.string.error_message)
                     binding.emptyView.visibility = View.VISIBLE
-                    Log.e("FetchError", "Error: ${result.exception} ")
+                    Log.e(TAG, "Error: ${result.exception} ")
 
                 }
             }
@@ -148,7 +159,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         val jobsDomainList: MutableList<Job> = mutableListOf()
         try {
             // Carga el JSON desde assets y lo convierte en un objeto RemoteJobsResponse
-            val remoteJobsResponse: RemoteJobsResponse? = context?.loadJSONFromAsset("mock_response.json")
+            val remoteJobsResponse: RemoteJobsResponse? =
+                context?.loadJSONFromAsset("mock_response.json")
 //            Log.d(TAG, "getJobsFromAssets: $remoteJobsResponse" )
             // acceder a los datos del objeto RemoteJobsResponse
             val jobsDto = remoteJobsResponse?.jobDtos

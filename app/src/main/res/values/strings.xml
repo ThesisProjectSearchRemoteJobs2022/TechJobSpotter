@@ -13,4 +13,9 @@
     <string name="company_name_text">company name</string>
     <string name="location_text">location</string>
     <string name="format_date_text">date</string>
+    <string name="welcome_message">Hola, %1$s! Bienvenido a nuestra aplicación.</string>
+    <string name="error_message">¡Lo siento! Algo salió mal. error: %1$s</string>
+    <string name="error_message_no_internet">¡Lo siento! No tienes conexión a Internet.</string>
+    <string name="error_message_no_data">¡Lo siento! No hay datos disponibles.</string>
+    <string name="error_jobs_not_found">¡Lo siento! No se encontraron trabajos.</string>
 </resources>

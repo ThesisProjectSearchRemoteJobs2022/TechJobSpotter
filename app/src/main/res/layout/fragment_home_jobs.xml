@@ -22,7 +22,7 @@
             app:expandedTitleMarginStart="26dp"
             app:expandedTitleTextAppearance="@style/expandedTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:title="@string/app_name"
+            app:title="Tech Jobs"
             app:titleEnabled="true">
 
             <RelativeLayout
@@ -228,7 +228,6 @@
                         android:id="@+id/showAllRecommended"
                         android:layout_below="@id/recyclerViewMarked"
                         android:layout_alignParentEnd="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true"
                         android:text="@string/message_show_all"
