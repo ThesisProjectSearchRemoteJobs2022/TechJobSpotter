@@ -8,6 +8,6 @@ import com.rogergcc.techjobspotter.data.cloud.model.JobDto
  * year 2023 .
  */
 
-interface JobRemoteDataSource {
+interface IJobRemoteDataSource {
     suspend fun geJobs(): List<JobDto>
 }

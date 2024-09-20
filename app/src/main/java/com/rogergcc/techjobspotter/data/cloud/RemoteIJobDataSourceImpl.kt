@@ -1,14 +1,14 @@
 package com.rogergcc.techjobspotter.data.cloud
 
 import com.rogergcc.techjobspotter.data.cloud.model.JobDto
-import com.rogergcc.techjobspotter.domain.JobRemoteDataSource
+import com.rogergcc.techjobspotter.domain.IJobRemoteDataSource
 
 
 /**
  * Created on agosto.
  * year 2023 .
  */
-class RemoteJobDataSourceImpl : JobRemoteDataSource {
+class RemoteIJobDataSourceImpl : IJobRemoteDataSource {
     // Implementa la lógica para obtener los datos remotos
     override suspend fun geJobs(): List<JobDto> {
         // Código para obtener los datos remotos

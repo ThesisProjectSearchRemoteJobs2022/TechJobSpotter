@@ -7,7 +7,7 @@ package com.rogergcc.techjobspotter.domain
  */
 class GetJobsUseCase(
     private val jobMapper: JobsMapper,
-    private val remote: JobRemoteDataSource
+    private val remote: IJobRemoteDataSource
 ) {
 
     suspend operator fun invoke(): List<Job> = remote.geJobs().map(jobMapper::dtoToDomain)

@@ -1,6 +1,5 @@
 package com.rogergcc.techjobspotter.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.data.cloud.RemoteJobDataSourceImpl
+import com.rogergcc.techjobspotter.data.cloud.RemoteIJobDataSourceImpl
 import com.rogergcc.techjobspotter.data.cloud.model.RemoteJobsResponse
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.GetJobsUseCase
@@ -22,7 +21,6 @@ import com.rogergcc.techjobspotter.domain.JobsMapper
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
 import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
-import com.rogergcc.techjobspotter.ui.utils.txt
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
@@ -38,7 +36,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         JobViewModelFactory(
             GetJobsUseCase(
                 JobsMapper(),
-                RemoteJobDataSourceImpl()
+                RemoteIJobDataSourceImpl()
             )
         )
     }
@@ -51,10 +49,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -74,15 +68,15 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             adapter = mAdapterRecommendJobs
         }
 //        binding.toolbar.visibility = View.GONE
+        jobsMocks = getJobsFromAssets()
         observePopularMoviesList()
+        viewModel.fetchJobs()
+//        binding.recyclerView.scheduleLayoutAnimation()
 
         binding.swipeRefresh.setOnRefreshListener {
-            observePopularMoviesList()
+            viewModel.fetchJobs()
         }
-        binding.recyclerView.scheduleLayoutAnimation()
 
-        jobsMocks = getJobsFromAssets()
-//        Log.d(TAG, "onViewCreated: $jobsMocks")
     }
 
 
@@ -94,14 +88,12 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         ).show()
     }
 
-    fun showToast(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+
 
     private fun goToMovieDetailsView(jobModel: Job) {
         Log.d(TAG, "prevention $jobModel")
         //showToast(requireContext(), "prevention $jobModel")
-
+        jobModel.title?.let { onMark(0, it) }
 //        onMark(0, jobModel.title ?: "x")
         onMark(1, jobModel.title ?: "y")
 
@@ -109,16 +101,11 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
     private fun observePopularMoviesList() {
-
-        val message = txt("observePopularMoviesList ddd")
-        Log.d(TAG, "observePopularMoviesLis xxx t: $message")
-
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.asString(requireContext() ), Toast.LENGTH_SHORT).show()
-
         }
 
-        viewModel.fetchJobs().observe(viewLifecycleOwner) { result ->
+        viewModel.resourceJobs.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
                     binding.swipeRefresh.isRefreshing = true
@@ -136,7 +123,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                     mAdapterRecommendJobs.mItems = jobsMocks ?: emptyList()
 
                     if (list.isEmpty()) { //<-- status result is FALSE
-                        binding.textEmptyErr.text = "No Jobs Found"
+                        binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
                         binding.emptyView.visibility = View.VISIBLE
                     } else {
                         binding.emptyView.visibility = View.GONE
