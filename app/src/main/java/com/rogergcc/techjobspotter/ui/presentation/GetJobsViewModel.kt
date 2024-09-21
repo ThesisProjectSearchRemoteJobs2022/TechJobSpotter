@@ -1,6 +1,5 @@
 package com.rogergcc.techjobspotter.ui.presentation
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.domain.GetJobsUseCase
 import com.rogergcc.techjobspotter.domain.Job
+import com.rogergcc.techjobspotter.domain.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -21,10 +20,8 @@ import kotlinx.coroutines.launch
  * year 2023 .
  */
 
-class GetJobsViewModel(private val getJobsUseCase: GetJobsUseCase) : ViewModel() {
+class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : ViewModel() {
 
-//    private val _message = MutableLiveData<UiText>()
-//    val message: LiveData<UiText> get() = _message
     private val _resourceJobs = MutableLiveData<Resource<List<Job>>>()
     val resourceJobs: LiveData<Resource<List<Job>>> get() = _resourceJobs
 
@@ -36,61 +33,31 @@ class GetJobsViewModel(private val getJobsUseCase: GetJobsUseCase) : ViewModel()
         _errorMessage.value = UiText.DynamicString(throwable.message ?: "Unknown error")
     }
 
-//    fun updateUserGreeting(name: String) {
-//        _message.value = UiText.DynamicString("Hola, $name")
-//    }
-
-    private fun updateErrorMessageFromResource(@StringRes errorResId: Int, vararg args: Any) {
-//        _errorMessage.value = UiText.StringResource(errorResId, args.toList())
-        _errorMessage.postValue(UiText.StringResource(errorResId, args.toList()))
-    }
 
     fun fetchJobs() {
         _resourceJobs.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 delay(1000)
-                _resourceJobs.postValue(Resource.Success(getJobsUseCase()))
+                _resourceJobs.postValue(Resource.Success(jobsPositionUseCase.execute()))
             } catch (e: Exception) {
 //                _resourceJobs.value = Resource.Failure(e)
                 _resourceJobs.postValue(Resource.Failure(e))
                 if (e is IllegalArgumentException) {
-                    updateErrorMessageFromResource(
-                        R.string.error_message,
-                        e.message ?: "Unknown error"
-                    )
+                    _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
+//                    _errorMessage.value = UiText.StringResource(errorResId, args.toList())
                 } else {
-                    updateErrorMessageFromResource(
-                        R.string.error_message_no_data,
-                        e.message ?: "Unknown error"
-                    )
+                    _errorMessage.postValue(UiText.StringResource(R.string.error_message_no_data, listOf(e.message ?: "Unknown error")))
                 }
 
             }
         }
     }
-//    fun fetchJobs() =
-//        liveData(viewModelScope.coroutineContext + Dispatchers.IO + coroutineExceptionHandler) {
-//            emit(Resource.Loading())
-//            try {
-//                delay(1000)
-//                emit(Resource.Success(getJobsUseCase()))
-//            } catch (e: Exception) {
-//                emit(Resource.Failure(e))
-//
-//                updateErrorMessageFromResource(
-//                    R.string.error_message,
-//                    e.message ?: "Unknown error"
-//                )
-//
-//            }
-//        }
-
 
 }
 
-class JobViewModelFactory(private val repo: GetJobsUseCase) : ViewModelProvider.Factory {
+class JobViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(GetJobsUseCase::class.java).newInstance(repo)
+        return modelClass.getConstructor(JobsPositionUseCase::class.java).newInstance(repo)
     }
 }

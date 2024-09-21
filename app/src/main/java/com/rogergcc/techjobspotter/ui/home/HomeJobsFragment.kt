@@ -1,5 +1,6 @@
 package com.rogergcc.techjobspotter.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,32 +13,41 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.data.cloud.RemoteIJobDataSourceImpl
-import com.rogergcc.techjobspotter.data.cloud.model.RemoteJobsResponse
+import com.rogergcc.techjobspotter.data.cloud.ContextProvider
+import com.rogergcc.techjobspotter.data.cloud.JobsMapperProvider
+import com.rogergcc.techjobspotter.data.cloud.JobsRepository
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
-import com.rogergcc.techjobspotter.domain.GetJobsUseCase
 import com.rogergcc.techjobspotter.domain.Job
 import com.rogergcc.techjobspotter.domain.JobsMapper
+import com.rogergcc.techjobspotter.domain.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
-import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
-    private var jobsMocks: List<Job>? = null
     private var _binding: FragmentHomeJobsBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
+    private val contextProvider = object : ContextProvider {
+        override fun getContext(): Context = requireContext()
+    }
+
+    private val jobsMapperProvider = object : JobsMapperProvider {
+        override fun getJobsMapper(): JobsMapper = JobsMapper()
+    }
+
     //    private val viewModel: MainViewModel by viewModels()
+    private val jobsRepository by lazy { JobsRepository(
+        contextProvider,
+        jobsMapperProvider
+    ) }
+
+    private val jobsUseCase by lazy { JobsPositionUseCase(jobsRepository) }
+
     private val viewModel by viewModels<GetJobsViewModel> {
         JobViewModelFactory(
-            GetJobsUseCase(
-                JobsMapper(),
-                RemoteIJobDataSourceImpl()
-            )
+            jobsUseCase
         )
     }
     private val mAdapterRecommendJobs by lazy {
@@ -68,7 +78,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             adapter = mAdapterRecommendJobs
         }
 //        binding.toolbar.visibility = View.GONE
-        jobsMocks = getJobsFromAssets()
+//        jobsMocks = getJobsFromAssets()
         observePopularMoviesList()
         viewModel.fetchJobs()
 //        binding.recyclerView.scheduleLayoutAnimation()
@@ -92,12 +102,24 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun goToMovieDetailsView(jobModel: Job) {
         Log.d(TAG, "prevention $jobModel")
-        //showToast(requireContext(), "prevention $jobModel")
         jobModel.title?.let { onMark(0, it) }
-//        onMark(0, jobModel.title ?: "x")
-        onMark(1, jobModel.title ?: "y")
+//        onMark(1, jobModel.title ?: "y")
 
 
+    }
+
+    private fun showLoadingState() {
+        binding.swipeRefresh.isRefreshing = true
+        binding.emptyView.visibility = View.GONE
+        binding.shimmer.visibility = View.VISIBLE
+        binding.shimmer.startShimmer()
+        binding.contentLayout.visibility = View.GONE
+    }
+    private fun showErrorState(exception: Exception) {
+        hideLoadingState()
+        binding.textEmptyErr.text = resources.getString(R.string.error_message)
+        binding.emptyView.visibility = View.VISIBLE
+        Log.e(TAG, "Error: $exception")
     }
 
     private fun observePopularMoviesList() {
@@ -108,19 +130,15 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         viewModel.resourceJobs.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
-                    binding.swipeRefresh.isRefreshing = true
-                    binding.emptyView.visibility = View.GONE
-                    binding.shimmer.visibility = View.VISIBLE
-                    binding.shimmer.startShimmer()
-                    binding.contentLayout.visibility = View.GONE
+                   showLoadingState()
                 }
 
                 is Resource.Success -> {
-                    hideSearch()
+                    hideLoadingState()
                     val list = result.data
                     Log.i("HomeJob", "observePopularMoviesList ${list.count()}")
                     //                    binding.rvMovies.adapter = concatAdapter
-                    mAdapterRecommendJobs.mItems = jobsMocks ?: emptyList()
+                    mAdapterRecommendJobs.mItems = list
 
                     if (list.isEmpty()) { //<-- status result is FALSE
                         binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
@@ -131,41 +149,15 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                 }
 
                 is Resource.Failure -> {
-                    hideSearch()
-
-                    binding.textEmptyErr.text = resources.getString(R.string.error_message)
-                    binding.emptyView.visibility = View.VISIBLE
-                    Log.e(TAG, "Error: ${result.exception} ")
+                    showErrorState(result.exception)
 
                 }
             }
         }
     }
 
-    private fun getJobsFromAssets(): List<Job> {
-        val jobsDomainList: MutableList<Job> = mutableListOf()
-        try {
-            // Carga el JSON desde assets y lo convierte en un objeto RemoteJobsResponse
-            val remoteJobsResponse: RemoteJobsResponse? =
-                context?.loadJSONFromAsset("mock_response.json")
-//            Log.d(TAG, "getJobsFromAssets: $remoteJobsResponse" )
-            // acceder a los datos del objeto RemoteJobsResponse
-            val jobsDto = remoteJobsResponse?.jobDtos
-//            Log.d(TAG, "getJobsFromAssets:$jobsDto ")
-            jobsDto?.forEach { jobDto ->
-                val jobDomain = jobDto?.let { JobsMapper().dtoToDomain(it) }
-                jobsDomainList.add(jobDomain!!)
-            }
-            return jobsDomainList.toList()
-        } catch (e: Exception) {
-            Log.e(TAG, "getJobsFromAssets: ${e.message}")
 
-            return jobsDomainList.toList()
-        }
-
-    }
-
-    private fun hideSearch() {
+    private fun hideLoadingState() {
         binding.swipeRefresh.isRefreshing = false
         binding.emptyView.visibility = View.GONE
         binding.shimmer.visibility = View.GONE
