@@ -1,5 +1,7 @@
 package com.rogergcc.techjobspotter.domain
 
+import com.rogergcc.techjobspotter.domain.model.JobPosition
+
 
 /**
  * Created on agosto.
@@ -7,5 +9,5 @@ package com.rogergcc.techjobspotter.domain
  */
 
 interface IJobsAssetsDataSource {
-    fun getJobsFromAssets(): List<Job>
+    fun getJobsFromAssets(): List<JobPosition>
 }

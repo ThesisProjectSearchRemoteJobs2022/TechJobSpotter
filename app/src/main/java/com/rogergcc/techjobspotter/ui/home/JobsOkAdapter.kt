@@ -10,7 +10,7 @@ import coil.load
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.BaseViewHolder
 import com.rogergcc.techjobspotter.databinding.ItemJobBinding
-import com.rogergcc.techjobspotter.domain.Job
+import com.rogergcc.techjobspotter.domain.model.JobPosition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,11 +19,11 @@ import kotlinx.coroutines.launch
 
 class JobsOkAdapter(
 //    private val itemClickListener: OnMovieClickListener,
-    val movieDetailsAction: (jobDomain: Job) -> Unit,
+    val movieDetailsAction: (jobPositionDomain: JobPosition) -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
     //    private var mItemsMovieResponse = emptyList<MovieResponse>()
 
-    var mItems = listOf<Job>()
+    var mItems = listOf<JobPosition>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -61,10 +61,10 @@ class JobsOkAdapter(
     private inner class RemoteJobsSpottViewHolder(
         val binding: ItemJobBinding,
         val context: Context,
-    ) : BaseViewHolder<Job>(binding.root) {
+    ) : BaseViewHolder<JobPosition>(binding.root) {
 
         private val coroutineScope = CoroutineScope(Dispatchers.Main)
-        override fun bind(item: Job) {
+        override fun bind(item: JobPosition) {
 
             binding.apply {
                 tvTitle.text = item.title

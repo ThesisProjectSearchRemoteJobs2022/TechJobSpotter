@@ -1,11 +1,11 @@
-package com.rogergcc.techjobspotter.domain
+package com.rogergcc.techjobspotter.domain.model
 
 
 /**
  * Created on agosto.
  * year 2023 .
  */
-data class Job(
+data class JobPosition(
     val candidateRequiredLocation: String? = "",
     val category: String? = "",
     val companyLogo: String? = "",

@@ -6,8 +6,8 @@ import com.rogergcc.techjobspotter.data.cloud.model.JobDto
 import com.rogergcc.techjobspotter.data.cloud.model.RemoteJobsResponse
 import com.rogergcc.techjobspotter.domain.IJobsAssetsDataSource
 import com.rogergcc.techjobspotter.domain.IJobsPositionRepository
-import com.rogergcc.techjobspotter.domain.Job
-import com.rogergcc.techjobspotter.domain.JobsMapper
+import com.rogergcc.techjobspotter.domain.mappers.JobsMapper
+import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
 
 
@@ -36,7 +36,7 @@ class JobsRepository( private val contextProvider: ContextProvider,
 //        return emptyList()
     }
 
-    override fun getJobsFromAssets(): List<Job> {
+    override fun getJobsFromAssets(): List<JobPosition> {
         return try {
             val remoteJobsResponse: RemoteJobsResponse? = contextProvider.getContext() .loadJSONFromAsset("mock_response.json")
             val jobsDto = remoteJobsResponse?.jobDtos
@@ -45,7 +45,7 @@ class JobsRepository( private val contextProvider: ContextProvider,
             } ?: emptyList()
         } catch (e: Exception) {
             Log.e(TAG, "getJobsFromAssets: ${e.message}")
-            emptyList<Job>()
+            emptyList<JobPosition>()
         }
     }
 

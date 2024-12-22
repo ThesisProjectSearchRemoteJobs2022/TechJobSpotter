@@ -1,16 +1,17 @@
-package com.rogergcc.techjobspotter.domain
+package com.rogergcc.techjobspotter.domain.mappers
 
 import com.rogergcc.techjobspotter.data.cloud.model.JobDto
+import com.rogergcc.techjobspotter.domain.model.JobPosition
 
 
 /**
  * Created on agosto.
  * year 2023 .
  */
-class JobsMapper : Mapper<Job, JobDto, Unit>() {
+class JobsMapper : Mapper<JobPosition, JobDto, Unit>() {
 
     override fun dtoToDomain(dto: JobDto) =
-        Job(
+        JobPosition(
             id = dto.id,
             title = dto.title,
             companyName = dto.companyName,
@@ -26,7 +27,7 @@ class JobsMapper : Mapper<Job, JobDto, Unit>() {
             companyLogo = dto.companyLogo
         )
 
-    override fun domainToDto(domain: Job): JobDto {
+    override fun domainToDto(domain: JobPosition): JobDto {
         return JobDto(
             id = domain.id,
             title = domain.title,

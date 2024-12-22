@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.domain
+package com.rogergcc.techjobspotter.domain.mappers
 
 
 /**

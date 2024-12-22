@@ -17,9 +17,9 @@ import com.rogergcc.techjobspotter.data.cloud.ContextProvider
 import com.rogergcc.techjobspotter.data.cloud.JobsMapperProvider
 import com.rogergcc.techjobspotter.data.cloud.JobsRepository
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
-import com.rogergcc.techjobspotter.domain.Job
-import com.rogergcc.techjobspotter.domain.JobsMapper
-import com.rogergcc.techjobspotter.domain.JobsPositionUseCase
+import com.rogergcc.techjobspotter.domain.mappers.JobsMapper
+import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
 
@@ -100,10 +100,10 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
 
 
-    private fun goToMovieDetailsView(jobModel: Job) {
-        Log.d(TAG, "prevention $jobModel")
-        jobModel.title?.let { onMark(0, it) }
-//        onMark(1, jobModel.title ?: "y")
+    private fun goToMovieDetailsView(jobPositionModel: JobPosition) {
+        Log.d(TAG, "prevention $jobPositionModel")
+        jobPositionModel.title?.let { onMark(0, it) }
+//        onMark(1, jobPositionModel.title ?: "y")
 
 
     }

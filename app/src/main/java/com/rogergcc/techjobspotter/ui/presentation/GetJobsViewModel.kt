@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.domain.Job
-import com.rogergcc.techjobspotter.domain.JobsPositionUseCase
+import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +22,8 @@ import kotlinx.coroutines.launch
 
 class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : ViewModel() {
 
-    private val _resourceJobs = MutableLiveData<Resource<List<Job>>>()
-    val resourceJobs: LiveData<Resource<List<Job>>> get() = _resourceJobs
+    private val _resourceJobs = MutableLiveData<Resource<List<JobPosition>>>()
+    val resourceJobs: LiveData<Resource<List<JobPosition>>> get() = _resourceJobs
 
     private val _errorMessage = MutableLiveData<UiText>()
     val errorMessage: LiveData<UiText> get() = _errorMessage

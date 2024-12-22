@@ -32,6 +32,7 @@ class SplashActivity : AppCompatActivity() {
             }
             finish()
         }
+
     }
 
     private fun hideSystemUi() {
