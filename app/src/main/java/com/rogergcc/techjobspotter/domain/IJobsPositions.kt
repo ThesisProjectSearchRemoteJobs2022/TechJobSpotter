@@ -8,6 +8,7 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
  * year 2023 .
  */
 
-interface IJobsAssetsDataSource {
-    fun getJobsFromAssets(): List<JobPosition>
+interface IJobsPositions {
+//    suspend fun geJobs(): List<JobDto>
+    suspend fun geJobs(): List<JobPosition>
 }

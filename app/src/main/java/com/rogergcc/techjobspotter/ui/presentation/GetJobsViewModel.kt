@@ -1,5 +1,6 @@
 package com.rogergcc.techjobspotter.ui.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,6 @@ import kotlinx.coroutines.launch
  */
 
 class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : ViewModel() {
-
     private val _resourceJobs = MutableLiveData<Resource<List<JobPosition>>>()
     val resourceJobs: LiveData<Resource<List<JobPosition>>> get() = _resourceJobs
 
@@ -42,6 +42,7 @@ class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : V
                 _resourceJobs.postValue(Resource.Success(jobsPositionUseCase.execute()))
             } catch (e: Exception) {
 //                _resourceJobs.value = Resource.Failure(e)
+                Log.e(TAG, "fetchJobs: ${e.message}" )
                 _resourceJobs.postValue(Resource.Failure(e))
                 if (e is IllegalArgumentException) {
                     _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
@@ -54,7 +55,12 @@ class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : V
         }
     }
 
+    companion object {
+        private const val TAG = "GetJobsViewModel"
+    }
+
 }
+
 
 class JobViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

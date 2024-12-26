@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.data.cloud.ContextProvider
-import com.rogergcc.techjobspotter.data.cloud.JobsMapperProvider
-import com.rogergcc.techjobspotter.data.cloud.JobsRepository
+import com.rogergcc.techjobspotter.data.cache.JobsAssetsRepository
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapper
+import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
+import com.rogergcc.techjobspotter.ui.utils.provider.ContextProvider
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
@@ -38,12 +38,12 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
     //    private val viewModel: MainViewModel by viewModels()
-    private val jobsRepository by lazy { JobsRepository(
+    private val jobsApiRepository by lazy { JobsAssetsRepository(
         contextProvider,
         jobsMapperProvider
     ) }
 
-    private val jobsUseCase by lazy { JobsPositionUseCase(jobsRepository) }
+    private val jobsUseCase by lazy { JobsPositionUseCase(jobsApiRepository) }
 
     private val viewModel by viewModels<GetJobsViewModel> {
         JobViewModelFactory(
