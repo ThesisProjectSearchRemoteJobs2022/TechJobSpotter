@@ -31,8 +31,4 @@ class JobsRemoteRepository(private val contextProvider: ContextProvider,
 
     }
 
-
-    companion object {
-        private const val TAG = "JobsRemoteRepository"
-    }
 }
