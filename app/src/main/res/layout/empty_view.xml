@@ -17,7 +17,10 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvErrorStateMessage"
-        style="@style/TextAppearance.AppCompat.Title"
+        android:textSize="@dimen/size_22sp"
+        android:textColor="?attr/shadeGrey"
+
+        android:fontFamily="@font/book"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

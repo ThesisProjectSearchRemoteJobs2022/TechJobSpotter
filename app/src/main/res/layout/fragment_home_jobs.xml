@@ -18,8 +18,8 @@
             android:layout_height="280dp"
             app:collapsedTitleTextAppearance="@style/collapsedTitleStyle"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginBottom="@dimen/size_26dp"
-            app:expandedTitleMarginStart="@dimen/size_26dp"
+            app:expandedTitleMarginBottom="@dimen/dim_26dp"
+            app:expandedTitleMarginStart="@dimen/dim_26dp"
             app:expandedTitleTextAppearance="@style/expandedTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:title="Tech Jobs"
@@ -42,7 +42,7 @@
                     android:id="@+id/welcomeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_26dp"
+                    android:layout_marginStart="@dimen/dim_26dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginEnd="@dimen/mid_padding_1"
                     android:layout_toStartOf="@id/notifyOptions"
@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/welcomeText"
-                    android:layout_marginStart="@dimen/size_26dp"
+                    android:layout_marginStart="@dimen/dim_26dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="@dimen/mid_padding_1"
                     android:layout_toStartOf="@id/notifyOptions"
@@ -72,8 +72,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="42dp"
-                    android:layout_marginEnd="@dimen/size_16dp"
-                    android:paddingBottom="@dimen/size_10dp"
+                    android:layout_marginEnd="@dimen/dim_16dp"
+                    android:paddingBottom="@dimen/dim_10dp"
                     app:srcCompat="@drawable/ic_baseline_more_vert_24"
                     app:tint="@color/white" />
 
@@ -96,8 +96,7 @@
                         app:cardBackgroundColor="@color/blue_250"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="0dp"
-                        app:strokeColor="@color/blue_300"
-                        >
+                        app:strokeColor="@color/blue_300">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -107,7 +106,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginHorizontal="@dimen/size_16dp"
+                                android:layout_marginHorizontal="@dimen/dim_16dp"
                                 android:fontFamily="@font/book"
                                 android:singleLine="true"
                                 android:text="@string/message_search"
@@ -118,7 +117,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="60dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="@dimen/size_16dp"
+                                android:layout_marginEnd="@dimen/dim_16dp"
                                 android:contentDescription="@null"
                                 android:src="@drawable/ic_round_search_24"
                                 app:tint="@color/blue_050" />
@@ -162,7 +161,7 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_marginTop="@dimen/dim_16dp"
                 android:fillViewport="true">
 
                 <RelativeLayout
@@ -172,7 +171,6 @@
 
                     <TextView
                         android:id="@+id/markedTitle"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="21dp"
@@ -181,28 +179,30 @@
                         android:fontFamily="@font/medium"
                         android:text="@string/txt_marked_jobs"
                         android:textColor="@color/gray_600"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone"
+                        />
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/showAllMarked"
                         style="@style/viewParent.moreText"
-                        android:paddingTop="6dp"
                         android:layout_alignParentEnd="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:paddingTop="6dp"
                         android:text="@string/message_show_all"
+                        android:visibility="gone"
                         />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:visibility="gone"
                         android:id="@+id/recyclerViewMarked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/markedTitle"
                         android:layout_marginTop="6dp"
-                        android:layout_marginBottom="@dimen/size_10dp"
+                        android:layout_marginBottom="@dimen/dim_10dp"
                         android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="2"
                         tools:listitem="@layout/item_job_marked" />
@@ -221,23 +221,22 @@
                         android:textSize="@dimen/size_18sp" />
 
                     <TextView
-                        style="@style/viewParent"
                         android:id="@+id/showAllRecommended"
-                        android:layout_marginTop="@dimen/x_large_margin"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/book"
-                        android:textSize="@dimen/size_16sp"
-                        android:paddingHorizontal="@dimen/mid_padding_2"
-
+                        style="@style/viewParent"
                         android:layout_below="@id/recyclerViewMarked"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/x_large_margin"
+                        android:layout_marginEnd="20dp"
                         android:clickable="true"
+
                         android:focusable="true"
+                        android:fontFamily="@font/book"
+                        android:paddingHorizontal="@dimen/mid_padding_2"
                         android:text="@string/message_show_all"
-                        />
+                        android:textSize="@dimen/size_16sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                        android:id="@+id/rvRecommendedJobs"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/recommendedTitle"
@@ -253,57 +252,11 @@
             </androidx.core.widget.NestedScrollView>
 
 
-
-
-
-            <LinearLayout
-                android:id="@+id/emptyView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="false"
-                android:fillViewport="true"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="100dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/empty_svg" />
-
-                <TextView
-                    android:id="@+id/textEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/medium"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/size_16dp"
-                    android:paddingEnd="@dimen/size_16dp"
-                    android:paddingTop="@dimen/size_16dp"
-                    android:text="@string/message_data_not_found" />
-
-                <TextView
-                    android:id="@+id/textEmptyErr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/book"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/size_16dp"
-                    android:paddingEnd="@dimen/size_16dp"
-                    android:paddingBottom="@dimen/size_16dp" />
-            </LinearLayout>
-
             <ImageView
                 android:id="@+id/shadow"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_marginTop="@dimen/dim_16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/bg_shadow_up_to_down"
                 android:visibility="visible" />
@@ -323,24 +276,22 @@
     <include
         android:id="@+id/errorStateView"
         layout="@layout/empty_view"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/mid_padding_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/mid_padding_2"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/swipeRefresh"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer"
-        android:visibility="gone"
+        android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/dim_16dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:shimmer_auto_start="true"
         app:shimmer_duration="800">

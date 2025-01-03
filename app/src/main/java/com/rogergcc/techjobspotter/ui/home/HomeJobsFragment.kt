@@ -71,7 +71,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.apply {
+        binding.rvRecommendedJobs.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapterRecommendJobs
@@ -111,13 +111,14 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         binding.swipeRefresh.isRefreshing = true
 //        binding.emptyView.visibility = View.GONE
         binding.errorStateView.root.visibility = View.GONE
-        binding.shimmer.visibility = View.VISIBLE
-        binding.shimmer.startShimmer()
+        binding.shimmerFrameLayout.visibility = View.VISIBLE
+        binding.shimmerFrameLayout.startShimmer()
         binding.contentLayout.visibility = View.GONE
     }
     private fun showErrorState(exception: Exception) {
         hideLoadingState()
-        binding.textEmptyErr.text = resources.getString(R.string.error_message)
+//        binding.textEmptyErr.text = resources.getString(R.string.error_message)
+        binding.errorStateView.tvErrorStateMessage.text = resources.getString(R.string.error_message)
 //        binding.emptyView.visibility = View.VISIBLE
         binding.errorStateView.root.visibility = View.VISIBLE
         Log.e(TAG, "Error: $exception")
@@ -167,8 +168,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         binding.swipeRefresh.isRefreshing = false
 //        binding.emptyView.visibility = View.GONE
         binding.errorStateView.root.visibility = View.GONE
-        binding.shimmer.visibility = View.GONE
-        binding.shimmer.stopShimmer()
+        binding.shimmerFrameLayout.visibility = View.GONE
+        binding.shimmerFrameLayout.stopShimmer()
         binding.contentLayout.visibility = View.VISIBLE
     }
 
