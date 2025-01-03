@@ -252,41 +252,9 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/size_16dp"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:shimmer_auto_start="true"
-                app:shimmer_duration="800">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-                    <include layout="@layout/item_job_placeholder" />
 
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-
-                    <include layout="@layout/item_job_placeholder" />
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <LinearLayout
                 android:id="@+id/emptyView"
@@ -294,7 +262,6 @@
                 android:layout_height="match_parent"
                 android:clickable="false"
                 android:fillViewport="true"
-                android:focusable="false"
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -353,4 +320,48 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <include
+        android:id="@+id/errorStateView"
+        layout="@layout/empty_view"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/mid_padding_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeRefresh"
+        />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:shimmer_auto_start="true"
+        app:shimmer_duration="800">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_job_placeholder" />
+
+            <include layout="@layout/item_job_placeholder" />
+
+            <include layout="@layout/item_job_placeholder" />
+
+            <include layout="@layout/item_job_placeholder" />
+
+            <include layout="@layout/item_job_placeholder" />
+
+            <include layout="@layout/item_job_placeholder" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

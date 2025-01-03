@@ -1,6 +1,5 @@
 package com.rogergcc.techjobspotter.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +20,7 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
-import com.rogergcc.techjobspotter.ui.utils.provider.ContextProvider
+import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
@@ -29,10 +28,10 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private val binding get() = _binding!!
 
-    private val contextProvider = object : ContextProvider {
-        override fun getContext(): Context = requireContext()
-    }
-
+//    private val contextProvider = object : ContextProvider {
+//        override fun getContext(): Context = requireContext()
+//    }
+    private val contextProvider by lazy { ContextProviderImpl(requireContext()) }
     private val jobsMapperProvider = object : JobsMapperProvider {
         override fun getJobsMapper(): JobsMapper = JobsMapper()
     }
@@ -110,7 +109,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun showLoadingState() {
         binding.swipeRefresh.isRefreshing = true
-        binding.emptyView.visibility = View.GONE
+//        binding.emptyView.visibility = View.GONE
+        binding.errorStateView.root.visibility = View.GONE
         binding.shimmer.visibility = View.VISIBLE
         binding.shimmer.startShimmer()
         binding.contentLayout.visibility = View.GONE
@@ -118,7 +118,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private fun showErrorState(exception: Exception) {
         hideLoadingState()
         binding.textEmptyErr.text = resources.getString(R.string.error_message)
-        binding.emptyView.visibility = View.VISIBLE
+//        binding.emptyView.visibility = View.VISIBLE
+        binding.errorStateView.root.visibility = View.VISIBLE
         Log.e(TAG, "Error: $exception")
     }
 
@@ -141,10 +142,15 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                     mAdapterRecommendJobs.mItems = list
 
                     if (list.isEmpty()) { //<-- status result is FALSE
-                        binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
-                        binding.emptyView.visibility = View.VISIBLE
+//                        binding.emptyView.visibility = View.VISIBLE
+//                        binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
+
+                        binding.errorStateView.root.visibility = View.VISIBLE
+                        binding.errorStateView.tvErrorStateMessage.text = resources.getString(R.string.error_message_no_data)
+
                     } else {
-                        binding.emptyView.visibility = View.GONE
+//                        binding.emptyView.visibility = View.GONE
+                        binding.errorStateView.root.visibility = View.GONE
                     }
                 }
 
@@ -159,7 +165,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun hideLoadingState() {
         binding.swipeRefresh.isRefreshing = false
-        binding.emptyView.visibility = View.GONE
+//        binding.emptyView.visibility = View.GONE
+        binding.errorStateView.root.visibility = View.GONE
         binding.shimmer.visibility = View.GONE
         binding.shimmer.stopShimmer()
         binding.contentLayout.visibility = View.VISIBLE
