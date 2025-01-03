@@ -50,9 +50,72 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         )
     }
     private val mAdapterRecommendJobs by lazy {
-        JobsOkAdapter() { movie ->
-            goToMovieDetailsView(movie)
+        JobsOkAdapter(
+            jobsPositionDetailsAction = { job ->
+                goToPositionDetailsView(job)
+            },
+            jobMarkClickAction = { job ->
+                onFavoriteAction(job)
+            },
+
+        )
+    }
+
+
+    private val mAdapterMarkedJobs by lazy {
+        JobsMarkFavoriteAdapter(
+            jobsPositionDetailsAction = { job ->
+                goToPositionDetailsView(job)
+            },
+            jobMarkClickAction = { job ->
+                onFavoriteAction(job)
+            }
+        )
+    }
+
+    private fun goToPositionDetailsView(jobPositionModel: JobPosition) {
+        Log.d(TAG, "prevention $jobPositionModel")
+        jobPositionModel.title?.let {
+
+            Snackbar.make(
+                binding.root,
+                "Go to details ${jobPositionModel.title}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+
         }
+//        onMark(1, jobPositionModel.title ?: "y")
+
+
+    }
+    private fun onMark(mark: Int, title: String) {
+
+        Snackbar.make(
+            binding.root,
+            if (mark == 0) "\uD83D\uDE13 Unmark $title" else "\uD83D\uDE0D Marked $title",
+            Snackbar.LENGTH_SHORT
+        ).show()
+
+
+    }
+
+
+    private fun onFavoriteAction(job: JobPosition) {
+//        job.title?.let { onMark(1, it) }
+        val isMarked = mAdapterMarkedJobs.mItems.contains(job)
+
+        if (isMarked) {
+            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+                remove(job)
+            }
+        } else {
+            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+                add(job)
+            }
+        }
+        mAdapterRecommendJobs.updateMarkIcon(job, !isMarked)
+        onMark(if (isMarked) 0 else 1, job.title ?: "y")
+
     }
 
     override fun onDestroyView() {
@@ -76,36 +139,36 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapterRecommendJobs
         }
+
+        binding.rvMarkedJobs.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false  )
+            adapter = mAdapterMarkedJobs
+
+        }
+
+
 //        binding.toolbar.visibility = View.GONE
-//        jobsMocks = getJobsFromAssets()
-        observePopularMoviesList()
+        observeRecommendPositions()
         viewModel.fetchJobs()
 //        binding.recyclerView.scheduleLayoutAnimation()
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchJobs()
+
+
+        }
+        if (binding.rvMarkedJobs.adapter==null || binding.rvMarkedJobs.adapter?.itemCount == 0) {
+            binding.shimmerMarkedLayout.visibility = View.GONE
         }
 
     }
 
 
-    private fun onMark(mark: Int, title: String) {
-        Snackbar.make(
-            binding.root,
-            if (mark == 0) "\uD83D\uDE13 Unmark $title" else "\uD83D\uDE0D Marked $title",
-            Snackbar.LENGTH_SHORT
-        ).show()
-    }
 
 
 
-    private fun goToMovieDetailsView(jobPositionModel: JobPosition) {
-        Log.d(TAG, "prevention $jobPositionModel")
-        jobPositionModel.title?.let { onMark(0, it) }
-//        onMark(1, jobPositionModel.title ?: "y")
 
-
-    }
 
     private fun showLoadingState() {
         binding.swipeRefresh.isRefreshing = true
@@ -123,8 +186,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         binding.errorStateView.root.visibility = View.VISIBLE
         Log.e(TAG, "Error: $exception")
     }
-
-    private fun observePopularMoviesList() {
+    private fun updateRecommendedJobsWithMarkedStatus(recommendedJobs: List<JobPosition>, markedJobs: List<JobPosition>): List<JobPosition> {
+        val markedJobTitles = markedJobs.map { it.title }
+        return recommendedJobs.map { job ->
+            job.copy(isMarked = markedJobTitles.contains(job.title))
+        }
+    }
+    private fun observeRecommendPositions() {
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.asString(requireContext() ), Toast.LENGTH_SHORT).show()
         }
@@ -138,9 +206,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                 is Resource.Success -> {
                     hideLoadingState()
                     val list = result.data
-                    Log.i("HomeJob", "observePopularMoviesList ${list.count()}")
+                    Log.i("HomeJob", "observeRecommendPositions ${list.count()}")
                     //                    binding.rvMovies.adapter = concatAdapter
-                    mAdapterRecommendJobs.mItems = list
+//                    mAdapterRecommendJobs.mItems = list
+
+                    // Update recommended jobs with marked status
+                    val updatedList = updateRecommendedJobsWithMarkedStatus(list, mAdapterMarkedJobs.mItems)
+                    mAdapterRecommendJobs.mItems = updatedList
 
                     if (list.isEmpty()) { //<-- status result is FALSE
 //                        binding.emptyView.visibility = View.VISIBLE

@@ -169,53 +169,85 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <LinearLayout
+                        android:id="@+id/markContentLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+
                     <TextView
                         android:id="@+id/markedTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="21dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="@dimen/dim_22dp"
                         android:layout_marginEnd="21dp"
                         android:fontFamily="@font/medium"
                         android:text="@string/txt_marked_jobs"
-                        android:textColor="@color/gray_600"
                         android:textSize="17sp"
-                        android:visibility="gone"
                         />
 
                     <TextView
                         android:id="@+id/showAllMarked"
+                        android:visibility="gone"
                         style="@style/viewParent.moreText"
-                        android:layout_alignParentEnd="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:paddingTop="6dp"
                         android:text="@string/message_show_all"
-                        android:visibility="gone"
                         />
 
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerMarkedLayout"
+                        android:layout_width="match_parent"
+                        android:nestedScrollingEnabled="true"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        app:shimmer_auto_start="true"
+                        app:shimmer_duration="800">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <include layout="@layout/item_job_marked" />
+
+                            <include layout="@layout/item_job_marked" />
+
+                            <include layout="@layout/item_job_marked" />
+
+                            <include layout="@layout/item_job_marked" />
+
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                    </LinearLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewMarked"
+                        android:id="@+id/rvMarkedJobs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/markedTitle"
+                        android:layout_below="@id/markContentLayout"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="@dimen/dim_10dp"
                         android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="2"
                         tools:listitem="@layout/item_job_marked" />
 
                     <TextView
-
                         android:id="@+id/recommendedTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/recyclerViewMarked"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="@dimen/x_large_margin"
-                        android:layout_marginEnd="21dp"
+                        android:layout_below="@id/rvMarkedJobs"
+                        android:layout_marginStart="@dimen/dim_20dp"
+                        android:layout_marginTop="@dimen/dim_26dp"
+                        android:layout_marginEnd="@dimen/dim_20dp"
                         android:fontFamily="@font/medium"
                         android:text="@string/title_recommend_jobs"
                         android:textSize="@dimen/size_18sp" />
@@ -223,9 +255,9 @@
                     <TextView
                         android:id="@+id/showAllRecommended"
                         style="@style/viewParent"
-                        android:layout_below="@id/recyclerViewMarked"
+                        android:layout_below="@id/rvMarkedJobs"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/x_large_margin"
+                        android:layout_marginTop="@dimen/dim_26dp"
                         android:layout_marginEnd="20dp"
                         android:clickable="true"
 
@@ -234,6 +266,8 @@
                         android:paddingHorizontal="@dimen/mid_padding_2"
                         android:text="@string/message_show_all"
                         android:textSize="@dimen/size_16sp" />
+
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRecommendedJobs"
@@ -274,6 +308,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
+        android:visibility="gone"
         android:id="@+id/errorStateView"
         layout="@layout/empty_view"
         android:layout_width="match_parent"
