@@ -1,6 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+def getDateTime() {
+    def formattedDate = new Date().format('yyyy-MM-dd\'T\'HH.mm')
+    return formattedDate
+}
+def getCommitSha1 = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'show', '-s', '--format=%h'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
 
 android {
@@ -12,13 +28,37 @@ android {
         minSdk 21
         targetSdk 33
         versionCode 1
-        versionName "1.0"
-
+        versionName "1.0" + ' ' + getCommitSha1()
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+    def baseUrl = '\"https://remotive.com/api/remote-jobs?limit=10\"'
+    //https://remotive.com/
     buildTypes {
+        debug {
+//            versionNameSuffix '_Debug' + '_' + getDateTime()
+//            versionNameSuffix "_Debug"
+            // Configuración para incluir la fecha en el nombre del archivo APK generado
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def formattedDate = getDateTime()
+//                    outputFileName = "${variant.name}-${variant.versionName}.apk"
+                    outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
+                }
+            }
+
+            debuggable true
+//            shrinkResources false
+            minifyEnabled false
+            resValue "string", "app_name_build", "TechJobSpotter-Debug"
+        }
+
         release {
+            debuggable false
+//            shrinkResources true
+            resValue "string", "app_name_build", "TechJobSpotter"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -30,14 +70,61 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+//        dataBinding true
+        viewBinding true
+    }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+    }
+
 }
 
 dependencies {
 
+    def material_version = "1.8.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation "com.google.android.material:material:$material_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    //Recyclerview - Concat adapter
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    // Lifecycle Dependency
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+//    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+//    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+//    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    // network
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.4'
+
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+
+    // coil
+    implementation "io.coil-kt:coil:$coil_version"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    //multidex
+    implementation 'com.android.support:multidex:1.0.3'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/mCardViewContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/mid_padding_1"
+    android:layout_marginTop="@dimen/small_margin"
+    android:layout_marginEnd="@dimen/mid_padding_1"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#F1F1F1"
+    app:strokeWidth="1dp"
+    style="@style/CardViewStyle"
+    >
+
+    <LinearLayout
+        android:id="@+id/mLinearLayoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="9dp"
+            android:padding="4dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/photoPreviewLayout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/ic_photo"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#F1F1F1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+
+                    android:id="@+id/photoPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerCrop" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:shimmer_auto_start="true"
+                    app:shimmer_duration="800">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/gray_100" />
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/photoPreviewLayout"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginBottom="3dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/bold"
+                    android:maxLines="2"
+                    android:text="@string/title_text"
+                    android:textColor="?attr/colorControlNormal"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp">
+
+                    <ImageView
+                        android:id="@+id/iconCompany"
+                        android:layout_width="15dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_round_business_24"
+                        app:tint="@color/gray_300"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/tvCompany"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/iconCompany"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/book"
+                        android:singleLine="true"
+                        android:text="@string/company_name_text"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp">
+
+                    <ImageView
+                        android:id="@+id/iconLocation"
+                        android:layout_width="15dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_outline_location_on_24"
+                        app:tint="@color/gray_300"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/iconLocation"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/book"
+                        android:singleLine="true"
+                        android:text="@string/location_text"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvType"
+                        android:background="@drawable/bg_job_type"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/book"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:singleLine="true"
+                        android:text="@string/type_text"
+                        style="@style/viewParent.typeJobText"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/book"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:singleLine="true"
+                        android:text="@string/format_date_text"
+                        android:textColor="@color/gray_300"
+                        android:textSize="11sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/mark"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:focusable="true"
+                android:padding="3dp"
+                android:src="@drawable/ic_mark"
+                app:tint="@color/gray_200" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
