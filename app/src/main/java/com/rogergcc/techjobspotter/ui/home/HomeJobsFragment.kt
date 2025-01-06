@@ -13,8 +13,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.data.cache.JobsAssetsRepository
+import com.rogergcc.techjobspotter.data.mappers.JobMapper
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
-import com.rogergcc.techjobspotter.domain.mappers.JobsMapper
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
@@ -33,7 +33,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //    }
     private val contextProvider by lazy { ContextProviderImpl(requireContext()) }
     private val jobsMapperProvider = object : JobsMapperProvider {
-        override fun getJobsMapper(): JobsMapper = JobsMapper()
+        override fun getJobsMapper(): JobMapper = JobMapper()
     }
 
     //    private val viewModel: MainViewModel by viewModels()

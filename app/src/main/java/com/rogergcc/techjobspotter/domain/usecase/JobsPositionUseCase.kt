@@ -9,7 +9,7 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
  * year 2023 .
  */
 class JobsPositionUseCase(
-    private val repository: IJobsPositions
+    private val repository: IJobsPositions,
 ) {
     suspend fun execute(): List<JobPosition> = repository.geJobs()
 
