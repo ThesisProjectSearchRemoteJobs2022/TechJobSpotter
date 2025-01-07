@@ -27,7 +27,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private var _binding: FragmentHomeJobsBinding? = null
 
     private val binding get() = _binding!!
-
 //    private val contextProvider = object : ContextProvider {
 //        override fun getContext(): Context = requireContext()
 //    }
@@ -36,7 +35,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         override fun getJobsMapper(): JobMapper = JobMapper()
     }
 
-    //    private val viewModel: MainViewModel by viewModels()
     private val jobsApiRepository by lazy { JobsAssetsRepository(
         contextProvider,
         jobsMapperProvider

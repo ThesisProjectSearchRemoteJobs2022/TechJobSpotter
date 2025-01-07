@@ -8,5 +8,5 @@ import android.content.Context
  * year 2024 .
  */
 interface ContextProvider {
- fun getContext(): Context
+    fun getContext(): Context
 }
