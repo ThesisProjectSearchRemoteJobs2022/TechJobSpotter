@@ -8,8 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
+import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +22,12 @@ import kotlinx.coroutines.launch
  * year 2023 .
  */
 
-class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : ViewModel() {
-    private val _resourceJobs = MutableLiveData<Resource<List<JobPosition>>>()
-    val resourceJobs: LiveData<Resource<List<JobPosition>>> get() = _resourceJobs
+class GetJobsViewModel(
+    private val jobsPositionUseCase: JobsPositionUseCase,
+    private val jobsMapperProvider: JobsMapperProvider,
+) : ViewModel() {
+    private val _resourceJobs = MutableLiveData<Resource<List<JobPositionUi>>>()
+    val resourceJobs: LiveData<Resource<List<JobPositionUi>>> get() = _resourceJobs
 
     private val _errorMessage = MutableLiveData<UiText>()
     val errorMessage: LiveData<UiText> get() = _errorMessage
@@ -39,7 +43,11 @@ class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : V
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 delay(1000)
-                _resourceJobs.postValue(Resource.Success(jobsPositionUseCase.execute()))
+                val jobsPosition = jobsPositionUseCase.execute()
+                val jobsListUi = jobsPosition.map {
+                    jobsMapperProvider.getJobsMapper().domainToPresentation(it)
+                }
+                _resourceJobs.postValue(Resource.Success(jobsListUi))
             } catch (e: Exception) {
 //                _resourceJobs.value = Resource.Failure(e)
                 Log.e(TAG, "fetchJobs: ${e.message}" )
@@ -60,10 +68,18 @@ class GetJobsViewModel(private val jobsPositionUseCase: JobsPositionUseCase) : V
     }
 
 }
-
-
-class JobViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
+class JobViewModelFactory(
+    private val repo: JobsPositionUseCase,
+    private val jobsMapperProvider: JobsMapperProvider
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(JobsPositionUseCase::class.java).newInstance(repo)
+        return modelClass.getConstructor(JobsPositionUseCase::class.java, JobsMapperProvider::class.java).newInstance(repo, jobsMapperProvider)
     }
 }
+
+
+//class JobViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        return modelClass.getConstructor(JobsPositionUseCase::class.java).newInstance(repo)
+//    }
+//}

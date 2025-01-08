@@ -1,10 +1,14 @@
 package com.rogergcc.techjobspotter.ui.presentation.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 
 /**
  * Created on enero.
  * year 2025 .
  */
+@Parcelize
 data class JobPositionUi(
     val candidateRequiredLocation: String? = "",
     val category: String? = "",
@@ -20,4 +24,4 @@ data class JobPositionUi(
     val title: String? = "",
     val url: String? = "",
     var isMarked: Boolean = false,
-)
+) : Parcelable

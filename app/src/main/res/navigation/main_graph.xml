@@ -9,7 +9,22 @@
         android:id="@+id/homeJobsFragment"
         android:name="com.rogergcc.techjobspotter.ui.home.HomeJobsFragment"
         android:label="Remote Ok"
-        tools:layout="@layout/fragment_home_jobs" />
+        tools:layout="@layout/fragment_home_jobs">
+        <action
+            android:id="@+id/action_homeJobsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment">
+            <argument
+                android:name="JobPositionUi"
+                app:argType="com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi" />
+
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.rogergcc.techjobspotter.ui.details.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" />
 
 
 </navigation>

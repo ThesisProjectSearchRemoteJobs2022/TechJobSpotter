@@ -11,7 +11,7 @@ import coil.load
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.BaseViewHolder
 import com.rogergcc.techjobspotter.databinding.ItemJobBinding
-import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 class JobsOkAdapter(
 //    private val itemClickListener: OnMovieClickListener,
-    val jobsPositionDetailsAction: (jobPositionDomain: JobPosition) -> Unit,
-    val jobMarkClickAction: (jobPositionDomain: JobPosition) -> Unit,
+    val jobsPositionDetailsAction: (jobPositionDomain: JobPositionUi) -> Unit,
+    val jobMarkClickAction: (jobPositionDomain: JobPositionUi) -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
     //    private var mItemsMovieResponse = emptyList<MovieResponse>()
 
@@ -63,12 +63,12 @@ class JobsOkAdapter(
     }
 
     override fun getItemCount(): Int = mItems.size
-    var mItems = listOf<JobPosition>()
+    var mItems = listOf<JobPositionUi>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-    fun updateMarkIcon(job: JobPosition, isMarked: Boolean) {
+    fun updateMarkIcon(job: JobPositionUi, isMarked: Boolean) {
         val position = mItems.indexOf(job)
         if (position != -1) {
             mItems[position].isMarked = isMarked // Update the isMarked property
@@ -79,10 +79,10 @@ class JobsOkAdapter(
     private inner class RemoteJobsSpottViewHolder(
         val binding: ItemJobBinding,
         val context: Context,
-    ) : BaseViewHolder<JobPosition>(binding.root) {
+    ) : BaseViewHolder<JobPositionUi>(binding.root) {
 
         private val coroutineScope = CoroutineScope(Dispatchers.Main)
-        override fun bind(item: JobPosition) {
+        override fun bind(item: JobPositionUi) {
 
             binding.apply {
                 tvTitle.text = item.title

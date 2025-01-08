@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
@@ -17,10 +19,10 @@ import com.rogergcc.techjobspotter.data.cloud.api.JobsApiInstance
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
-import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
 import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
+import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 
 
@@ -28,7 +30,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private var _binding: FragmentHomeJobsBinding? = null
 
     private val binding get() = _binding!!
-//    private val contextProvider = object : ContextProvider {
+
+    //    private val contextProvider = object : ContextProvider {
 //        override fun getContext(): Context = requireContext()
 //    }
     private val contextProvider by lazy { ContextProviderImpl(requireContext()) }
@@ -41,16 +44,19 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //        jobsMapperProvider
 //    ) }
 
-    private val jobsApiRepository by lazy { JobsRemoteRepository(
-        JobsApiInstance.retrofitService,
-        jobsMapperProvider
-    ) }
+    private val jobsApiRepository by lazy {
+        JobsRemoteRepository(
+            JobsApiInstance.retrofitService,
+            jobsMapperProvider
+        )
+    }
 
     private val jobsUseCase by lazy { JobsPositionUseCase(jobsApiRepository) }
 
     private val viewModel by viewModels<GetJobsViewModel> {
         JobViewModelFactory(
-            jobsUseCase
+            jobsUseCase,
+            jobsMapperProvider
         )
     }
     private val mAdapterRecommendJobs by lazy {
@@ -62,7 +68,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                 onFavoriteAction(job)
             },
 
-        )
+            )
     }
 
 
@@ -77,21 +83,26 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         )
     }
 
-    private fun goToPositionDetailsView(jobPositionModel: JobPosition) {
-        Log.d(TAG, "prevention $jobPositionModel")
-        jobPositionModel.title?.let {
+    private fun goToPositionDetailsView(jobPositio: JobPositionUi) {
+        Log.d(TAG, "prevention $jobPositio")
+        Snackbar.make(
+            binding.root, "Go to details ${jobPositio.title}",
+            Snackbar.LENGTH_SHORT
+        ).show()
 
-            Snackbar.make(
-                binding.root,
-                "Go to details ${jobPositionModel.title}",
-                Snackbar.LENGTH_SHORT
-            ).show()
+//        val bundle = Bundle().apply {
+//            putParcelable("jobPosition", jobPositionModel)
+//        }
 
-        }
+//        val action = HomeJobsFragmentDirections.actionHomeJobsFragmentToDetailsFragment(jobPositio)
+        val bundle = bundleOf("selectedJobPosition" to jobPositio)
+//        findNavController().navigate(action)
+        findNavController().navigate(R.id.action_homeJobsFragment_to_detailsFragment, bundle)
 //        onMark(1, jobPositionModel.title ?: "y")
 
 
     }
+
     private fun onMark(mark: Int, title: String) {
 
         Snackbar.make(
@@ -104,7 +115,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
 
-    private fun onFavoriteAction(job: JobPosition) {
+    private fun onFavoriteAction(job: JobPositionUi) {
 //        job.title?.let { onMark(1, it) }
         val isMarked = mAdapterMarkedJobs.mItems.contains(job)
 
@@ -146,7 +157,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
         binding.rvMarkedJobs.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false  )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapterMarkedJobs
 
         }
@@ -154,24 +165,23 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
 //        binding.toolbar.visibility = View.GONE
         observeRecommendPositions()
-        viewModel.fetchJobs()
-//        binding.recyclerView.scheduleLayoutAnimation()
+        if (viewModel.resourceJobs.value == null)
+            viewModel.fetchJobs()
 
+//        viewModel.fetchJobs()
+
+
+//        binding.recyclerView.scheduleLayoutAnimation()
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchJobs()
 
 
         }
-        if (binding.rvMarkedJobs.adapter==null || binding.rvMarkedJobs.adapter?.itemCount == 0) {
+        if (binding.rvMarkedJobs.adapter == null || binding.rvMarkedJobs.adapter?.itemCount == 0) {
             binding.shimmerMarkedLayout.visibility = View.GONE
         }
 
     }
-
-
-
-
-
 
 
     private fun showLoadingState() {
@@ -182,40 +192,48 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         binding.shimmerFrameLayout.startShimmer()
         binding.contentLayout.visibility = View.GONE
     }
+
     private fun showErrorState(exception: Exception) {
         hideLoadingState()
 //        binding.textEmptyErr.text = resources.getString(R.string.error_message)
-        binding.errorStateView.tvErrorStateMessage.text = resources.getString(R.string.error_message)
+        binding.errorStateView.tvErrorStateMessage.text =
+            resources.getString(R.string.error_message)
 //        binding.emptyView.visibility = View.VISIBLE
         binding.errorStateView.root.visibility = View.VISIBLE
         Log.e(TAG, "Error: $exception")
     }
-    private fun updateRecommendedJobsWithMarkedStatus(recommendedJobs: List<JobPosition>, markedJobs: List<JobPosition>): List<JobPosition> {
+
+    private fun updateRecommendedJobsWithMarkedStatus(
+        recommendedJobs: List<JobPositionUi>,
+        markedJobs: List<JobPositionUi>,
+    ): List<JobPositionUi> {
         val markedJobTitles = markedJobs.map { it.title }
         return recommendedJobs.map { job ->
             job.copy(isMarked = markedJobTitles.contains(job.title))
         }
     }
+
     private fun observeRecommendPositions() {
         viewModel.errorMessage.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it.asString(requireContext() ), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
         }
 
         viewModel.resourceJobs.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
-                   showLoadingState()
+                    showLoadingState()
                 }
 
                 is Resource.Success -> {
                     hideLoadingState()
                     val list = result.data
-                    Log.i("HomeJob", "observeRecommendPositions ${list.count()}")
+                    Log.i(TAG, "observeRecommendPositions Jobs Found: ${list.count()}")
                     //                    binding.rvMovies.adapter = concatAdapter
 //                    mAdapterRecommendJobs.mItems = list
 
                     // Update recommended jobs with marked status
-                    val updatedList = updateRecommendedJobsWithMarkedStatus(list, mAdapterMarkedJobs.mItems)
+                    val updatedList =
+                        updateRecommendedJobsWithMarkedStatus(list, mAdapterMarkedJobs.mItems)
                     mAdapterRecommendJobs.mItems = updatedList
 
                     if (list.isEmpty()) { //<-- status result is FALSE
@@ -223,7 +241,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //                        binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
 
                         binding.errorStateView.root.visibility = View.VISIBLE
-                        binding.errorStateView.tvErrorStateMessage.text = resources.getString(R.string.error_message_no_data)
+                        binding.errorStateView.tvErrorStateMessage.text =
+                            resources.getString(R.string.error_message_no_data)
 
                     } else {
 //                        binding.emptyView.visibility = View.GONE
@@ -235,6 +254,9 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                     showErrorState(result.exception)
 
                 }
+
+                else -> {
+                    showErrorState(Exception("Unknown error"))}
             }
         }
     }
