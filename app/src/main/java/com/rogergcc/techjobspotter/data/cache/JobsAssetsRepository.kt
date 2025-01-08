@@ -1,6 +1,6 @@
 package com.rogergcc.techjobspotter.data.cache
 
-import com.rogergcc.techjobspotter.data.cloud.model.RemoteJobsResponse
+import com.rogergcc.techjobspotter.data.model.RemoteJobsResponse
 import com.rogergcc.techjobspotter.domain.IJobsPositions
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
@@ -23,7 +23,7 @@ class JobsAssetsRepository(
     override suspend fun geJobs(): List<JobPosition> {
         return try {
             val remoteJobsResponse: RemoteJobsResponse? = contextProvider.getContext() .loadJSONFromAsset("mock_response.json")
-            val jobsDto = remoteJobsResponse?.jobDtos
+            val jobsDto = remoteJobsResponse?.jobsData
             jobsDto?.mapNotNull { jobDto ->
                 jobDto?.let { jobsMapperProvider.getJobsMapper().dtoToDomain(it) }
             } ?: emptyList()

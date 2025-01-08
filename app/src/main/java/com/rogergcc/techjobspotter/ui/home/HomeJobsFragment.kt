@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
-import com.rogergcc.techjobspotter.data.cache.JobsAssetsRepository
+import com.rogergcc.techjobspotter.data.cloud.JobsRemoteRepository
+import com.rogergcc.techjobspotter.data.cloud.api.JobsApiInstance
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
@@ -35,8 +36,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         override fun getJobsMapper(): JobMapper = JobMapper()
     }
 
-    private val jobsApiRepository by lazy { JobsAssetsRepository(
-        contextProvider,
+//    private val jobsApiRepository by lazy { JobsAssetsRepository(
+//        contextProvider,
+//        jobsMapperProvider
+//    ) }
+
+    private val jobsApiRepository by lazy { JobsRemoteRepository(
+        JobsApiInstance.retrofitService,
         jobsMapperProvider
     ) }
 

@@ -35,7 +35,7 @@ android {
 
 
     def baseUrl = '\"https://remotive.com/api/remote-jobs?limit=10\"'
-    https://remotive.com/api/remote-jobs
+//    https://remotive.com/api/remote-jobs
     //https://remotive.com/
     buildTypes {
         debug {

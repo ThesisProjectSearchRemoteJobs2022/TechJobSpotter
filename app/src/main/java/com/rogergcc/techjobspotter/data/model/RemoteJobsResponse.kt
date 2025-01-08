@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.data.cloud.model
+package com.rogergcc.techjobspotter.data.model
 import com.google.gson.annotations.SerializedName
 
 
@@ -10,7 +10,7 @@ data class RemoteJobsResponse(
     @SerializedName("job-count")
     val jobCount: Int? = 0,
     @SerializedName("jobs")
-    val jobDtos: List<JobDto?>? = listOf(),
+    val jobsData: List<JobDto?>? = listOf(),
     @SerializedName("0-legal-notice")
     val legalNotice: String? = "",
     @SerializedName("00-warning")

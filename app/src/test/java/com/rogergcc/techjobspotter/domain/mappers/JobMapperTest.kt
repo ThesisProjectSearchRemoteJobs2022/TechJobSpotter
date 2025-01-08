@@ -1,7 +1,7 @@
 package com.rogergcc.techjobspotter.domain.mappers
 
-import com.rogergcc.techjobspotter.data.cloud.model.JobDto
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
+import com.rogergcc.techjobspotter.data.model.JobDto
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import org.junit.Assert.assertEquals

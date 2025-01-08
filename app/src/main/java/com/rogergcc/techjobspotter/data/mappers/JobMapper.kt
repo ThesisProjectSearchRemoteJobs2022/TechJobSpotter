@@ -5,7 +5,7 @@ package com.rogergcc.techjobspotter.data.mappers
  * Created on enero.
  * year 2025 .
  */
-import com.rogergcc.techjobspotter.data.cloud.model.JobDto
+import com.rogergcc.techjobspotter.data.model.JobDto
 //import com.rogergcc.techjobspotter.data.model.JobDto
 import com.rogergcc.techjobspotter.domain.mappers.Mapper
 import com.rogergcc.techjobspotter.domain.model.JobPosition

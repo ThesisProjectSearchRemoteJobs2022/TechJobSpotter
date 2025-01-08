@@ -1,10 +1,9 @@
 package com.rogergcc.techjobspotter.data.cloud
 
-import com.rogergcc.techjobspotter.data.cloud.model.JobDto
+import com.rogergcc.techjobspotter.data.cloud.api.RemoteJobsPositionService
 import com.rogergcc.techjobspotter.domain.IJobsPositions
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
-import com.rogergcc.techjobspotter.ui.utils.provider.ContextProvider
 
 
 /**
@@ -13,20 +12,25 @@ import com.rogergcc.techjobspotter.ui.utils.provider.ContextProvider
  */
 
 
-class JobsRemoteRepository(private val contextProvider: ContextProvider,
-                           private val jobsMapperProvider: JobsMapperProvider
+class JobsRemoteRepository(
+    private val jobsApiService: RemoteJobsPositionService,
+    private val jobsMapperProvider: JobsMapperProvider,
 ) :
-//    IJobsPositions, IJobsAssetsDataSource {
     IJobsPositions {
-    // Implementa la lógica para obtener los datos remotos
     override suspend fun geJobs(): List<JobPosition> {
         // Código para obtener los datos remotos
 
-        return try {
-            val jobDomain = jobsMapperProvider.getJobsMapper().dtoToDomain(JobDto())
-            return listOf(jobDomain,jobDomain, jobDomain)
+        try {
+            val responseJobsPosition = jobsApiService.getResponseJobsPosition(20)
+            val jobsList = responseJobsPosition.jobsData
+
+            val jobsPositionDomain = jobsList?.mapNotNull { jobDto ->
+                jobDto?.let { jobsMapperProvider.getJobsMapper().dtoToDomain(it) }
+            } ?: emptyList()
+
+            return jobsPositionDomain
         } catch (e: Exception) {
-            emptyList()
+            return emptyList()
         }
 
     }

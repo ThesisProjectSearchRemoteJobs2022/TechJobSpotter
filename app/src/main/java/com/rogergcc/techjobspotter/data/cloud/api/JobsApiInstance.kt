@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * year 2023 .
  */
 object JobsApiInstance {
-    private const val BASE_URL = "https://remotive.com/api/remote-jobs?limit=10"
+    private const val BASE_URL = "https://remotive.com/api/"
 
     private val loggingInterceptor: HttpLoggingInterceptor by lazy {
         HttpLoggingInterceptor().apply {
@@ -37,8 +37,8 @@ object JobsApiInstance {
         .client(okHttpClient)
         .build()
 
-    val retrofitService: JobsApiInstance by lazy {
-        retrofit.create(JobsApiInstance::class.java)
+    val retrofitService: RemoteJobsPositionService by lazy {
+        retrofit.create(RemoteJobsPositionService::class.java)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.data.cloud.model
+package com.rogergcc.techjobspotter.data.model
 
 import com.google.gson.annotations.SerializedName
 
