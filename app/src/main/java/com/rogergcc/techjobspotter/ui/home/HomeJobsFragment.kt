@@ -176,13 +176,14 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //        binding.recyclerView.scheduleLayoutAnimation()
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchJobs()
-
+//            showLoadingState()
 
         }
-        if (binding.rvMarkedJobs.adapter == null || binding.rvMarkedJobs.adapter?.itemCount == 0) {
-//            binding.shimmerMarkedLayout.visibility = View.GONE
-            binding.shimmerMarkedLayout.hideView()
-        }
+//        if (binding.rvMarkedJobs.adapter == null ||
+//            binding.rvMarkedJobs.adapter?.itemCount == 0) {
+////            binding.shimmerMarkedLayout.visibility = View.GONE
+//            binding.shimmerMarkedLayout.hideView()
+//        }
 
     }
 
@@ -190,26 +191,32 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         binding.swipeRefresh.isRefreshing = false
 //        binding.emptyView.visibility = View.GONE
         binding.errorStateView.root.hideView()
+        binding.contentLayout.showView()
+
         binding.shimmerFrameLayout.hideView()
         binding.shimmerFrameLayout.stopShimmer()
-        binding.contentLayout.showView()
+
+        binding.shimmerMarkedLayout.hideView()
+        binding.shimmerMarkedLayout.stopShimmer()
     }
 
     private fun showLoadingState() {
         binding.swipeRefresh.isRefreshing = true
         binding.errorStateView.root.hideView()
+        binding.contentLayout.hideView()
+
         binding.shimmerFrameLayout.showView()
         binding.shimmerFrameLayout.startShimmer()
-        binding.contentLayout.hideView()
+
+        binding.shimmerMarkedLayout.showView()
+        binding.shimmerMarkedLayout.startShimmer()
     }
 
 
     private fun showErrorState(exception: Exception) {
         hideLoadingState()
-//        binding.textEmptyErr.text = resources.getString(R.string.error_message)
         binding.errorStateView.tvErrorStateMessage.text =
             resources.getString(R.string.error_message)
-//        binding.emptyView.visibility = View.VISIBLE
         binding.errorStateView.root.showView()
         Log.e(TAG, "Error: $exception")
     }
