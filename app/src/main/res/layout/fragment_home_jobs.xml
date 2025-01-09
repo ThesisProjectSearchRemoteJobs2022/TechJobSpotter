@@ -202,8 +202,10 @@
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerMarkedLayout"
                         android:layout_width="match_parent"
-                        android:nestedScrollingEnabled="true"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
 
                         app:shimmer_auto_start="true"

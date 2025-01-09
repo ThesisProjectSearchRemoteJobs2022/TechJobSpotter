@@ -24,7 +24,7 @@ data class JobDto(
     @SerializedName("salary")
     val salary: String? = "",
     @SerializedName("tags")
-    val tags: List<String?>? = listOf(),
+    val tags: List<String>? = listOf(),
     @SerializedName("title")
     val title: String? = "",
     @SerializedName("url")

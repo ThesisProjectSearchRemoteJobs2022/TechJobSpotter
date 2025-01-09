@@ -5,6 +5,7 @@ package com.rogergcc.techjobspotter.data.mappers
  * Created on enero.
  * year 2025 .
  */
+import com.rogergcc.techjobspotter.data.cache.database.JobEntity
 import com.rogergcc.techjobspotter.data.model.JobDto
 //import com.rogergcc.techjobspotter.data.model.JobDto
 import com.rogergcc.techjobspotter.domain.mappers.Mapper
@@ -81,6 +82,24 @@ class JobMapper : Mapper<JobPosition, JobDto, JobPositionUi> {
             candidateRequiredLocation = domain.candidateRequiredLocation,
             category = domain.category,
             companyLogo = domain.companyLogo
+        )
+    }
+
+    override fun domainToEntity(domain: JobPosition): JobEntity {
+        return JobEntity(
+            idKey = domain.id.toString(),
+            id = domain.id ?: 0,
+            title = domain.title ?: "",
+            companyName = domain.companyName ?: "",
+            companyLogoUrl = domain.companyLogoUrl ?: "",
+            description = domain.description ?: "",
+            publicationDate = domain.publicationDate ?: "",
+            salary = domain.salary ?: "",
+            url = domain.url ?: "",
+            tags = domain.tags ?: listOf(),
+            jobType = domain.jobType ?: "",
+            candidateRequiredLocation = domain.candidateRequiredLocation ?: "",
+            category = domain.category ?: ""
         )
     }
 }

@@ -106,8 +106,8 @@
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/bold"
                         android:gravity="center_horizontal"
-                        android:text="@{item.title}"
-                        android:textColor="@color/gray_500"
+                        android:text="{item.title}"
+                        android:textColor="?attr/colorControlNormal"
                         android:textSize="18sp" />
 
                     <TextView
@@ -119,7 +119,7 @@
                         android:fontFamily="@font/book"
                         android:gravity="center_horizontal"
                         android:text="item.company"
-                        android:textColor="@color/gray_500"
+                        android:textColor="?attr/colorAccent"
                         android:textSize="14sp" />
 
                     <TextView
@@ -137,11 +137,12 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
-                        android:text="@{item.type}"
-                        android:textColor="@color/green_300"
+                        android:text="item.type"
+                        android:textColor="?attr/colorSecondary"
                         android:textSize="14sp" />
 
                     <com.google.android.material.card.MaterialCardView
+                        app:cardBackgroundColor="?attr/baseThemeColor"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
                         app:strokeColor="#f1f1f1"
@@ -165,7 +166,7 @@
                                 android:orientation="horizontal">
 
                                 <ImageView
-                                    app:tint="@color/navy_100"
+                                    app:tint="?attr/colorPrimaryVariant"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
                                     android:src="@drawable/ic_twotone_info_24" />
@@ -177,11 +178,12 @@
                                     android:layout_marginStart="5dp"
                                     android:fontFamily="@font/bold"
                                     android:text="Job Description"
-                                    android:textColor="@color/navy_100" />
+                                    android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
                             <TextView
                                 android:id="@+id/description"
+                                android:text="lorem"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/book"
@@ -216,7 +218,7 @@
                                 android:orientation="horizontal">
 
                                 <ImageView
-                                    app:tint="@color/navy_100"
+                                    app:tint="?attr/colorPrimaryVariant"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
                                     android:src="@drawable/ic_twotone_work_24" />
@@ -228,7 +230,7 @@
                                     android:layout_marginStart="5dp"
                                     android:fontFamily="@font/bold"
                                     android:text="Company Information"
-                                    android:textColor="@color/navy_100" />
+                                    android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -260,14 +262,14 @@
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp">
+                                    android:layout_marginTop="@dimen/dim_6dp">
 
                                     <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconLocation"
                                         app:tint="@color/gray_300"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
-                                        android:layout_marginTop="2dp"
+                                        android:layout_marginTop="@dimen/dim_2dp"
                                         android:src="@drawable/ic_outline_location_on_24" />
 
                                     <TextView
@@ -276,21 +278,21 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconLocation"
-                                        android:text="@{item.location}" />
+                                        android:text="{item.location}" />
 
                                 </RelativeLayout>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp">
+                                    android:layout_marginTop="@dimen/dim_6dp">
 
                                     <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconWebsite"
                                         app:tint="@color/gray_300"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
-                                        android:layout_marginTop="2dp"
+                                        android:layout_marginTop="@dimen/dim_2dp"
                                         android:src="@drawable/ic_baseline_public_24" />
 
                                     <TextView
@@ -299,7 +301,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconWebsite"
-                                        android:text="@{item.companyUrl}"
+                                        android:text="{item.companyUrl}"
                                         android:textIsSelectable="true" />
 
                                 </RelativeLayout>

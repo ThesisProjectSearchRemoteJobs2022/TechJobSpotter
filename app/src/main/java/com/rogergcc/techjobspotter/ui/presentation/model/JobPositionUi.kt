@@ -20,7 +20,7 @@ data class JobPositionUi(
     val jobType: String? = "",
     val publicationDate: String? = "",
     val salary: String? = "",
-    val tags: List<String?>? = listOf(),
+    val tags: List<String>? = listOf(),
     val title: String? = "",
     val url: String? = "",
     var isMarked: Boolean = false,
