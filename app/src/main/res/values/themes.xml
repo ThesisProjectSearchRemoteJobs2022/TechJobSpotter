@@ -20,6 +20,7 @@
         <item name="shimmerColor">@color/greyShimmerLight</item>
         <item name="baseThemeColor">@color/gray_050</item>
         <item name="shadeGrey">@color/gray_600</item>
+        <item name="contentColor">@color/gray_050</item>
         <!--        <item name="colorOnSurface">@color/blue_050</item>-->
 <!--        <item name="colorSurface">@color/blue_050</item>-->
 <!--        <item name="fontFamily">@font/book</item>-->

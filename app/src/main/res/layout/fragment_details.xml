@@ -142,7 +142,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.card.MaterialCardView
-                        app:cardBackgroundColor="?attr/baseThemeColor"
+                        app:cardBackgroundColor="?attr/contentColor"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
                         app:strokeColor="#f1f1f1"

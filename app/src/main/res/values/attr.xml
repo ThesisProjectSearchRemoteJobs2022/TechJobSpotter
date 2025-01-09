@@ -10,4 +10,5 @@
     <attr name="baseThemeColor" format="color" />
     <attr name="shimmerColor" format="color" />
     <attr name="shadeGrey" format="color" />
+    <attr name="contentColor" format="color" />
 </resources>

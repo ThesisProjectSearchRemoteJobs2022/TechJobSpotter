@@ -23,6 +23,7 @@
         <item name="shimmerColor">@color/greyShimmerDark</item>
         <item name="baseThemeColor">@color/gray_700</item>
         <item name="shadeGrey">@color/gray_200</item>
+        <item name="contentColor">@color/gray_300</item>
     </style>
 
     <style name="CardViewStyle" parent="Base.CardView">
