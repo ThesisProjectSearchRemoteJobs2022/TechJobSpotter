@@ -13,7 +13,6 @@ data class JobEntity(
     val id: Int,
     val title: String,
     val description: String,
-
     val companyName: String,
     val companyLogoUrl: String,
     val publicationDate: String,

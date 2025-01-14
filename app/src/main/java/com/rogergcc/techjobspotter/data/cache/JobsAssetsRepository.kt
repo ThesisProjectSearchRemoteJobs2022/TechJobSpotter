@@ -1,7 +1,7 @@
 package com.rogergcc.techjobspotter.data.cache
 
 import com.rogergcc.techjobspotter.data.model.RemoteJobsResponse
-import com.rogergcc.techjobspotter.domain.IJobsPositions
+import com.rogergcc.techjobspotter.domain.IJobsPositionsRemoteRepository
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
@@ -17,8 +17,8 @@ class JobsAssetsRepository(
     private val contextProvider: ContextProvider,
     private val jobsMapperProvider: JobsMapperProvider,
 ) :
-//    IJobsPositions, IJobsAssetsDataSource {
-    IJobsPositions {
+//    IJobsPositionsRemoteRepository, IJobsAssetsDataSource {
+    IJobsPositionsRemoteRepository {
 
     override suspend fun geJobs(): List<JobPosition> {
         return try {

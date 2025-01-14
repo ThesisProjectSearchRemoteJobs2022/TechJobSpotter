@@ -49,7 +49,10 @@ class JobsOkAdapter(
             val position =
                 holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
                     ?: return@setOnClickListener
-            jobMarkClickAction(mItems[position])
+            val job = mItems[position]
+            val isMarked = !job.isMarked
+            jobMarkClickAction(job.copy(isMarked = isMarked))
+
         }
 
 
@@ -69,7 +72,7 @@ class JobsOkAdapter(
             notifyDataSetChanged()
         }
     fun updateMarkIcon(job: JobPositionUi, isMarked: Boolean) {
-        val position = mItems.indexOf(job)
+        val position = mItems.indexOfFirst { it.id == job.id }
         if (position != -1) {
             mItems[position].isMarked = isMarked // Update the isMarked property
             notifyItemChanged(position)

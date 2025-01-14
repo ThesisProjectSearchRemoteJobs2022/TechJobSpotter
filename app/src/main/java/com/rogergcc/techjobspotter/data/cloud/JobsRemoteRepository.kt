@@ -1,7 +1,7 @@
 package com.rogergcc.techjobspotter.data.cloud
 
 import com.rogergcc.techjobspotter.data.cloud.api.RemoteJobsPositionService
-import com.rogergcc.techjobspotter.domain.IJobsPositions
+import com.rogergcc.techjobspotter.domain.IJobsPositionsRemoteRepository
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 
@@ -16,7 +16,7 @@ class JobsRemoteRepository(
     private val jobsApiService: RemoteJobsPositionService,
     private val jobsMapperProvider: JobsMapperProvider,
 ) :
-    IJobsPositions {
+    IJobsPositionsRemoteRepository {
     override suspend fun geJobs(): List<JobPosition> {
         // Código para obtener los datos remotos
 

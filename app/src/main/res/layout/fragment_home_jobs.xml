@@ -176,7 +176,6 @@
                         android:orientation="vertical"
                         >
 
-
                     <TextView
                         android:id="@+id/markedTitle"
                         android:layout_width="match_parent"
@@ -225,7 +224,9 @@
                             <include layout="@layout/item_job_marked" />
 
                         </LinearLayout>
+
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -239,6 +240,8 @@
                         android:orientation="horizontal"
 
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
                         tools:itemCount="2"
                         tools:listitem="@layout/item_job_marked" />
 
@@ -270,7 +273,6 @@
                         android:textSize="@dimen/size_16sp" />
 
 
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRecommendedJobs"
                         android:layout_width="match_parent"
@@ -283,6 +285,30 @@
                         tools:itemCount="3"
                         tools:listitem="@layout/item_job" />
 
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerRecommendedLayout"
+
+                        android:layout_width="match_parent"
+                        android:layout_below="@id/recommendedTitle"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:shimmer_auto_start="true"
+                        app:shimmer_duration="800">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_job_placeholder" />
+
+                            <include layout="@layout/item_job_placeholder" />
+
+                            <include layout="@layout/item_job_placeholder" />
+
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
                 </RelativeLayout>
 
             </androidx.core.widget.NestedScrollView>
@@ -322,34 +348,5 @@
         app:layout_constraintTop_toBottomOf="@+id/swipeRefresh"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dim_16dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:shimmer_auto_start="true"
-        app:shimmer_duration="800">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/item_job_placeholder" />
-
-            <include layout="@layout/item_job_placeholder" />
-
-            <include layout="@layout/item_job_placeholder" />
-
-            <include layout="@layout/item_job_placeholder" />
-
-            <include layout="@layout/item_job_placeholder" />
-
-            <include layout="@layout/item_job_placeholder" />
-
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

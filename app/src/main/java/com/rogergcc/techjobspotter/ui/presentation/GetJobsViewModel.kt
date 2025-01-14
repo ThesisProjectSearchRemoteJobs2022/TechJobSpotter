@@ -26,8 +26,14 @@ class GetJobsViewModel(
     private val jobsPositionUseCase: JobsPositionUseCase,
     private val jobsMapperProvider: JobsMapperProvider,
 ) : ViewModel() {
-    private val _resourceJobs = MutableLiveData<Resource<List<JobPositionUi>>>()
-    val resourceJobs: LiveData<Resource<List<JobPositionUi>>> get() = _resourceJobs
+    private val _remoteJobsPosition = MutableLiveData<Resource<List<JobPositionUi>>>()
+    val remoteJobsPosition: LiveData<Resource<List<JobPositionUi>>> get() = _remoteJobsPosition
+
+    private val _localJobsPosition = MutableLiveData<Resource<List<JobPositionUi>>>()
+    val localJobsPosition: LiveData<Resource<List<JobPositionUi>>> get() = _localJobsPosition
+
+    private val _markedJobPosition = MutableLiveData<Resource<JobPositionUi>>()
+    val markedJobPosition: LiveData<Resource<JobPositionUi>> get() = _markedJobPosition
 
     private val _errorMessage = MutableLiveData<UiText>()
     val errorMessage: LiveData<UiText> get() = _errorMessage
@@ -38,20 +44,20 @@ class GetJobsViewModel(
     }
 
 
-    fun fetchJobs() {
-        _resourceJobs.value = Resource.Loading()
+    fun fetchRemoteJobsPositions() {
+        _remoteJobsPosition.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 delay(1000)
-                val jobsPosition = jobsPositionUseCase.execute()
+                val jobsPosition = jobsPositionUseCase.getJobsApi()
                 val jobsListUi = jobsPosition.map {
                     jobsMapperProvider.getJobsMapper().domainToPresentation(it)
                 }
-                _resourceJobs.postValue(Resource.Success(jobsListUi))
+                _remoteJobsPosition.postValue(Resource.Success(jobsListUi))
             } catch (e: Exception) {
 //                _resourceJobs.value = Resource.Failure(e)
                 Log.e(TAG, "fetchJobs: ${e.message}" )
-                _resourceJobs.postValue(Resource.Failure(e))
+                _remoteJobsPosition.postValue(Resource.Failure(e))
                 if (e is IllegalArgumentException) {
                     _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
 //                    _errorMessage.value = UiText.StringResource(errorResId, args.toList())
@@ -62,6 +68,60 @@ class GetJobsViewModel(
             }
         }
     }
+
+    fun fetchLocalJobsPositions() {
+        _localJobsPosition.value = Resource.Loading()
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            try {
+                delay(1000)
+                val jobsPosition = jobsPositionUseCase.getJobsPositionCache()
+                val jobsListUi = jobsMapperProvider.getJobsMapper().listDomainToPresentation(jobsPosition)
+
+                _localJobsPosition.postValue(Resource.Success(jobsListUi))
+            } catch (e: Exception) {
+//                _resourceJobs.value = Resource.Failure(e)
+                Log.e(TAG, "fetchLocalJobsPositions: ${e.message}")
+                _localJobsPosition.postValue(Resource.Failure(e))
+                if (e is IllegalArgumentException) {
+                    _errorMessage.postValue(
+                        UiText.StringResource(
+                            R.string.error_message,
+                            listOf(e.message ?: "Unknown error")
+                        )
+                    )
+
+                }
+            }
+        }
+    }
+
+    fun markFavoriteJobPosition(job: JobPositionUi) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            try {
+                val jobPosition = jobsMapperProvider.getJobsMapper().presentationToDomain(job)
+
+                val jobPositionFound = jobsPositionUseCase.getJobByIdCache(jobPosition.id ?: 0)
+
+
+                if (jobPositionFound.id == 0) {
+                    jobsPositionUseCase.insertJobCache(jobPosition)
+                    jobPosition.isMarked = true
+                }else{
+                    jobsPositionUseCase.deleteJobCache(jobPosition)
+                    jobPosition.isMarked = false
+                }
+                val jobsFoundUi = jobsMapperProvider.getJobsMapper()
+                    .domainToPresentation(jobPosition)
+                _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
+
+            } catch (e: Exception) {
+                Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
+                _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
+            }
+        }
+    }
+
+
 
     companion object {
         private const val TAG = "GetJobsViewModel"

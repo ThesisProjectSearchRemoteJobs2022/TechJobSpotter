@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
+import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
+import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
 import com.rogergcc.techjobspotter.data.cloud.JobsRemoteRepository
 import com.rogergcc.techjobspotter.data.cloud.api.JobsApiInstance
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
@@ -29,6 +31,8 @@ import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
+    private lateinit var jobsPositionCache: List<JobPositionUi>
+
     private var _binding: FragmentHomeJobsBinding? = null
 
     private val binding get() = _binding!!
@@ -52,8 +56,22 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             jobsMapperProvider
         )
     }
+    private val jobsDaoCache by lazy {
+        AppDatabase.getDatabase(contextProvider.getContext()).jobDao()
+    }
+    private val jobsCacheRepository by lazy {
+        JobsPositionCache(
+            jobsDaoCache,
+            jobsMapperProvider
+        )
+    }
 
-    private val jobsUseCase by lazy { JobsPositionUseCase(jobsApiRepository) }
+    private val jobsUseCase by lazy {
+        JobsPositionUseCase(
+            jobsApiRepository,
+            jobsCacheRepository
+        )
+    }
 
     private val viewModel by viewModels<GetJobsViewModel> {
         JobViewModelFactory(
@@ -61,6 +79,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             jobsMapperProvider
         )
     }
+
     private val mAdapterRecommendJobs by lazy {
         JobsOkAdapter(
             jobsPositionDetailsAction = { job ->
@@ -105,33 +124,81 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     }
 
-    private fun onMark(mark: Int, title: String) {
-
-        Snackbar.make(
-            binding.root,
-            if (mark == 0) "\uD83D\uDE13 Unmark $title" else "\uD83D\uDE0D Marked $title",
-            Snackbar.LENGTH_SHORT
-        ).show()
+    private fun showMessage(isMarked: Boolean, title: String? = "") {
+        if (!isMarked) {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE13 Unmark $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        } else {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE0D Marked $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
 
 
     }
 
+    private fun observeMarkedJobSelected() {
+        viewModel.markedJobPosition.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    showLoadingState()
+                }
 
-    private fun onFavoriteAction(job: JobPositionUi) {
-//        job.title?.let { onMark(1, it) }
-        val isMarked = mAdapterMarkedJobs.mItems.contains(job)
+                is Resource.Success -> {
+                    hideLoadingState()
+                    val job = result.data
+                    mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
+                    Log.i(TAG, "observeMarkedJobs Jobs Found: ${job.title}")
+                    if (job.isMarked) {
+                        mAdapterMarkedJobs.mItems =
+                            mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                add(job)
+                            }
+                    } else {
+                        mAdapterMarkedJobs.mItems =
+                            mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                remove(job)
 
-        if (isMarked) {
-            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                remove(job)
-            }
-        } else {
-            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                add(job)
+                            }
+                    }
+//                    mAdapterMarkedJobs.mItems = jobsPositionCache
+//                    mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
+                    mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
+                    showMessage(job.isMarked, job.title )
+
+                }
+
+                is Resource.Failure -> {
+                    showErrorState(result.exception)
+                }
+
+                else -> {
+                    showErrorState(Exception("Unknown error"))
+                }
             }
         }
-        mAdapterRecommendJobs.updateMarkIcon(job, !isMarked)
-        onMark(if (isMarked) 0 else 1, job.title ?: "y")
+    }
+
+    private fun onFavoriteAction(job: JobPositionUi) {
+        val isMarked = jobsPositionCache.contains(job)
+
+        viewModel.markFavoriteJobPosition(job)
+
+//        if (isMarked) {
+//            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+//                remove(job)
+//            }
+//        } else {
+//            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+//                add(job)
+//            }
+//        }
+//
+//        mAdapterRecommendJobs.updateMarkIcon(job, !isMarked)
+//        onMark(if (isMarked) 0 else 1, job.title ?: "y")
 
     }
 
@@ -166,16 +233,21 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
 
 //        binding.toolbar.visibility = View.GONE
+        observeLocalJobs()
         observeRecommendPositions()
-        if (viewModel.resourceJobs.value == null)
-            viewModel.fetchJobs()
+        observeMarkedJobSelected()
+
+        viewModel.fetchLocalJobsPositions()
+        if (viewModel.remoteJobsPosition.value == null)
+            viewModel.fetchRemoteJobsPositions()
 
 //        viewModel.fetchJobs()
 
 
 //        binding.recyclerView.scheduleLayoutAnimation()
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.fetchJobs()
+            viewModel.fetchLocalJobsPositions()
+            viewModel.fetchRemoteJobsPositions()
 //            showLoadingState()
 
         }
@@ -187,14 +259,18 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     }
 
+
     private fun hideLoadingState() {
         binding.swipeRefresh.isRefreshing = false
 //        binding.emptyView.visibility = View.GONE
         binding.errorStateView.root.hideView()
-        binding.contentLayout.showView()
+//        binding.contentLayout.showView()
 
-        binding.shimmerFrameLayout.hideView()
-        binding.shimmerFrameLayout.stopShimmer()
+        binding.rvMarkedJobs.showView()
+        binding.rvRecommendedJobs.showView()
+
+        binding.shimmerRecommendedLayout.hideView()
+        binding.shimmerRecommendedLayout.stopShimmer()
 
         binding.shimmerMarkedLayout.hideView()
         binding.shimmerMarkedLayout.stopShimmer()
@@ -203,10 +279,14 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private fun showLoadingState() {
         binding.swipeRefresh.isRefreshing = true
         binding.errorStateView.root.hideView()
-        binding.contentLayout.hideView()
+//        binding.contentLayout.hideView()
 
-        binding.shimmerFrameLayout.showView()
-        binding.shimmerFrameLayout.startShimmer()
+
+        binding.rvMarkedJobs.hideView()
+        binding.rvRecommendedJobs.hideView()
+
+        binding.shimmerRecommendedLayout.showView()
+        binding.shimmerRecommendedLayout.startShimmer()
 
         binding.shimmerMarkedLayout.showView()
         binding.shimmerMarkedLayout.startShimmer()
@@ -221,7 +301,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         Log.e(TAG, "Error: $exception")
     }
 
-    private fun updateRecommendedJobsWithMarkedStatus(
+    private fun updateMarkedStatus(
         recommendedJobs: List<JobPositionUi>,
         markedJobs: List<JobPositionUi>,
     ): List<JobPositionUi> {
@@ -231,12 +311,45 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         }
     }
 
+    private fun observeLocalJobs() {
+        viewModel.localJobsPosition.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    showLoadingState()
+                }
+
+                is Resource.Success -> {
+                    hideLoadingState()
+                    jobsPositionCache = result.data
+                    Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
+                    mAdapterMarkedJobs.mItems = jobsPositionCache
+                    if (jobsPositionCache.isEmpty()) {
+                        binding.errorStateView.root.showView()
+                        binding.errorStateView.tvErrorStateMessage.text =
+                            resources.getString(R.string.error_message_no_data)
+                    } else {
+                        binding.errorStateView.root.hideView()
+                    }
+                }
+
+                is Resource.Failure -> {
+                    showErrorState(result.exception)
+                }
+
+                else -> {
+                    showErrorState(Exception("Unknown error"))
+                }
+            }
+        }
+    }
+
+
     private fun observeRecommendPositions() {
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.resourceJobs.observe(viewLifecycleOwner) { result ->
+        viewModel.remoteJobsPosition.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
                     showLoadingState()
@@ -250,8 +363,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //                    mAdapterRecommendJobs.mItems = list
 
                     // Update recommended jobs with marked status
-                    val updatedList =
-                        updateRecommendedJobsWithMarkedStatus(list, mAdapterMarkedJobs.mItems)
+                    val updatedList = updateMarkedStatus(list, jobsPositionCache)
                     mAdapterRecommendJobs.mItems = updatedList
 
                     if (list.isEmpty()) { //<-- status result is FALSE

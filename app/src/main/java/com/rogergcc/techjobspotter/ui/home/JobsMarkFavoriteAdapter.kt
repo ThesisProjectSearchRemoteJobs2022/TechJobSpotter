@@ -30,6 +30,13 @@ class JobsMarkFavoriteAdapter(
             notifyDataSetChanged()
         }
 
+    fun updateMarkIcon(job: JobPositionUi, isMarked: Boolean) {
+        val position = mItems.indexOfFirst { it.id == job.id }
+        if (position != -1) {
+            mItems[position].isMarked = isMarked // Update the isMarked property
+            notifyItemChanged(position)
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             ItemJobMarkedBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -1,6 +1,7 @@
 package com.rogergcc.techjobspotter.data.cache.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -16,4 +17,11 @@ interface JobDao {
 
     @Insert
     suspend fun insertJob(job: JobEntity)
+
+    @Query("SELECT * FROM jobs_table WHERE id = :id")
+    suspend fun getJobById(id: Int): JobEntity
+
+    @Delete
+    suspend fun deleteJob(job: JobEntity)
+
 }
