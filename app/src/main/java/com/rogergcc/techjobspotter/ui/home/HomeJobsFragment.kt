@@ -42,7 +42,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //    }
     private val contextProvider by lazy { ContextProviderImpl(requireContext()) }
     private val jobsMapperProvider = object : JobsMapperProvider {
-        override fun getJobsMapper(): JobMapper = JobMapper()
+        override fun provider(): JobMapper = JobMapper()
     }
 
 //    private val jobsApiRepository by lazy { JobsAssetsRepository(

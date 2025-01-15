@@ -9,5 +9,5 @@ import com.rogergcc.techjobspotter.data.mappers.JobMapper
  */
 interface JobsMapperProvider {
 //    fun getJobsMapper(): JobsMapperAbstract
-    fun getJobsMapper(): JobMapper
+    fun provider(): JobMapper
 }

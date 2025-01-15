@@ -25,7 +25,7 @@ class JobsAssetsRepository(
             val remoteJobsResponse: RemoteJobsResponse? = contextProvider.getContext() .loadJSONFromAsset("mock_response.json")
             val jobsDto = remoteJobsResponse?.jobsData
             jobsDto?.mapNotNull { jobDto ->
-                jobDto?.let { jobsMapperProvider.getJobsMapper().dtoToDomain(it) }
+                jobDto?.let { jobsMapperProvider.provider().dtoToDomain(it) }
             } ?: emptyList()
         } catch (e: Exception) {
             emptyList<JobPosition>()

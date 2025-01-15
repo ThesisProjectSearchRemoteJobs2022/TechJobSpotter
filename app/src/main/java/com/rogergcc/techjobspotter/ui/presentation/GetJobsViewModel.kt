@@ -51,7 +51,7 @@ class GetJobsViewModel(
                 delay(1000)
                 val jobsPosition = jobsPositionUseCase.getJobsApi()
                 val jobsListUi = jobsPosition.map {
-                    jobsMapperProvider.getJobsMapper().domainToPresentation(it)
+                    jobsMapperProvider.provider().domainToPresentation(it)
                 }
                 _remoteJobsPosition.postValue(Resource.Success(jobsListUi))
             } catch (e: Exception) {
@@ -75,7 +75,7 @@ class GetJobsViewModel(
             try {
                 delay(1000)
                 val jobsPosition = jobsPositionUseCase.getJobsPositionCache()
-                val jobsListUi = jobsMapperProvider.getJobsMapper().listDomainToPresentation(jobsPosition)
+                val jobsListUi = jobsMapperProvider.provider().listDomainToPresentation(jobsPosition)
 
                 _localJobsPosition.postValue(Resource.Success(jobsListUi))
             } catch (e: Exception) {
@@ -98,7 +98,7 @@ class GetJobsViewModel(
     fun markFavoriteJobPosition(jobPositionUi: JobPositionUi) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
-                val jobPositionDomain = jobsMapperProvider.getJobsMapper().presentationToDomain(jobPositionUi)
+                val jobPositionDomain = jobsMapperProvider.provider().presentationToDomain(jobPositionUi)
 
                 val jobPositionFound = jobsPositionUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
 
@@ -109,7 +109,7 @@ class GetJobsViewModel(
                     jobsPositionUseCase.deleteJobCache(jobPositionDomain)
                     jobPositionDomain.isMarked = false
                 }
-                val jobsFoundUi = jobsMapperProvider.getJobsMapper()
+                val jobsFoundUi = jobsMapperProvider.provider()
                     .domainToPresentation(jobPositionDomain)
                 _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
 

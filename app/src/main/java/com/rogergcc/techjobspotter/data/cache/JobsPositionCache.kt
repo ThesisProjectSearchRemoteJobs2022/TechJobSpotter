@@ -18,7 +18,7 @@ class JobsPositionCache(
     override suspend fun getAllJobs(): List<JobPosition> {
         try {
             val jobsCache = jobDao.getAllJobs()
-            return  jobsMapperProvider.getJobsMapper().listEntityToDomain(jobsCache)
+            return  jobsMapperProvider.provider().listEntityToDomain(jobsCache)
         } catch (e: Exception) {
             Log.e(TAG, "geJobs: exception: ${e.message}" )
             return emptyList()
@@ -27,7 +27,7 @@ class JobsPositionCache(
 
     override suspend fun insertJob(job: JobPosition) {
         try {
-            jobDao.insertJob(jobsMapperProvider.getJobsMapper().domainToEntity(job))
+            jobDao.insertJob(jobsMapperProvider.provider().domainToEntity(job))
         } catch (e: Exception) {
             Log.e(TAG, "insertJob: exception: ${e.message}" )
         }
@@ -36,7 +36,7 @@ class JobsPositionCache(
     override suspend fun getJobById(id: Int): JobPosition {
         try {
             val job = jobDao.getJobById(id)
-            return jobsMapperProvider.getJobsMapper().entityToDomain(job)
+            return jobsMapperProvider.provider().entityToDomain(job)
         } catch (e: Exception) {
             Log.e(TAG, "getJobById: exception: ${e.message}" )
             return JobPosition()
@@ -45,7 +45,7 @@ class JobsPositionCache(
 
     override suspend fun deleteJob(job: JobPosition) {
         try {
-            jobDao.deleteJob(jobsMapperProvider.getJobsMapper().domainToEntity(job))
+            jobDao.deleteJob(jobsMapperProvider.provider().domainToEntity(job))
         } catch (e: Exception) {
             Log.e(TAG, "deleteJob: exception: ${e.message}" )
         }
