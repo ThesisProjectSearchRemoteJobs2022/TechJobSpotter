@@ -24,7 +24,7 @@ sealed class UiText {
 
     class StringResource(
         @StringRes val resId: Int,
-        val args: List<Any>
+        val args: List<Any>,
     ) : UiText() {
         override fun toString(): String =
             "resId = $resId\nargs = ${args.toList().map { "(${it::class} = $it)" }}"

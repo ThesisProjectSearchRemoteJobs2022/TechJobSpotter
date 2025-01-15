@@ -8,7 +8,7 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
  * year 2023 .
  */
 
-interface IJobsPositions {
+interface IJobsPositionsRemoteRepository {
 //    suspend fun geJobs(): List<JobDto>
     suspend fun geJobs(): List<JobPosition>
 }

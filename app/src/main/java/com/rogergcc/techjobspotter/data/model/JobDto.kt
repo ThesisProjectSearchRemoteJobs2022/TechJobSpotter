@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.data.cloud.model
+package com.rogergcc.techjobspotter.data.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,9 +7,9 @@ data class JobDto(
     val candidateRequiredLocation: String? = "",
     @SerializedName("category")
     val category: String? = "",
-    @SerializedName("company_logo")
+    @SerializedName("company_logo") // data ok
     val companyLogo: String? = "",
-    @SerializedName("company_logo_url")
+    @SerializedName("company_logo_url") // sometimes no data
     val companyLogoUrl: String? = "",
     @SerializedName("company_name")
     val companyName: String? = "",
@@ -24,9 +24,9 @@ data class JobDto(
     @SerializedName("salary")
     val salary: String? = "",
     @SerializedName("tags")
-    val tags: List<String?>? = listOf(),
+    val tags: List<String>? = listOf(),
     @SerializedName("title")
     val title: String? = "",
     @SerializedName("url")
-    val url: String? = ""
+    val url: String? = "",
 )

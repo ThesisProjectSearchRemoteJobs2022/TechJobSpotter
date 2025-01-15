@@ -179,7 +179,7 @@
 
             </LinearLayout>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/mark"
                 android:layout_width="30dp"
                 android:layout_height="40dp"

@@ -10,7 +10,7 @@ import coil.load
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.BaseViewHolder
 import com.rogergcc.techjobspotter.databinding.ItemJobMarkedBinding
-import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,17 +19,24 @@ import kotlinx.coroutines.launch
 
 class JobsMarkFavoriteAdapter(
 //    private val itemClickListener: OnMovieClickListener,
-    val jobsPositionDetailsAction: (jobPositionDomain: JobPosition) -> Unit,
-    val jobMarkClickAction: (jobPositionDomain: JobPosition) -> Unit
+    val jobsPositionDetailsAction: (jobPositionDomain: JobPositionUi) -> Unit,
+    val jobMarkClickAction: (jobPositionDomain: JobPositionUi) -> Unit
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
     //    private var mItemsMovieResponse = emptyList<MovieResponse>()
 
-    var mItems = listOf<JobPosition>()
+    var mItems = listOf<JobPositionUi>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
+    fun updateMarkIcon(job: JobPositionUi, isMarked: Boolean) {
+        val position = mItems.indexOfFirst { it.id == job.id }
+        if (position != -1) {
+            mItems[position].isMarked = isMarked // Update the isMarked property
+            notifyItemChanged(position)
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             ItemJobMarkedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -65,10 +72,10 @@ class JobsMarkFavoriteAdapter(
     private inner class RemoteJobsSpottViewHolder(
         val binding: ItemJobMarkedBinding,
         val context: Context,
-    ) : BaseViewHolder<JobPosition>(binding.root) {
+    ) : BaseViewHolder<JobPositionUi>(binding.root) {
 
         private val coroutineScope = CoroutineScope(Dispatchers.Main)
-        override fun bind(item: JobPosition) {
+        override fun bind(item: JobPositionUi) {
 
             binding.apply {
                 tvTitle.text = item.title

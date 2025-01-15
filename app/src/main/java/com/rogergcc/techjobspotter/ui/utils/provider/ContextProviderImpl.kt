@@ -8,5 +8,5 @@ import android.content.Context
  * year 2025 .
  */
 class ContextProviderImpl(private val context: Context) : ContextProvider {
- override fun getContext(): Context = context
+    override fun getContext(): Context = context
 }
