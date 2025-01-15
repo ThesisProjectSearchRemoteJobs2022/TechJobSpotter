@@ -165,19 +165,19 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                             }
                     }
 //                    mAdapterMarkedJobs.mItems = jobsPositionCache
-//                    mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
                     mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
-                    showMessage(job.isMarked, job.title )
+                    showMessage(job.isMarked, job.title)
 
                 }
 
                 is Resource.Failure -> {
-                    showErrorState(result.exception)
+                    hideLoadingState()
+                    showErrorState(
+                        result.exception,
+                        resources.getString(R.string.error_message)
+                    )
                 }
 
-                else -> {
-                    showErrorState(Exception("Unknown error"))
-                }
             }
         }
     }
@@ -185,6 +185,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private fun onFavoriteAction(job: JobPositionUi) {
         val isMarked = jobsPositionCache.contains(job)
 
+
+        Log.d(TAG, "onFavoriteAction: mark favorite ${job.title} $isMarked")
         viewModel.markFavoriteJobPosition(job)
 
 //        if (isMarked) {
@@ -241,8 +243,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         if (viewModel.remoteJobsPosition.value == null)
             viewModel.fetchRemoteJobsPositions()
 
-//        viewModel.fetchJobs()
-
 
 //        binding.recyclerView.scheduleLayoutAnimation()
         binding.swipeRefresh.setOnRefreshListener {
@@ -262,9 +262,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun hideLoadingState() {
         binding.swipeRefresh.isRefreshing = false
-//        binding.emptyView.visibility = View.GONE
-        binding.errorStateView.root.hideView()
-//        binding.contentLayout.showView()
+        //binding.errorStateView.root.hideView()
 
         binding.rvMarkedJobs.showView()
         binding.rvRecommendedJobs.showView()
@@ -279,8 +277,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private fun showLoadingState() {
         binding.swipeRefresh.isRefreshing = true
         binding.errorStateView.root.hideView()
-//        binding.contentLayout.hideView()
-
 
         binding.rvMarkedJobs.hideView()
         binding.rvRecommendedJobs.hideView()
@@ -293,10 +289,9 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
 
-    private fun showErrorState(exception: Exception) {
-        hideLoadingState()
-        binding.errorStateView.tvErrorStateMessage.text =
-            resources.getString(R.string.error_message)
+    private fun showErrorState(exception: Exception, messageError: String) {
+
+        binding.errorStateView.tvErrorStateMessage.text = messageError
         binding.errorStateView.root.showView()
         Log.e(TAG, "Error: $exception")
     }
@@ -323,22 +318,17 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                     jobsPositionCache = result.data
                     Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
                     mAdapterMarkedJobs.mItems = jobsPositionCache
-                    if (jobsPositionCache.isEmpty()) {
-                        binding.errorStateView.root.showView()
-                        binding.errorStateView.tvErrorStateMessage.text =
-                            resources.getString(R.string.error_message_no_data)
-                    } else {
-                        binding.errorStateView.root.hideView()
-                    }
+
                 }
 
                 is Resource.Failure -> {
-                    showErrorState(result.exception)
+                    hideLoadingState()
+                    showErrorState(
+                        result.exception,
+                        resources.getString(R.string.error_message)
+                    )
                 }
 
-                else -> {
-                    showErrorState(Exception("Unknown error"))
-                }
             }
         }
     }
@@ -357,37 +347,34 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
                 is Resource.Success -> {
                     hideLoadingState()
-                    val list = result.data
-                    Log.i(TAG, "observeRecommendPositions Jobs Found: ${list.count()}")
-                    //                    binding.rvMovies.adapter = concatAdapter
-//                    mAdapterRecommendJobs.mItems = list
+                    val jobsOnfly = result.data
+                    Log.i(TAG, "observeRecommendPositions Jobs Found: ${jobsOnfly.count()}")
+                    if (jobsOnfly.isEmpty()) {
+                        showErrorState(
+                            Exception("No data found"),
+                            resources.getString(R.string.error_message_no_data)
+                        )
+                        return@observe
+                    }
+
+                    //binding.rvMovies.adapter = concatAdapter
 
                     // Update recommended jobs with marked status
-                    val updatedList = updateMarkedStatus(list, jobsPositionCache)
-                    mAdapterRecommendJobs.mItems = updatedList
+                    val jobsUpdateShowMarkedList = updateMarkedStatus(jobsOnfly, mAdapterMarkedJobs.mItems)
+                    mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
 
-                    if (list.isEmpty()) { //<-- status result is FALSE
-//                        binding.emptyView.visibility = View.VISIBLE
-//                        binding.textEmptyErr.text = resources.getString(R.string.error_message_no_data)
 
-                        binding.errorStateView.root.showView()
-                        binding.errorStateView.tvErrorStateMessage.text =
-                            resources.getString(R.string.error_message_no_data)
-
-                    } else {
-//                        binding.emptyView.visibility = View.GONE
-                        binding.errorStateView.root.hideView()
-                    }
                 }
 
                 is Resource.Failure -> {
-                    showErrorState(result.exception)
+                    hideLoadingState()
+                    showErrorState(
+                        result.exception,
+                        resources.getString(R.string.error_message)
+                    )
 
                 }
 
-                else -> {
-                    showErrorState(Exception("Unknown error"))
-                }
             }
         }
     }

@@ -92,7 +92,7 @@ class JobMapper : Mapper<JobDto, JobPosition, JobPositionUi> {
             id = domain.id ?: 0,
             title = domain.title ?: "",
             companyName = domain.companyName ?: "",
-            companyLogoUrl = domain.companyLogoUrl ?: "",
+            companyLogo = domain.companyLogo ?: "",
             description = domain.description ?: "",
             publicationDate = domain.publicationDate ?: "",
             salary = domain.salary ?: "",
@@ -100,7 +100,7 @@ class JobMapper : Mapper<JobDto, JobPosition, JobPositionUi> {
             tags = domain.tags ?: listOf(),
             jobType = domain.jobType ?: "",
             candidateRequiredLocation = domain.candidateRequiredLocation ?: "",
-            category = domain.category ?: ""
+            category = domain.category ?: "",
         )
     }
 
@@ -109,7 +109,7 @@ class JobMapper : Mapper<JobDto, JobPosition, JobPositionUi> {
             id = entity.id,
             title = entity.title,
             companyName = entity.companyName,
-            companyLogoUrl = entity.companyLogoUrl,
+            companyLogoUrl = entity.companyLogo,
             description = entity.description,
             publicationDate = entity.publicationDate,
             salary = entity.salary,

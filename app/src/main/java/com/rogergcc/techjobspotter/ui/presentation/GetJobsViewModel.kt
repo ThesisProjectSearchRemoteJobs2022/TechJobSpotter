@@ -95,23 +95,22 @@ class GetJobsViewModel(
         }
     }
 
-    fun markFavoriteJobPosition(job: JobPositionUi) {
+    fun markFavoriteJobPosition(jobPositionUi: JobPositionUi) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
-                val jobPosition = jobsMapperProvider.getJobsMapper().presentationToDomain(job)
+                val jobPositionDomain = jobsMapperProvider.getJobsMapper().presentationToDomain(jobPositionUi)
 
-                val jobPositionFound = jobsPositionUseCase.getJobByIdCache(jobPosition.id ?: 0)
-
+                val jobPositionFound = jobsPositionUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
 
                 if (jobPositionFound.id == 0) {
-                    jobsPositionUseCase.insertJobCache(jobPosition)
-                    jobPosition.isMarked = true
+                    jobsPositionUseCase.insertJobCache(jobPositionDomain)
+                    jobPositionDomain.isMarked = true
                 }else{
-                    jobsPositionUseCase.deleteJobCache(jobPosition)
-                    jobPosition.isMarked = false
+                    jobsPositionUseCase.deleteJobCache(jobPositionDomain)
+                    jobPositionDomain.isMarked = false
                 }
                 val jobsFoundUi = jobsMapperProvider.getJobsMapper()
-                    .domainToPresentation(jobPosition)
+                    .domainToPresentation(jobPositionDomain)
                 _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
 
             } catch (e: Exception) {

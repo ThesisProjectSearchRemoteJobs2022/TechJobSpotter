@@ -57,7 +57,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 //        val person = arguments?.getParcelable<Person>("person")
 //        var person = intent?.extras?.getParcellable<JobPositionUi>("jobPosition")
 
-        binding.photoPreview.load(jobPositionUi?.companyLogoUrl) {
+        binding.photoPreview.load(jobPositionUi?.companyLogo) {
             crossfade(true)
             crossfade(1000)
             placeholder(R.drawable.ic_round_business_center_24)

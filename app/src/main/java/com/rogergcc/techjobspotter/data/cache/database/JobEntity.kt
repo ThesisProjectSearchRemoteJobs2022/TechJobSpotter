@@ -14,7 +14,7 @@ data class JobEntity(
     val title: String,
     val description: String,
     val companyName: String,
-    val companyLogoUrl: String,
+    val companyLogo: String,
     val publicationDate: String,
     val salary: String,
     val url: String,

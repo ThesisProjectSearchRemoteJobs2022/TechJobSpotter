@@ -132,8 +132,6 @@ class JobsOkAdapter(
 //                                        Toast.makeText(context, "Marked", Toast.LENGTH_SHORT).show()
 //                }
 
-//                tvTitle.text = item.title
-//                tvReleaseDate.text = item.releaseDate
             }
         }
     }
