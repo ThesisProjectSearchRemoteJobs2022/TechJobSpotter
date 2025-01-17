@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<?xml version="1.0" encoding="utf-8"?>
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:tools="http://schemas.android.com/tools"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent"-->
@@ -15,6 +16,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
+        android:visibility="gone"
         app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,21 +38,19 @@
         app:layout_anchor="@id/appbar"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:background="@drawable/bg_rounded_top"
+        >
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_rounded_top">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dim_8dp"
                 android:background="@drawable/bg_strip_round" />
 
             <androidx.core.widget.NestedScrollView
@@ -106,7 +106,7 @@
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/bold"
                         android:gravity="center_horizontal"
-                        android:text="{item.title}"
+                        android:text="@string/item_title"
                         android:textColor="?attr/colorControlNormal"
                         android:textSize="18sp" />
 
@@ -118,7 +118,7 @@
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/book"
                         android:gravity="center_horizontal"
-                        android:text="item.company"
+                        android:text="@string/item_company"
                         android:textColor="?attr/colorAccent"
                         android:textSize="14sp" />
 
@@ -137,7 +137,7 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
-                        android:text="item.type"
+                        android:text="@string/item_type"
                         android:textColor="?attr/colorSecondary"
                         android:textSize="14sp" />
 
@@ -162,28 +162,31 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    app:tint="?attr/colorPrimaryVariant"
-                                    android:layout_width="21dp"
-                                    android:layout_height="21dp"
-                                    android:src="@drawable/ic_twotone_info_24" />
+<!--                                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                                    app:tint="?attr/colorPrimaryVariant"-->
+<!--                                    android:layout_width="21dp"-->
+<!--                                    android:layout_height="21dp"-->
+<!--                                    android:src="@drawable/ic_twotone_info_24" />-->
 
                                 <TextView
+                                    app:drawableStartCompat="@drawable/ic_twotone_info_24"
+
+                                    android:drawablePadding="@dimen/dim_4dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="5dp"
+                                    android:gravity="center_vertical"
                                     android:fontFamily="@font/bold"
                                     android:text="@string/title_job_description"
+                                    android:textSize="@dimen/size_15sp"
                                     android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
                             <TextView
+                                android:layout_marginTop="@dimen/dim_14dp"
                                 android:id="@+id/description"
-                                android:text="lorem"
+                                android:text="@string/lorem"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/book"
@@ -214,28 +217,31 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    app:tint="?attr/colorPrimaryVariant"
-                                    android:layout_width="21dp"
-                                    android:layout_height="21dp"
-                                    android:src="@drawable/ic_twotone_work_24" />
+<!--                                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                                    app:tint="?attr/colorPrimaryVariant"-->
+<!--                                    android:layout_width="21dp"-->
+<!--                                    android:layout_height="21dp"-->
+<!--                                    android:src="@drawable/ic_twotone_work_24" />-->
 
                                 <TextView
+                                    app:drawableStartCompat="@drawable/ic_twotone_work_24"
+                                    android:drawablePadding="@dimen/dim_4dp"
+
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="5dp"
+                                    android:gravity="center_vertical"
                                     android:fontFamily="@font/bold"
                                     android:text="@string/title_company_information"
+                                    android:textSize="@dimen/size_15sp"
                                     android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dim_14dp"
                                 android:orientation="vertical">
 
                                 <RelativeLayout
@@ -278,7 +284,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconLocation"
-                                        android:text="{item.location}" />
+                                        android:text="@string/item_location" />
 
                                 </RelativeLayout>
 
@@ -301,7 +307,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconWebsite"
-                                        android:text="{item.companyUrl}"
+                                        android:text="@string/item_companyurl"
                                         android:textIsSelectable="true" />
 
                                 </RelativeLayout>
@@ -326,7 +332,7 @@
                 android:layout_marginTop="15dp"
                 android:src="@drawable/bg_shadow_up_to_down" />
 
-        </RelativeLayout>
+
 
     </RelativeLayout>
 
@@ -348,18 +354,22 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_rounded_green_outline">
+            android:background="@drawable/bg_rounded_green_outline"
+            android:clickable="true"
+            android:focusable="true"
+            >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnMark"
                 app:tint="@color/green_200"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 app:srcCompat="@drawable/ic_mark"
+                android:contentDescription="@string/mark_favorite"
                 />
 
         </RelativeLayout>
