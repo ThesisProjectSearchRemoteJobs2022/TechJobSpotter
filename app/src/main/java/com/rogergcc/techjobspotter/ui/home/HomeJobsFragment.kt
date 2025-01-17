@@ -105,7 +105,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
     private fun goToPositionDetailsView(jobPositio: JobPositionUi) {
-        Log.d(TAG, "prevention $jobPositio")
+        Log.d(TAG, "prevention job marked? ${jobPositio.isMarked}")
         Snackbar.make(
             binding.root, "Go to details ${jobPositio.title}",
             Snackbar.LENGTH_SHORT

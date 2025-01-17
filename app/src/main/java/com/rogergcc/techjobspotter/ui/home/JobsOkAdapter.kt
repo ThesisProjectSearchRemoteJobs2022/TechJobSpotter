@@ -99,7 +99,7 @@ class JobsOkAdapter(
 
                         crossfade(true)
                         crossfade(1000)
-                        delay(1500)
+                        delay(1000)
                         error(R.drawable.ic_round_business_center_24)
                             .target(
                                 onStart = { placeholder ->

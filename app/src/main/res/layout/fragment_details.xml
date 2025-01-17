@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_top">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
@@ -74,7 +74,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16sp">
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/photoPreview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -165,7 +165,7 @@
                                 android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <ImageView
+                                <androidx.appcompat.widget.AppCompatImageView
                                     app:tint="?attr/colorPrimaryVariant"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
@@ -177,7 +177,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="5dp"
                                     android:fontFamily="@font/bold"
-                                    android:text="Job Description"
+                                    android:text="@string/title_job_description"
                                     android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
@@ -217,7 +217,7 @@
                                 android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <ImageView
+                                <androidx.appcompat.widget.AppCompatImageView
                                     app:tint="?attr/colorPrimaryVariant"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
@@ -229,7 +229,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="5dp"
                                     android:fontFamily="@font/bold"
-                                    android:text="Company Information"
+                                    android:text="@string/title_company_information"
                                     android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
@@ -242,7 +242,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconCompany"
                                         app:tint="@color/gray_300"
                                         android:layout_width="17dp"
@@ -320,7 +320,7 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginTop="15dp"
@@ -359,7 +359,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                 app:srcCompat="@drawable/ic_mark"
+                app:srcCompat="@drawable/ic_mark"
                 />
 
         </RelativeLayout>
@@ -375,13 +375,13 @@
             android:clickable="true"
             android:focusable="true">
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     app:tint="@color/white"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
@@ -392,9 +392,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/bold"
-                    android:text="How To Apply"
+                    android:text="@string/txt_how_to_apply"
                     android:textColor="@color/white" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </RelativeLayout>
 

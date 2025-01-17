@@ -20,7 +20,7 @@ class JobMapperTest {
         val jobDto = JobDto(
             title = "Software Engineer",
             companyName = "Tech Company",
-            companyLogoUrl = "http://logo.url",
+//            companyLogoUrl = "http://logo.url",
             description = "Job description",
             publicationDate = "2023-01-01",
             salary = "1000",
@@ -37,7 +37,7 @@ class JobMapperTest {
         assertEquals(jobDto.id, jobPosition.id)
         assertEquals(jobDto.title, jobPosition.title)
         assertEquals(jobDto.companyName, jobPosition.companyName)
-        assertEquals(jobDto.companyLogoUrl, jobPosition.companyLogoUrl)
+//        assertEquals(jobDto.companyLogoUrl, jobPosition.companyLogoUrl)
         assertEquals(jobDto.description, jobPosition.description)
         assertEquals(jobDto.publicationDate, jobPosition.publicationDate)
         assertEquals(jobDto.salary, jobPosition.salary)
@@ -71,7 +71,7 @@ class JobMapperTest {
         assertEquals(jobPosition.id, jobDto.id)
         assertEquals(jobPosition.title, jobDto.title)
         assertEquals(jobPosition.companyName, jobDto.companyName)
-        assertEquals(jobPosition.companyLogoUrl, jobDto.companyLogoUrl)
+//        assertEquals(jobPosition.companyLogoUrl, jobDto.companyLogoUrl)
         assertEquals(jobPosition.description, jobDto.description)
         assertEquals(jobPosition.publicationDate, jobDto.publicationDate)
         assertEquals(jobPosition.salary, jobDto.salary)

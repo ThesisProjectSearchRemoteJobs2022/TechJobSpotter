@@ -19,5 +19,8 @@
     <string name="error_message_no_data">¡Lo siento! No hay datos disponibles.</string>
     <string name="error_jobs_not_found">¡Lo siento! No se encontraron trabajos.</string>
     <string name="ok">OK\n</string>
+    <string name="txt_how_to_apply">How To Apply</string>
+    <string name="title_job_description">Job Description</string>
+    <string name="title_company_information">Company Information</string>
 
 </resources>

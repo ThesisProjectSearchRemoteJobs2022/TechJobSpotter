@@ -9,8 +9,8 @@ data class JobDto(
     val category: String? = "",
     @SerializedName("company_logo") // data ok
     val companyLogo: String? = "",
-    @SerializedName("company_logo_url") // sometimes no data
-    val companyLogoUrl: String? = "",
+//    @SerializedName("company_logo_url") // sometimes no data
+//    val companyLogoUrl: String? = "",
     @SerializedName("company_name")
     val companyName: String? = "",
     @SerializedName("description")

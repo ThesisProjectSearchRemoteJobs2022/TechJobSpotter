@@ -13,7 +13,7 @@ data class JobPositionUi(
     val candidateRequiredLocation: String? = "",
     val category: String? = "",
     val companyLogo: String? = "",
-    val companyLogoUrl: String? = "",
+//    val companyLogoUrl: String? = "",
     val companyName: String? = "",
     val description: String? = "",
     val id: Int? = 0,
