@@ -26,8 +26,8 @@
     <string name="lorem">lorem</string>
     <string name="item_type">item.type</string>
     <string name="item_title">{item.title}</string>
-    <string name="item_location">{item.location}</string>
+    <string name="item_location">item.location</string>
     <string name="item_company">item.company</string>
-    <string name="item_companyurl">{item.companyUrl}</string>
+    <string name="item_companyurl">item.companyUrl</string>
 
 </resources>

@@ -171,7 +171,7 @@
 <!--                                    android:src="@drawable/ic_twotone_info_24" />-->
 
                                 <TextView
-                                    app:drawableStartCompat="@drawable/ic_twotone_info_24"
+                                    app:drawableStartCompat="@drawable/ic_info"
 
                                     android:drawablePadding="@dimen/dim_4dp"
                                     android:layout_width="match_parent"
@@ -226,7 +226,7 @@
 <!--                                    android:src="@drawable/ic_twotone_work_24" />-->
 
                                 <TextView
-                                    app:drawableStartCompat="@drawable/ic_twotone_work_24"
+                                    app:drawableStartCompat="@drawable/ic_work"
                                     android:drawablePadding="@dimen/dim_4dp"
 
                                     android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconCompany"
-                                        android:text="item.company" />
+                                        android:text="@string/item_company" />
 
                                 </RelativeLayout>
 
@@ -395,7 +395,7 @@
                     app:tint="@color/white"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
-                    android:src="@drawable/ic_twotone_help_24" />
+                    android:src="@drawable/ic_help" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -145,7 +145,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             crossfade(true)
             crossfade(1000)
             placeholder(R.drawable.ic_round_business_center_24)
-            error(R.drawable.ic_twotone_info_24)
+            error(R.drawable.ic_info)
                 .target(
                     onError = {
                         binding.progress.stopShimmer()
