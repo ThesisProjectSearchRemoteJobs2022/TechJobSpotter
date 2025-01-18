@@ -136,8 +136,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                 Snackbar.LENGTH_SHORT
             ).show()
         }
-
-
     }
 
     private fun observeMarkedJobSelected() {

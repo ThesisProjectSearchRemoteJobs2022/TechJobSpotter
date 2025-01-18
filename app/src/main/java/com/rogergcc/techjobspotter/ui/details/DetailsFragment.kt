@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
+import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
@@ -93,20 +94,18 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
         }
-        viewModel.markedJobPosition.observe(viewLifecycleOwner) { resource ->
+        viewModel.jobPositionDetail.observe(viewLifecycleOwner) { resource ->
             when (resource) {
 
                 is Resource.Failure -> {
-                    Log.d("DetailsFragment", "Resource.Failure")
-                    Log.d("DetailsFragment", "resource: ${resource.exception}")
+                    Log.d(TAG, "Resource.Failure jobPositionDetail")
                 }
                 is Resource.Loading -> {
-                    Log.d("DetailsFragment", "Resource.Loading")
+                    Log.d(TAG, "Resource.Loading jobPositionDetail")
 
                 }
                 is Resource.Success -> {
-                    Log.d("DetailsFragment", "Resource.Success")
-                    Log.d("DetailsFragment", "resource: ${resource.data}")
+                    Log.d(TAG, "Resource.Success jobPositionDetail")
                     setUpPhoto(resource.data.companyLogo)
                     setUpMarkedColor(resource.data.isMarked)
                     setUpDetails(resource.data)
@@ -114,10 +113,25 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             }
         }
 
-        Log.d(TAG, "onViewCreated: jobPositionUi logo: ${jobPositionUi?.companyLogo}")
-//        Log.d(TAG, "onViewCreated: jobPositionUi logoUrl: ${jobPositionUi?.companyLogoUrl}")
+        viewModel.jobPositionFavorite.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Failure -> {
+                    Log.d(TAG, "Resource.Failure jobPositionFavorite")
+                }
+                is Resource.Loading -> {
+                    Log.d(TAG, "Resource.Loading jobPositionFavorite")
 
+                }
+                is Resource.Success -> {
+                    Log.d(TAG, "Resource.Success jobPositionFavorite")
+                    showMessageFavorite(resource.data.isMarked, resource.data.title)
+                }
+            }
+        }
 
+        binding.btnMark.setOnClickListener {
+            viewModel.markFavoriteJobPosition(jobPositionUi)
+        }
 
     }
 
@@ -166,6 +180,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         binding.photoPreview.setImageDrawable(it)
                     }
                 )
+        }
+    }
+
+    private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
+        setUpMarkedColor(isMarked)
+        if (!isMarked) {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE13 Unmark $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        } else {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE0D Marked $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 
