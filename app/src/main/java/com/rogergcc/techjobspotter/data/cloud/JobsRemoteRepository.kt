@@ -25,7 +25,7 @@ class JobsRemoteRepository(
             val jobsList = responseJobsPosition.jobsData
 
             val jobsPositionDomain = jobsList?.mapNotNull { jobDto ->
-                jobDto?.let { jobsMapperProvider.getJobsMapper().dtoToDomain(it) }
+                jobDto?.let { jobsMapperProvider.provider().dtoToDomain(it) }
             } ?: emptyList()
 
             return jobsPositionDomain

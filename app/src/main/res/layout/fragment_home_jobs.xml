@@ -48,7 +48,7 @@
                     android:layout_toStartOf="@id/notifyOptions"
                     android:fontFamily="@font/book"
                     android:text="@string/message_welcome"
-                    android:textColor="@color/blue_025"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView
@@ -153,62 +153,62 @@
         app:layout_anchor="@id/appbar"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                app:layout_constraintTop_toTopOf="parent"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dim_16dp"
                 android:fillViewport="true">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/contentLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:id="@+id/markContentLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-
                     <TextView
                         android:id="@+id/markedTitle"
-                        android:layout_width="match_parent"
+                        style="@style/viewParent.moreText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="@dimen/dim_22dp"
                         android:layout_marginEnd="21dp"
-                        android:fontFamily="@font/medium"
                         android:text="@string/txt_marked_jobs"
-                        android:textSize="17sp"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/showAllMarked"
-                        android:visibility="gone"
                         style="@style/viewParent.moreText"
+                        android:layout_marginTop="@dimen/dim_22dp"
+                        android:layout_marginEnd="20dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:paddingTop="6dp"
                         android:text="@string/message_show_all"
-                        />
+                        android:paddingHorizontal="@dimen/mid_padding_2"
+                        android:textSize="@dimen/size_16sp"
 
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerMarkedLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
-
                         app:shimmer_auto_start="true"
-                        app:shimmer_duration="800">
+                        app:shimmer_duration="800"
+                        app:layout_constraintTop_toBottomOf="@id/showAllMarked"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -227,74 +227,71 @@
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
 
-                    </LinearLayout>
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvMarkedJobs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/markContentLayout"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="@dimen/dim_8dp"
                         android:layout_marginBottom="@dimen/dim_10dp"
                         android:nestedScrollingEnabled="true"
                         android:orientation="horizontal"
-
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
                         tools:itemCount="2"
-                        tools:listitem="@layout/item_job_marked" />
+                        tools:listitem="@layout/item_job_marked"
+                        app:layout_constraintTop_toBottomOf="@id/shimmerMarkedLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/recommendedTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rvMarkedJobs"
+                        style="@style/viewParent.moreText"
                         android:layout_marginStart="@dimen/dim_20dp"
                         android:layout_marginTop="@dimen/dim_26dp"
                         android:layout_marginEnd="@dimen/dim_20dp"
-                        android:fontFamily="@font/medium"
                         android:text="@string/title_recommend_jobs"
-                        android:textSize="@dimen/size_18sp" />
+                        android:textSize="@dimen/size_18sp"
+                        app:layout_constraintTop_toBottomOf="@id/rvMarkedJobs"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
 
                     <TextView
                         android:id="@+id/showAllRecommended"
-                        style="@style/viewParent"
-                        android:layout_below="@id/rvMarkedJobs"
-                        android:layout_alignParentEnd="true"
+                        style="@style/viewParent.moreText"
                         android:layout_marginTop="@dimen/dim_26dp"
-                        android:layout_marginEnd="20dp"
-                        android:clickable="true"
-
-                        android:focusable="true"
-                        android:fontFamily="@font/book"
+                        android:layout_marginEnd="@dimen/dim_20dp"
                         android:paddingHorizontal="@dimen/mid_padding_2"
                         android:text="@string/message_show_all"
-                        android:textSize="@dimen/size_16sp" />
-
+                        android:textSize="@dimen/size_16sp"
+                        app:layout_constraintTop_toBottomOf="@id/rvMarkedJobs"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRecommendedJobs"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/recommendedTitle"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginBottom="20dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         tools:itemCount="3"
-                        tools:listitem="@layout/item_job" />
+                        tools:listitem="@layout/item_job"
+                        app:layout_constraintTop_toBottomOf="@id/showAllRecommended"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerRecommendedLayout"
-
                         android:layout_width="match_parent"
-                        android:layout_below="@id/recommendedTitle"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         app:shimmer_auto_start="true"
-                        app:shimmer_duration="800">
+                        app:shimmer_duration="800"
+                        app:layout_constraintTop_toBottomOf="@id/recommendedTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -309,7 +306,7 @@
 
                         </LinearLayout>
                     </com.facebook.shimmer.ShimmerFrameLayout>
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>
 
@@ -321,7 +318,10 @@
                 android:layout_marginTop="@dimen/dim_16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/bg_shadow_up_to_down"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:layout_width="42dp"
@@ -329,9 +329,12 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/small_margin"
                 android:background="@drawable/bg_strip_round"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                app:layout_constraintTop_toBottomOf="@id/shadow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -347,6 +350,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/swipeRefresh"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -49,6 +49,12 @@ class JobsMarkFavoriteAdapter(
 //            movieDetailsAction(mItems[position])
 //        }
 
+        itemBinding.mLinearLayoutContainer.setOnClickListener {
+            val position =
+                holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
+                    ?: return@setOnClickListener
+            jobsPositionDetailsAction(mItems[position])
+        }
 
         itemBinding.mark.setOnClickListener {
             val position =
@@ -83,10 +89,9 @@ class JobsMarkFavoriteAdapter(
 
                 coroutineScope.launch {
                     photoPreview.load(item.companyLogo) {
-
                         crossfade(true)
                         crossfade(1000)
-                        delay(1500)
+                        delay(1000)
                         error(R.drawable.ic_round_business_center_24)
                             .target(
                                 onStart = { placeholder ->

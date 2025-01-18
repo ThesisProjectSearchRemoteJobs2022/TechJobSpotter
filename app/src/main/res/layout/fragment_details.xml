@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<?xml version="1.0" encoding="utf-8"?>
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:tools="http://schemas.android.com/tools"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent"-->
@@ -9,12 +10,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.details.DetailsFragment"
+
+    tools:targetApi="34"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_200">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
+        android:visibility="gone"
         app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,32 +36,38 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_anchor="@id/appbar"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:background="@drawable/bg_rounded_top"
+        >
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_rounded_top">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvDrawTop"
                 android:layout_width="50dp"
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_strip_round" />
+                android:layout_marginTop="@dimen/dim_8dp"
+                android:background="@drawable/bg_strip_round"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp">
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@id/imvDrawTop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,7 +84,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16sp">
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/photoPreview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -106,7 +116,7 @@
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/bold"
                         android:gravity="center_horizontal"
-                        android:text="{item.title}"
+                        android:text="@string/item_title"
                         android:textColor="?attr/colorControlNormal"
                         android:textSize="18sp" />
 
@@ -118,7 +128,7 @@
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/book"
                         android:gravity="center_horizontal"
-                        android:text="item.company"
+                        android:text="@string/item_company"
                         android:textColor="?attr/colorAccent"
                         android:textSize="14sp" />
 
@@ -137,7 +147,7 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="6dp"
                         android:paddingBottom="2dp"
-                        android:text="item.type"
+                        android:text="@string/item_type"
                         android:textColor="?attr/colorSecondary"
                         android:textSize="14sp" />
 
@@ -162,32 +172,35 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <ImageView
-                                    app:tint="?attr/colorPrimaryVariant"
-                                    android:layout_width="21dp"
-                                    android:layout_height="21dp"
-                                    android:src="@drawable/ic_twotone_info_24" />
+<!--                                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                                    app:tint="?attr/colorPrimaryVariant"-->
+<!--                                    android:layout_width="21dp"-->
+<!--                                    android:layout_height="21dp"-->
+<!--                                    android:src="@drawable/ic_twotone_info_24" />-->
 
                                 <TextView
+                                    app:drawableStartCompat="@drawable/ic_info"
+
+                                    android:drawablePadding="@dimen/dim_4dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="5dp"
+                                    android:gravity="center_vertical"
                                     android:fontFamily="@font/bold"
-                                    android:text="Job Description"
-                                    android:textColor="?attr/colorPrimaryVariant" />
+                                    android:text="@string/title_job_description"
+                                    android:textSize="@dimen/size_15sp"
+                                    android:textColor="@color/blue_300" />
                             </LinearLayout>
 
                             <TextView
+                                android:layout_marginTop="@dimen/dim_14dp"
                                 android:id="@+id/description"
-                                android:text="lorem"
+                                android:text="@string/lorem"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/book"
-                                android:textColor="@color/gray_400"
+                                android:textColor="@color/gray_600"
                                 android:textIsSelectable="true" />
 
                         </LinearLayout>
@@ -214,37 +227,40 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
                                 android:orientation="horizontal">
 
-                                <ImageView
-                                    app:tint="?attr/colorPrimaryVariant"
-                                    android:layout_width="21dp"
-                                    android:layout_height="21dp"
-                                    android:src="@drawable/ic_twotone_work_24" />
+<!--                                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                                    app:tint="?attr/colorPrimaryVariant"-->
+<!--                                    android:layout_width="21dp"-->
+<!--                                    android:layout_height="21dp"-->
+<!--                                    android:src="@drawable/ic_twotone_work_24" />-->
 
                                 <TextView
+                                    app:drawableStartCompat="@drawable/ic_work"
+                                    android:drawablePadding="@dimen/dim_4dp"
+
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="5dp"
+                                    android:gravity="center_vertical"
                                     android:fontFamily="@font/bold"
-                                    android:text="Company Information"
+                                    android:text="@string/title_company_information"
+                                    android:textSize="@dimen/size_15sp"
                                     android:textColor="?attr/colorPrimaryVariant" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dim_14dp"
                                 android:orientation="vertical">
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconCompany"
-                                        app:tint="@color/gray_300"
+                                        app:tint="?attr/shadeGrey"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
                                         android:src="@drawable/ic_round_business_24" />
@@ -255,7 +271,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconCompany"
-                                        android:text="item.company" />
+                                        android:text="@string/item_company" />
 
                                 </RelativeLayout>
 
@@ -266,7 +282,7 @@
 
                                     <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconLocation"
-                                        app:tint="@color/gray_300"
+                                        app:tint="?attr/shadeGrey"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
                                         android:layout_marginTop="@dimen/dim_2dp"
@@ -278,7 +294,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconLocation"
-                                        android:text="{item.location}" />
+                                        android:text="@string/item_location" />
 
                                 </RelativeLayout>
 
@@ -289,7 +305,7 @@
 
                                     <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/iconWebsite"
-                                        app:tint="@color/gray_300"
+                                        app:tint="?attr/shadeGrey"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
                                         android:layout_marginTop="@dimen/dim_2dp"
@@ -301,7 +317,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
                                         android:layout_toEndOf="@id/iconWebsite"
-                                        android:text="{item.companyUrl}"
+                                        android:text="@string/item_companyurl"
                                         android:textIsSelectable="true" />
 
                                 </RelativeLayout>
@@ -320,15 +336,19 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/bg_shadow_up_to_down" />
+                android:src="@drawable/bg_shadow_up_to_down"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
-        </RelativeLayout>
 
-    </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -348,18 +368,22 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_rounded_green_outline">
+            android:background="@drawable/bg_rounded_green_outline"
+            >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnMark"
                 app:tint="@color/green_200"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cropToPadding="true"
+                android:padding="@dimen/dim_12dp"
                 android:layout_centerInParent="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                 app:srcCompat="@drawable/ic_mark"
+                app:srcCompat="@drawable/ic_mark"
+                android:contentDescription="@string/mark_favorite"
                 />
 
         </RelativeLayout>
@@ -375,26 +399,26 @@
             android:clickable="true"
             android:focusable="true">
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     app:tint="@color/white"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
-                    android:src="@drawable/ic_twotone_help_24" />
+                    android:src="@drawable/ic_help" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/bold"
-                    android:text="How To Apply"
+                    android:text="@string/txt_how_to_apply"
                     android:textColor="@color/white" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </RelativeLayout>
 
