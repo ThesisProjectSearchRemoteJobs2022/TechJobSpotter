@@ -36,7 +36,12 @@ class JobsPositionCache(
     override suspend fun getJobById(id: Int): JobPosition {
         try {
             val job = jobDao.getJobById(id)
-            return jobsMapperProvider.provider().entityToDomain(job)
+            job?.let {
+                return jobsMapperProvider.provider().entityToDomain(it)
+            } ?: run {
+                Log.e(TAG, "getJobById: Job not found for id: $id")
+                return JobPosition()
+            }
         } catch (e: Exception) {
             Log.e(TAG, "getJobById: exception: ${e.message}" )
             return JobPosition()

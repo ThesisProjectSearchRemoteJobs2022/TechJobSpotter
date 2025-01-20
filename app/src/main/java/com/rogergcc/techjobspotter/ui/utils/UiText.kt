@@ -18,6 +18,10 @@ sealed class UiText {
         const val TAG = "UiText"
     }
 
+    fun asException(context: Context): Exception {
+        return Exception(this.asString(context))
+    }
+
     data class DynamicString(val value: String) : UiText() {
         override fun toString(): String = value
     }

@@ -83,14 +83,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
 //        val jobPositionUi = arguments?.getBundle("selectedJobPosition") as JobPositionUi
         val jobPositionUi = arguments?.getParcelable<JobPositionUi>("selectedJobPosition")
+
+        if (jobPositionUi == null) {
+            Log.e(TAG, "jobPositionUi is null")
+            Toast.makeText(context, "Job position data is missing", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         Log.d(TAG, "------------------------")
-        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi?.companyLogo}")
+        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi.companyLogo}")
 //        Log.d(TAG, "jobPositionUi: logo url ${jobPositionUi?.companyLogoUrl}")
 
 //        val person = arguments?.getParcelable<Person>("person")
 //        var person = intent?.extras?.getParcellable<JobPositionUi>("jobPosition")
 
-        viewModel.checkJobMarked(jobPositionUi!!)
+        viewModel.checkJobMarked(jobPositionUi)
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
         }
