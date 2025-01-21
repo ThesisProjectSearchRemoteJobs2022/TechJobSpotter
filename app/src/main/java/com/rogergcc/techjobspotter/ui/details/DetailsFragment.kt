@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
@@ -23,6 +26,7 @@ import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.setTextHtml
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
@@ -98,28 +102,54 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         viewModel.checkJobMarked(jobPositionUi)
 
-        viewModel.uiPositionState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is JobPositionViewModel.DetailUiState.Loading -> {
-                    Log.d(TAG, "DetailUiState.Loading")
-                }
-                is JobPositionViewModel.DetailUiState.Success -> {
-                    Log.d(TAG, "DetailUiState.Success")
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiPositionState
+                .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+                .collect{ state->
+                    when (state) {
+                        is JobPositionViewModel.DetailUiState.Loading -> {
+                            Log.d(TAG, "DetailUiState.Loading")
+                        }
+                        is JobPositionViewModel.DetailUiState.Success -> {
+                            Log.d(TAG, "DetailUiState.Success")
 
-                    if (state.jobPositionDetailUi != null) {
-                        setUpDetails(state.jobPositionDetailUi)
-                        setUpPhoto(state.jobPositionDetailUi.companyLogo)
-                        setUpMarkedColor(state.jobPositionDetailUi.isMarked)
-                    }
-                    if (state.jobPositionFavoriteUi != null) {
-                        showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+                            if (state.jobPositionDetailUi != null) {
+                                setUpDetails(state.jobPositionDetailUi)
+                                setUpPhoto(state.jobPositionDetailUi.companyLogo)
+                                setUpMarkedColor(state.jobPositionDetailUi.isMarked)
+                            }
+                            if (state.jobPositionFavoriteUi != null) {
+                                showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+                            }
+                        }
+                        is JobPositionViewModel.DetailUiState.Failure -> {
+                            Log.d(TAG, "DetailUiState.Failure")
+                        }
                     }
                 }
-                is JobPositionViewModel.DetailUiState.Failure -> {
-                    Log.d(TAG, "DetailUiState.Failure")
-                }
-            }
         }
+//        viewModel.uiPositionState.observe(viewLifecycleOwner) { state ->
+//            when (state) {
+//                is JobPositionViewModel.DetailUiState.Loading -> {
+//                    Log.d(TAG, "DetailUiState.Loading")
+//                }
+//                is JobPositionViewModel.DetailUiState.Success -> {
+//                    Log.d(TAG, "DetailUiState.Success")
+//
+//                    if (state.jobPositionDetailUi != null) {
+//                        setUpDetails(state.jobPositionDetailUi)
+//                        setUpPhoto(state.jobPositionDetailUi.companyLogo)
+//                        setUpMarkedColor(state.jobPositionDetailUi.isMarked)
+//                    }
+//                    if (state.jobPositionFavoriteUi != null) {
+//                        showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+//                    }
+//                }
+//                is JobPositionViewModel.DetailUiState.Failure -> {
+//                    Log.d(TAG, "DetailUiState.Failure")
+//                }
+//            }
+//        }
 
 //        viewModel.jobPositionDetail.observe(viewLifecycleOwner) { resource ->
 //            when (resource) {

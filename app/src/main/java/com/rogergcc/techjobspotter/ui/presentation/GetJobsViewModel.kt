@@ -1,8 +1,6 @@
 package com.rogergcc.techjobspotter.ui.presentation
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,6 +12,8 @@ import com.rogergcc.techjobspotter.ui.utils.UiText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -36,8 +36,12 @@ class GetJobsViewModel(
         data class Failure(val errorMessage: UiText) : UiState()
     }
 
-    private val _uiState = MutableLiveData<UiState>(UiState.Loading)
-    val uiState: LiveData<UiState> get() = _uiState
+//    private val _uiState = MutableLiveData<UiState>(UiState.Loading)
+//    val uiState: LiveData<UiState> get() = _uiState
+
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> get() = _uiState
+
 
 //    private val _remoteJobsPosition = MutableLiveData<Resource<List<JobPositionUi>>>()
 //    val remoteJobsPosition: LiveData<Resource<List<JobPositionUi>>> get() = _remoteJobsPosition
@@ -68,7 +72,8 @@ class GetJobsViewModel(
                     jobsMapperProvider.provider().domainToPresentation(it)
                 }
 //                _remoteJobsPosition.postValue(Resource.Success(jobsListUi))
-                _uiState.postValue(UiState.Success(remoteJobsPosition = jobsListUi))
+//                _uiState.postValue(UiState.Success(remoteJobsPosition = jobsListUi))
+                _uiState.value = UiState.Success(remoteJobsPosition = jobsListUi)
             } catch (e: Exception) {
 //                Log.e(TAG, "fetchJobs: ${e.message}" )
 ////                _remoteJobsPosition.postValue(Resource.Failure(e))
@@ -95,7 +100,8 @@ class GetJobsViewModel(
                 val jobsListUi = jobsMapperProvider.provider().listDomainToPresentation(jobsPosition)
 
 //                _localJobsPosition.postValue(Resource.Success(jobsListUi))
-                _uiState.postValue(UiState.Success(localJobsPosition = jobsListUi))
+//                _uiState.postValue(UiState.Success(localJobsPosition = jobsListUi))
+                _uiState.value = UiState.Success(localJobsPosition = jobsListUi)
             } catch (e: Exception) {
 //                Log.e(TAG, "fetchLocalJobsPositions: ${e.message}")
 //                _localJobsPosition.postValue(Resource.Failure(e))
@@ -129,7 +135,8 @@ class GetJobsViewModel(
                 val jobsFoundUi = jobsMapperProvider.provider()
                     .domainToPresentation(jobPositionDomain)
 //                _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
-                _uiState.postValue(UiState.Success(markedJobPosition = jobsFoundUi))
+//                _uiState.postValue(UiState.Success(markedJobPosition = jobsFoundUi))
+                _uiState.value = UiState.Success(markedJobPosition = jobsFoundUi)
 
             } catch (e: Exception) {
 //                Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
@@ -140,7 +147,8 @@ class GetJobsViewModel(
     }
     private fun handleException(e: Exception) {
         Log.e(TAG, "Error: ${e.message}")
-        _uiState.postValue(UiState.Failure(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error"))))
+//        _uiState.postValue(UiState.Failure(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error"))))
+        _uiState.value = UiState.Failure(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
     }
 
 

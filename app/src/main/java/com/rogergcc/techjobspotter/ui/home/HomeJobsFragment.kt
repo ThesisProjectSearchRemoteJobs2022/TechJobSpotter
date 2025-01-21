@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +29,7 @@ import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.extensions.hideView
 import com.rogergcc.techjobspotter.ui.utils.extensions.showView
 import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
+import kotlinx.coroutines.launch
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
@@ -136,50 +140,101 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         }
     }
     private fun observeUiState() {
-        viewModel.uiState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is GetJobsViewModel.UiState.Loading -> {
-                    showLoadingState()
-                }
-                is GetJobsViewModel.UiState.Success -> {
-                    hideLoadingState()
-                    state.remoteJobsPosition?.let { jobsOnfly ->
-                        Log.i(TAG, "observeRecommendPositions Jobs Found: ${jobsOnfly.count()}")
-                        if (jobsOnfly.isEmpty()) {
-                            showErrorState(
-                                Exception("No data found"),
-                                resources.getString(R.string.error_message_no_data)
-                            )
-                            return@observe
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+                .collect{state->
+                    when (state) {
+                        is GetJobsViewModel.UiState.Loading -> {
+                            showLoadingState()
                         }
-                        val jobsUpdateShowMarkedList = updateMarkedStatus(jobsOnfly, mAdapterMarkedJobs.mItems)
-                        mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
-                    }
-                    state.localJobsPosition?.let { jobsPositionCache ->
-                        Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
-                        mAdapterMarkedJobs.mItems = jobsPositionCache
-                    }
-                    state.markedJobPosition?.let { job ->
-                        mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
-                        if (job.isMarked) {
-                            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                                add(job)
+                        is GetJobsViewModel.UiState.Success -> {
+                            hideLoadingState()
+                            state.remoteJobsPosition?.let { jobsOnfly ->
+                                Log.i(TAG, "observeRecommendPositions Jobs Found: ${jobsOnfly.count()}")
+                                if (jobsOnfly.isEmpty()) {
+                                    showErrorState(
+                                        Exception("No data found"),
+                                        resources.getString(R.string.error_message_no_data)
+                                    )
+                                    return@collect
+                                }
+                                val jobsUpdateShowMarkedList = updateMarkedStatus(jobsOnfly, mAdapterMarkedJobs.mItems)
+                                mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
                             }
-                        } else {
-                            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                                remove(job)
+                            state.localJobsPosition?.let { jobsPositionCache ->
+                                Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
+                                mAdapterMarkedJobs.mItems = jobsPositionCache
+                            }
+                            state.markedJobPosition?.let { job ->
+                                mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
+                                if (job.isMarked) {
+                                    mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                        add(job)
+                                    }
+                                } else {
+                                    mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                        remove(job)
+                                    }
+                                }
+                                mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
+                                showMessage(job.isMarked, job.title)
                             }
                         }
-                        mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
-                        showMessage(job.isMarked, job.title)
+                        is GetJobsViewModel.UiState.Failure -> {
+                            hideLoadingState()
+                            showErrorState(state.errorMessage.asException(requireContext()), state.errorMessage.asString(requireContext()))
+                        }
                     }
+
                 }
-                is GetJobsViewModel.UiState.Failure -> {
-                    hideLoadingState()
-                    showErrorState(state.errorMessage.asException(requireContext()), state.errorMessage.asString(requireContext()))
-                }
-            }
         }
+
+//        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+//            when (state) {
+//                is GetJobsViewModel.UiState.Loading -> {
+//                    showLoadingState()
+//                }
+//                is GetJobsViewModel.UiState.Success -> {
+//                    hideLoadingState()
+//                    state.remoteJobsPosition?.let { jobsOnfly ->
+//                        Log.i(TAG, "observeRecommendPositions Jobs Found: ${jobsOnfly.count()}")
+//                        if (jobsOnfly.isEmpty()) {
+//                            showErrorState(
+//                                Exception("No data found"),
+//                                resources.getString(R.string.error_message_no_data)
+//                            )
+//                            return@observe
+//                        }
+//                        val jobsUpdateShowMarkedList = updateMarkedStatus(jobsOnfly, mAdapterMarkedJobs.mItems)
+//                        mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
+//                    }
+//                    state.localJobsPosition?.let { jobsPositionCache ->
+//                        Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
+//                        mAdapterMarkedJobs.mItems = jobsPositionCache
+//                    }
+//                    state.markedJobPosition?.let { job ->
+//                        mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
+//                        if (job.isMarked) {
+//                            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+//                                add(job)
+//                            }
+//                        } else {
+//                            mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
+//                                remove(job)
+//                            }
+//                        }
+//                        mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
+//                        showMessage(job.isMarked, job.title)
+//                    }
+//                }
+//                is GetJobsViewModel.UiState.Failure -> {
+//                    hideLoadingState()
+//                    showErrorState(state.errorMessage.asException(requireContext()), state.errorMessage.asString(requireContext()))
+//                }
+//            }
+//        }
+
     }
 
 //    private fun observeMarkedJobSelected() {
@@ -324,6 +379,14 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         _binding = null
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: ")
+//        viewModel.fetchRemoteJobsPositions()
+    // desventaja si cambio favorite desde details
+    //  y regresa este no actualiza el icono marcado en lista remota jobs
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -351,7 +414,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
 //        binding.toolbar.visibility = View.GONE
 
-        observeUiState()
+
 //        observeLocalJobs()
 //        observeRecommendPositions()
 //        observeMarkedJobSelected()
@@ -360,7 +423,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //        if (viewModel.remoteJobsPosition.value == null)
 //            viewModel.fetchRemoteJobsPositions()
 
-        Log.d(TAG, "onViewCreated: view state ${viewModel.uiState.value}")
         viewModel.fetchRemoteJobsPositions()
 
 //        binding.recyclerView.scheduleLayoutAnimation()
@@ -370,6 +432,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 //            showLoadingState()
 
         }
+        observeUiState()
 //        if (binding.rvMarkedJobs.adapter == null ||
 //            binding.rvMarkedJobs.adapter?.itemCount == 0) {
 ////            binding.shimmerMarkedLayout.visibility = View.GONE
