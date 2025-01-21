@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
-import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
 import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
@@ -98,43 +97,64 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 //        var person = intent?.extras?.getParcellable<JobPositionUi>("jobPosition")
 
         viewModel.checkJobMarked(jobPositionUi)
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
-        }
-        viewModel.jobPositionDetail.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
 
-                is Resource.Failure -> {
-                    Log.d(TAG, "Resource.Failure jobPositionDetail")
+        viewModel.uiPositionState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is JobPositionViewModel.DetailUiState.Loading -> {
+                    Log.d(TAG, "DetailUiState.Loading")
                 }
-                is Resource.Loading -> {
-                    Log.d(TAG, "Resource.Loading jobPositionDetail")
+                is JobPositionViewModel.DetailUiState.Success -> {
+                    Log.d(TAG, "DetailUiState.Success")
 
+                    if (state.jobPositionDetailUi != null) {
+                        setUpDetails(state.jobPositionDetailUi)
+                        setUpPhoto(state.jobPositionDetailUi.companyLogo)
+                        setUpMarkedColor(state.jobPositionDetailUi.isMarked)
+                    }
+                    if (state.jobPositionFavoriteUi != null) {
+                        showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+                    }
                 }
-                is Resource.Success -> {
-                    Log.d(TAG, "Resource.Success jobPositionDetail")
-                    setUpPhoto(resource.data.companyLogo)
-                    setUpMarkedColor(resource.data.isMarked)
-                    setUpDetails(resource.data)
+                is JobPositionViewModel.DetailUiState.Failure -> {
+                    Log.d(TAG, "DetailUiState.Failure")
                 }
             }
         }
 
-        viewModel.jobPositionFavorite.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Failure -> {
-                    Log.d(TAG, "Resource.Failure jobPositionFavorite")
-                }
-                is Resource.Loading -> {
-                    Log.d(TAG, "Resource.Loading jobPositionFavorite")
-
-                }
-                is Resource.Success -> {
-                    Log.d(TAG, "Resource.Success jobPositionFavorite")
-                    showMessageFavorite(resource.data.isMarked, resource.data.title)
-                }
-            }
-        }
+//        viewModel.jobPositionDetail.observe(viewLifecycleOwner) { resource ->
+//            when (resource) {
+//
+//                is Resource.Failure -> {
+//                    Log.d(TAG, "Resource.Failure jobPositionDetail")
+//                }
+//                is Resource.Loading -> {
+//                    Log.d(TAG, "Resource.Loading jobPositionDetail")
+//
+//                }
+//                is Resource.Success -> {
+//                    Log.d(TAG, "Resource.Success jobPositionDetail")
+//                    setUpPhoto(resource.data.companyLogo)
+//                    setUpMarkedColor(resource.data.isMarked)
+//                    setUpDetails(resource.data)
+//                }
+//            }
+//        }
+//
+//        viewModel.jobPositionFavorite.observe(viewLifecycleOwner) { resource ->
+//            when (resource) {
+//                is Resource.Failure -> {
+//                    Log.d(TAG, "Resource.Failure jobPositionFavorite")
+//                }
+//                is Resource.Loading -> {
+//                    Log.d(TAG, "Resource.Loading jobPositionFavorite")
+//
+//                }
+//                is Resource.Success -> {
+//                    Log.d(TAG, "Resource.Success jobPositionFavorite")
+//                    showMessageFavorite(resource.data.isMarked, resource.data.title)
+//                }
+//            }
+//        }
 
         binding.btnMark.setOnClickListener {
             viewModel.markFavoriteJobPosition(jobPositionUi)
