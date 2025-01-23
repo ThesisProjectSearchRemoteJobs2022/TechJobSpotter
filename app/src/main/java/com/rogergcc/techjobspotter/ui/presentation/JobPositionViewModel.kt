@@ -1,19 +1,18 @@
 package com.rogergcc.techjobspotter.ui.presentation
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rogergcc.techjobspotter.R
-import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionCacheUseCase
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -22,22 +21,31 @@ import kotlinx.coroutines.launch
  */
 
 class JobPositionViewModel(
-    private val jobsCacheUsecase: JobsPositionCacheUseCase,
+    private val jobsCacheUseCase: JobsPositionCacheUseCase,
     private val jobsMapper: JobsMapperProvider,
 ) : ViewModel() {
 
-//    private val _uiState = MutableStateFlow(UiState())
-//    val uiState = _uiState.asStateFlow()
+    sealed class DetailUiState {
+        object Loading : DetailUiState()
+        data class Success(
+            val jobPositionDetailUi: JobPositionUi? = null,
+            val jobPositionFavoriteUi: JobPositionUi? = null,
 
-    private val _markedJobPosition = MutableLiveData<Resource<JobPositionUi>>()
-    val markedJobPosition: LiveData<Resource<JobPositionUi>> get() = _markedJobPosition
+        ) : DetailUiState()
+        data class Failure(val errorMessage: UiText) : DetailUiState()
+    }
+    private val _uiPositionDetailState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
+    val uiPositionState: StateFlow<DetailUiState> get() = _uiPositionDetailState
 
-    private val _errorMessage = MutableLiveData<UiText>()
-    val errorMessage: LiveData<UiText> get() = _errorMessage
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-        _errorMessage.value = UiText.DynamicString(throwable.message ?: "Unknown error")
+//        _errorMessage.value = UiText.DynamicString(throwable.message ?: "Unknown error")
+        showErrorState()
+    }
+
+    private fun showErrorState() {
+        _uiPositionDetailState.value = DetailUiState.Failure(UiText.StringResource(R.string.error_message, listOf("Unknown error")))
     }
 
     fun checkJobMarked(jobPositionUi: JobPositionUi) {
@@ -45,20 +53,52 @@ class JobPositionViewModel(
             try {
                 val jobPositionDomain = jobsMapper.provider().presentationToDomain(jobPositionUi)
 
-                val jobPositionFound = jobsCacheUsecase.getJobByIdCache(jobPositionDomain.id ?: 0)
+                val jobPositionFound = jobsCacheUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
 
 
-                if (jobPositionFound.id == jobPositionDomain.id) {
-                    val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionFound)
-                    jobsFoundUi.isMarked = true
-                    _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
-                } else {
-                    _markedJobPosition.postValue(Resource.Success(jobPositionUi ))
+                if (jobPositionFound.id != jobPositionDomain.id) {
+                    _uiPositionDetailState.value = DetailUiState.Success(
+                        jobPositionDetailUi = jobPositionUi)
+                    return@launch
                 }
+
+                val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionFound)
+                jobsFoundUi.isMarked = true
+                _uiPositionDetailState.value = DetailUiState.Success(
+                    jobPositionDetailUi = jobsFoundUi)
 
             } catch (e: Exception) {
                 Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
-                _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
+                showErrorState()
+            }
+        }
+    }
+
+    fun markFavoriteJobPosition(jobPositionUi: JobPositionUi) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            try {
+                val jobPositionDomain = jobsMapper.provider().presentationToDomain(jobPositionUi)
+
+                val jobPositionFound = jobsCacheUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
+                if (jobPositionFound.id == jobPositionDomain.id) {
+                    jobsCacheUseCase.deleteJobCache(jobPositionDomain)
+                    val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
+                    jobsFoundUi.isMarked = false
+                    _uiPositionDetailState.value = DetailUiState.Success(
+                        jobPositionFavoriteUi = jobsFoundUi)
+                    return@launch
+                }
+
+                jobsCacheUseCase.insertJobCache(jobPositionDomain)
+                val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
+                jobsFoundUi.isMarked = true
+                _uiPositionDetailState.value = DetailUiState.Success(
+                    jobPositionFavoriteUi = jobsFoundUi)
+            } catch (e: Exception) {
+                Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
+                _uiPositionDetailState.value = DetailUiState.Failure(
+                    UiText.StringResource(
+                        R.string.error_message, listOf(e.message ?: "Unknown error")))
             }
         }
     }

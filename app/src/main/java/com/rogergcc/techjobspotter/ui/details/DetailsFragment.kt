@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
-import com.rogergcc.techjobspotter.core.Resource
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
 import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
 import com.rogergcc.techjobspotter.data.mappers.JobMapper
@@ -23,6 +26,7 @@ import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.setTextHtml
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
@@ -82,42 +86,109 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
 //        val jobPositionUi = arguments?.getBundle("selectedJobPosition") as JobPositionUi
         val jobPositionUi = arguments?.getParcelable<JobPositionUi>("selectedJobPosition")
+
+        if (jobPositionUi == null) {
+            Log.e(TAG, "jobPositionUi is null")
+            Toast.makeText(context, "Job position data is missing", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         Log.d(TAG, "------------------------")
-        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi?.companyLogo}")
+        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi.companyLogo}")
 //        Log.d(TAG, "jobPositionUi: logo url ${jobPositionUi?.companyLogoUrl}")
 
 //        val person = arguments?.getParcelable<Person>("person")
 //        var person = intent?.extras?.getParcellable<JobPositionUi>("jobPosition")
 
-        viewModel.checkJobMarked(jobPositionUi!!)
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it.asString(requireContext()), Toast.LENGTH_SHORT).show()
+        viewModel.checkJobMarked(jobPositionUi)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiPositionState
+                .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+                .collect{ state->
+                    when (state) {
+                        is JobPositionViewModel.DetailUiState.Loading -> {
+                            Log.d(TAG, "DetailUiState.Loading")
+                        }
+                        is JobPositionViewModel.DetailUiState.Success -> {
+                            Log.d(TAG, "DetailUiState.Success")
+
+                            if (state.jobPositionDetailUi != null) {
+                                setUpDetails(state.jobPositionDetailUi)
+                                setUpPhoto(state.jobPositionDetailUi.companyLogo)
+                                setUpMarkedColor(state.jobPositionDetailUi.isMarked)
+                            }
+                            if (state.jobPositionFavoriteUi != null) {
+                                showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+                            }
+                        }
+                        is JobPositionViewModel.DetailUiState.Failure -> {
+                            Log.d(TAG, "DetailUiState.Failure")
+                        }
+                    }
+                }
         }
-        viewModel.markedJobPosition.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
+//        viewModel.uiPositionState.observe(viewLifecycleOwner) { state ->
+//            when (state) {
+//                is JobPositionViewModel.DetailUiState.Loading -> {
+//                    Log.d(TAG, "DetailUiState.Loading")
+//                }
+//                is JobPositionViewModel.DetailUiState.Success -> {
+//                    Log.d(TAG, "DetailUiState.Success")
+//
+//                    if (state.jobPositionDetailUi != null) {
+//                        setUpDetails(state.jobPositionDetailUi)
+//                        setUpPhoto(state.jobPositionDetailUi.companyLogo)
+//                        setUpMarkedColor(state.jobPositionDetailUi.isMarked)
+//                    }
+//                    if (state.jobPositionFavoriteUi != null) {
+//                        showMessageFavorite(state.jobPositionFavoriteUi.isMarked, state.jobPositionFavoriteUi.title)
+//                    }
+//                }
+//                is JobPositionViewModel.DetailUiState.Failure -> {
+//                    Log.d(TAG, "DetailUiState.Failure")
+//                }
+//            }
+//        }
 
-                is Resource.Failure -> {
-                    Log.d("DetailsFragment", "Resource.Failure")
-                    Log.d("DetailsFragment", "resource: ${resource.exception}")
-                }
-                is Resource.Loading -> {
-                    Log.d("DetailsFragment", "Resource.Loading")
+//        viewModel.jobPositionDetail.observe(viewLifecycleOwner) { resource ->
+//            when (resource) {
+//
+//                is Resource.Failure -> {
+//                    Log.d(TAG, "Resource.Failure jobPositionDetail")
+//                }
+//                is Resource.Loading -> {
+//                    Log.d(TAG, "Resource.Loading jobPositionDetail")
+//
+//                }
+//                is Resource.Success -> {
+//                    Log.d(TAG, "Resource.Success jobPositionDetail")
+//                    setUpPhoto(resource.data.companyLogo)
+//                    setUpMarkedColor(resource.data.isMarked)
+//                    setUpDetails(resource.data)
+//                }
+//            }
+//        }
+//
+//        viewModel.jobPositionFavorite.observe(viewLifecycleOwner) { resource ->
+//            when (resource) {
+//                is Resource.Failure -> {
+//                    Log.d(TAG, "Resource.Failure jobPositionFavorite")
+//                }
+//                is Resource.Loading -> {
+//                    Log.d(TAG, "Resource.Loading jobPositionFavorite")
+//
+//                }
+//                is Resource.Success -> {
+//                    Log.d(TAG, "Resource.Success jobPositionFavorite")
+//                    showMessageFavorite(resource.data.isMarked, resource.data.title)
+//                }
+//            }
+//        }
 
-                }
-                is Resource.Success -> {
-                    Log.d("DetailsFragment", "Resource.Success")
-                    Log.d("DetailsFragment", "resource: ${resource.data}")
-                    setUpPhoto(resource.data.companyLogo)
-                    setUpMarkedColor(resource.data.isMarked)
-                    setUpDetails(resource.data)
-                }
-            }
+        binding.btnMark.setOnClickListener {
+            viewModel.markFavoriteJobPosition(jobPositionUi)
         }
-
-        Log.d(TAG, "onViewCreated: jobPositionUi logo: ${jobPositionUi?.companyLogo}")
-//        Log.d(TAG, "onViewCreated: jobPositionUi logoUrl: ${jobPositionUi?.companyLogoUrl}")
-
-
 
     }
 
@@ -166,6 +237,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         binding.photoPreview.setImageDrawable(it)
                     }
                 )
+        }
+    }
+
+    private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
+        setUpMarkedColor(isMarked)
+        if (!isMarked) {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE13 Unmark $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        } else {
+            Snackbar.make(
+                binding.root, "\uD83D\uDE0D Marked $title",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 
