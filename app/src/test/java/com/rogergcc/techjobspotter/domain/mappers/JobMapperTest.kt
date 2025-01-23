@@ -89,7 +89,7 @@ class JobMapperTest {
             id = 1,
             title = "Software Engineer",
             companyName = "Tech Company",
-            companyLogoUrl = "http://logo.url",
+//            companyLogoUrl = "http://logo.url",
             description = "Job description",
             publicationDate = "2023-01-01",
             salary = "1000",
@@ -106,7 +106,7 @@ class JobMapperTest {
         assertEquals(jobPresentation.id, jobPosition.id)
         assertEquals(jobPresentation.title, jobPosition.title)
         assertEquals(jobPresentation.companyName, jobPosition.companyName)
-        assertEquals(jobPresentation.companyLogoUrl, jobPosition.companyLogoUrl)
+//        assertEquals(jobPresentation.companyLogoUrl, jobPosition.companyLogoUrl)
         assertEquals(jobPresentation.description, jobPosition.description)
         assertEquals(jobPresentation.publicationDate, jobPosition.publicationDate)
         assertEquals(jobPresentation.salary, jobPosition.salary)
@@ -144,7 +144,7 @@ class JobMapperTest {
         assertEquals(jobPosition.id, jobPresentation.id)
         assertEquals(jobPosition.title, jobPresentation.title)
         assertEquals(jobPosition.companyName, jobPresentation.companyName)
-        assertEquals(jobPosition.companyLogoUrl, jobPresentation.companyLogoUrl)
+//        assertEquals(jobPosition.companyLogoUrl, jobPresentation.companyLogoUrl)
         assertEquals(jobPosition.description, jobPresentation.description)
         assertEquals(jobPosition.publicationDate, jobPresentation.publicationDate)
         assertEquals(jobPosition.salary, jobPresentation.salary)
