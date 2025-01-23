@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  * year 2023 .
  */
 
-class JobPositionViewModel(
+class JobDetailPositionViewModel(
     private val jobsCacheUseCase: JobsPositionCacheUseCase,
     private val jobsMapper: JobsMapperProvider,
 ) : ViewModel() {
@@ -106,7 +106,7 @@ class JobPositionViewModel(
 
 
     companion object {
-        private const val TAG = "JobPositionViewModel"
+        private const val TAG = "JobDetailPositionViewModel"
     }
 
 }

@@ -30,7 +30,7 @@ class JobsOkAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             ItemJobBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = RemoteJobsSpottViewHolder(itemBinding, parent.context)
+        val holder = RemoteJobsSpotsViewHolder(itemBinding, parent.context)
 
 //        itemBinding.root.setOnClickListener {
 //            val position =
@@ -61,7 +61,7 @@ class JobsOkAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when (holder) {
-            is RemoteJobsSpottViewHolder -> holder.bind(mItems[position])
+            is RemoteJobsSpotsViewHolder -> holder.bind(mItems[position])
         }
     }
 
@@ -79,7 +79,7 @@ class JobsOkAdapter(
         }
     }
 
-    private inner class RemoteJobsSpottViewHolder(
+    private inner class RemoteJobsSpotsViewHolder(
         val binding: ItemJobBinding,
         val context: Context,
     ) : BaseViewHolder<JobPositionUi>(binding.root) {
