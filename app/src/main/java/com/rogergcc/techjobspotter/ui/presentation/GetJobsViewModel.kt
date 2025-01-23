@@ -43,17 +43,6 @@ class GetJobsViewModel(
     val uiState: StateFlow<UiState> get() = _uiState
 
 
-//    private val _remoteJobsPosition = MutableLiveData<Resource<List<JobPositionUi>>>()
-//    val remoteJobsPosition: LiveData<Resource<List<JobPositionUi>>> get() = _remoteJobsPosition
-//
-//    private val _localJobsPosition = MutableLiveData<Resource<List<JobPositionUi>>>()
-//    val localJobsPosition: LiveData<Resource<List<JobPositionUi>>> get() = _localJobsPosition
-//
-//    private val _markedJobPosition = MutableLiveData<Resource<JobPositionUi>>()
-//    val markedJobPosition: LiveData<Resource<JobPositionUi>> get() = _markedJobPosition
-//
-//    private val _errorMessage = MutableLiveData<UiText>()
-//    val errorMessage: LiveData<UiText> get() = _errorMessage
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
@@ -71,8 +60,6 @@ class GetJobsViewModel(
                 val jobsListUi = jobsPosition.map {
                     jobsMapperProvider.provider().domainToPresentation(it)
                 }
-//                _remoteJobsPosition.postValue(Resource.Success(jobsListUi))
-//                _uiState.postValue(UiState.Success(remoteJobsPosition = jobsListUi))
                 _uiState.value = UiState.Success(remoteJobsPosition = jobsListUi)
             } catch (e: Exception) {
 //                Log.e(TAG, "fetchJobs: ${e.message}" )
@@ -99,8 +86,6 @@ class GetJobsViewModel(
                 val jobsPosition = jobsPositionUseCase.getJobsPositionCache()
                 val jobsListUi = jobsMapperProvider.provider().listDomainToPresentation(jobsPosition)
 
-//                _localJobsPosition.postValue(Resource.Success(jobsListUi))
-//                _uiState.postValue(UiState.Success(localJobsPosition = jobsListUi))
                 _uiState.value = UiState.Success(localJobsPosition = jobsListUi)
             } catch (e: Exception) {
 //                Log.e(TAG, "fetchLocalJobsPositions: ${e.message}")
@@ -134,8 +119,6 @@ class GetJobsViewModel(
                 }
                 val jobsFoundUi = jobsMapperProvider.provider()
                     .domainToPresentation(jobPositionDomain)
-//                _markedJobPosition.postValue(Resource.Success(jobsFoundUi))
-//                _uiState.postValue(UiState.Success(markedJobPosition = jobsFoundUi))
                 _uiState.value = UiState.Success(markedJobPosition = jobsFoundUi)
 
             } catch (e: Exception) {

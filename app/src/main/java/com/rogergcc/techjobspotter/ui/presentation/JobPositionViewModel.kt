@@ -25,9 +25,6 @@ class JobPositionViewModel(
     private val jobsMapper: JobsMapperProvider,
 ) : ViewModel() {
 
-//    private val _uiState = MutableStateFlow(UiState())
-//    val uiState = _uiState.asStateFlow()
-
     sealed class DetailUiState {
         object Loading : DetailUiState()
         data class Success(
@@ -40,14 +37,6 @@ class JobPositionViewModel(
     private val _uiPositionDetailState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
     val uiPositionState: StateFlow<DetailUiState> get() = _uiPositionDetailState
 
-//    private val _jobPositionDetail = MutableLiveData<Resource<JobPositionUi>>()
-//    val jobPositionDetail: LiveData<Resource<JobPositionUi>> get() = _jobPositionDetail
-//
-//    private val _jobPositionFavorite = MutableLiveData<Resource<JobPositionUi>>()
-//    val jobPositionFavorite: LiveData<Resource<JobPositionUi>> get() = _jobPositionFavorite
-//
-//    private val _errorMessage = MutableLiveData<UiText>()
-//    val errorMessage: LiveData<UiText> get() = _errorMessage
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
@@ -68,8 +57,6 @@ class JobPositionViewModel(
 
 
                 if (jobPositionFound.id != jobPositionDomain.id) {
-                //  _jobPositionDetail.postValue(Resource.Success(jobPositionUi ))
-//                    _uiPositionDetailState.postValue(DetailUiState.Success(jobPositionDetailUi = jobPositionUi))
                     _uiPositionDetailState.value = DetailUiState.Success(
                         jobPositionDetailUi = jobPositionUi)
                     return@launch
@@ -77,14 +64,11 @@ class JobPositionViewModel(
 
                 val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionFound)
                 jobsFoundUi.isMarked = true
-                //_jobPositionDetail.postValue(Resource.Success(jobsFoundUi))
-//                _uiPositionDetailState.postValue(DetailUiState.Success(jobPositionDetailUi = jobsFoundUi))
                 _uiPositionDetailState.value = DetailUiState.Success(
                     jobPositionDetailUi = jobsFoundUi)
 
             } catch (e: Exception) {
                 Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
-//                _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
                 showErrorState()
             }
         }
@@ -100,9 +84,6 @@ class JobPositionViewModel(
                     jobsCacheUseCase.deleteJobCache(jobPositionDomain)
                     val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
                     jobsFoundUi.isMarked = false
-//                    _jobPositionFavorite.postValue(Resource.Success(jobsFoundUi))
-//                    _uiPositionDetailState.postValue(
-//                        DetailUiState.Success(jobPositionFavoriteUi = jobsFoundUi))
                     _uiPositionDetailState.value = DetailUiState.Success(
                         jobPositionFavoriteUi = jobsFoundUi)
                     return@launch
@@ -111,17 +92,10 @@ class JobPositionViewModel(
                 jobsCacheUseCase.insertJobCache(jobPositionDomain)
                 val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
                 jobsFoundUi.isMarked = true
-//                _jobPositionFavorite.postValue(Resource.Success(jobsFoundUi))
-//                _uiPositionDetailState.postValue(
-//                    DetailUiState.Success(jobPositionFavoriteUi = jobsFoundUi))
                 _uiPositionDetailState.value = DetailUiState.Success(
                     jobPositionFavoriteUi = jobsFoundUi)
             } catch (e: Exception) {
                 Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
-//                _errorMessage.postValue(UiText.StringResource(R.string.error_message, listOf(e.message ?: "Unknown error")))
-//                _uiPositionDetailState.postValue(DetailUiState.Failure(
-//                    UiText.StringResource(
-//                        R.string.error_message, listOf(e.message ?: "Unknown error"))) )
                 _uiPositionDetailState.value = DetailUiState.Failure(
                     UiText.StringResource(
                         R.string.error_message, listOf(e.message ?: "Unknown error")))
