@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.ui.home
+package com.rogergcc.techjobspotter.ui.details
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -40,7 +40,7 @@ class JobsMarkFavoriteAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             ItemJobMarkedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = RemoteJobsSpottViewHolder(itemBinding, parent.context)
+        val holder = JobsSpotViewHolder(itemBinding, parent.context)
 
 //        itemBinding.root.setOnClickListener {
 //            val position =
@@ -69,13 +69,13 @@ class JobsMarkFavoriteAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when (holder) {
-            is RemoteJobsSpottViewHolder -> holder.bind(mItems[position])
+            is JobsSpotViewHolder -> holder.bind(mItems[position])
         }
     }
 
     override fun getItemCount(): Int = mItems.size
 
-    private inner class RemoteJobsSpottViewHolder(
+    private inner class JobsSpotViewHolder(
         val binding: ItemJobMarkedBinding,
         val context: Context,
     ) : BaseViewHolder<JobPositionUi>(binding.root) {

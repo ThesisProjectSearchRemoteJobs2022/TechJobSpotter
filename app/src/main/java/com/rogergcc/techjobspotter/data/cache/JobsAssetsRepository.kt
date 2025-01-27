@@ -4,8 +4,8 @@ import com.rogergcc.techjobspotter.data.model.RemoteJobsResponse
 import com.rogergcc.techjobspotter.domain.IJobsPositionsRemoteRepository
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.model.JobPosition
+import com.rogergcc.techjobspotter.ui.provider.ContextProvider
 import com.rogergcc.techjobspotter.ui.utils.loadJSONFromAsset
-import com.rogergcc.techjobspotter.ui.utils.provider.ContextProvider
 
 
 /**

@@ -23,12 +23,13 @@ import com.rogergcc.techjobspotter.data.mappers.JobMapper
 import com.rogergcc.techjobspotter.databinding.FragmentHomeJobsBinding
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
+import com.rogergcc.techjobspotter.ui.details.JobsMarkFavoriteAdapter
 import com.rogergcc.techjobspotter.ui.presentation.GetJobsViewModel
-import com.rogergcc.techjobspotter.ui.presentation.JobViewModelFactory
+import com.rogergcc.techjobspotter.ui.presentation.JobsPositionViewModelFactory
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
+import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.extensions.hideView
 import com.rogergcc.techjobspotter.ui.utils.extensions.showView
-import com.rogergcc.techjobspotter.ui.utils.provider.ContextProviderImpl
 import kotlinx.coroutines.launch
 
 
@@ -76,7 +77,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     }
 
     private val viewModel by viewModels<GetJobsViewModel> {
-        JobViewModelFactory(
+        JobsPositionViewModelFactory(
             jobsUseCase,
             jobsMapperProvider
         )

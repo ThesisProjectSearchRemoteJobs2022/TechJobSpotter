@@ -1,4 +1,4 @@
-package com.rogergcc.techjobspotter.ui.utils.provider
+package com.rogergcc.techjobspotter.ui.provider
 
 import android.content.Context
 

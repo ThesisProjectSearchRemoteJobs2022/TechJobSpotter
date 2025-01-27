@@ -140,7 +140,7 @@ class GetJobsViewModel(
     }
 
 }
-class JobViewModelFactory(
+class JobsPositionViewModelFactory(
     private val repo: JobsPositionUseCase,
     private val jobsMapperProvider: JobsMapperProvider
 ) : ViewModelProvider.Factory {
@@ -150,7 +150,7 @@ class JobViewModelFactory(
 }
 
 
-//class JobViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
+//class JobsPositionViewModelFactory(private val repo: JobsPositionUseCase) : ViewModelProvider.Factory {
 //    override fun <T : ViewModel> create(modelClass: Class<T>): T {
 //        return modelClass.getConstructor(JobsPositionUseCase::class.java).newInstance(repo)
 //    }
