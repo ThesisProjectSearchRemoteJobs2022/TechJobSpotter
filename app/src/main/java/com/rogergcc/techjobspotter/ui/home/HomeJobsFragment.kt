@@ -29,13 +29,13 @@ import com.rogergcc.techjobspotter.ui.presentation.JobsPositionViewModelFactory
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.extensions.hideView
+import com.rogergcc.techjobspotter.ui.utils.extensions.showSnackbarShort
 import com.rogergcc.techjobspotter.ui.utils.extensions.showView
 import kotlinx.coroutines.launch
 
 
 class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     private lateinit var jobsPositionCache: List<JobPositionUi>
-
     private var _binding: FragmentHomeJobsBinding? = null
 
     private val binding get() = _binding!!
@@ -129,15 +129,11 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun showMessage(isMarked: Boolean, title: String? = "") {
         if (!isMarked) {
-            Snackbar.make(
-                binding.root, "\uD83D\uDE13 Unmark $title",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE13 Unmark $title")
+
         } else {
-            Snackbar.make(
-                binding.root, "\uD83D\uDE0D Marked $title",
-                Snackbar.LENGTH_SHORT
-            ).show()
+
+            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE0D Marked $title")
         }
     }
     private fun observeUiState() {
@@ -197,12 +193,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun onFavoriteAction(job: JobPositionUi) {
 //        val isMarked = jobsPositionCache.contains(job)
-
-
         Log.d(TAG, "onFavoriteAction: mark[ ${job.isMarked} ] favorite ${job.title} ")
         viewModel.markFavoriteJobPosition(job)
-
-
     }
 
     override fun onDestroyView() {
@@ -241,11 +233,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             adapter = mAdapterMarkedJobs
 
         }
-
-
 //        binding.toolbar.visibility = View.GONE
-
-
         viewModel.fetchLocalJobsPositions()
 //        if (viewModel.remoteJobsPosition.value == null)
 //            viewModel.fetchRemoteJobsPositions()
@@ -257,10 +245,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             viewModel.fetchLocalJobsPositions()
             viewModel.fetchRemoteJobsPositions()
 //            showLoadingState()
-
         }
         observeUiState()
-
     }
 
 
@@ -309,7 +295,6 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
             job.copy(isMarked = markedJobTitles.contains(job.title))
         }
     }
-
 
     companion object {
         private const val TAG = "HomeJobsFragment"

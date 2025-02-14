@@ -1,5 +1,6 @@
 # TechJobSpotter
-  TechJobSpotter App - Oportunidades Laborales de posiciones Tecnologia 
+  TechJobSpotter App - Oportunidades Laborales de posiciones Tecnologia
+  posiciones Tecnologia obtenidas de la API Remota
 
 # Techs
     * Kotlin
@@ -10,10 +11,8 @@
     * Room
     * Navigation
     * Glide
-    * Material Design
     * data domain presentation layers mvvm
     * Kotlin Flow
-    * Dagger Hilt
     * ViewBinding
 
 

@@ -9,6 +9,5 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
  */
 
 interface IJobsPositionsRemoteRepository {
-//    suspend fun geJobs(): List<JobDto>
     suspend fun geJobs(): List<JobPosition>
 }
