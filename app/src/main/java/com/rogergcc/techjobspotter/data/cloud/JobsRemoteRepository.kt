@@ -18,8 +18,6 @@ class JobsRemoteRepository(
 ) :
     IJobsPositionsRemoteRepository {
     override suspend fun geJobs(): List<JobPosition> {
-        // Código para obtener los datos remotos
-
         try {
             val responseJobsPosition = jobsApiService.getResponseJobsPosition(20)
             val jobsList = responseJobsPosition.jobsData

@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
 import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
@@ -25,6 +24,7 @@ import com.rogergcc.techjobspotter.ui.presentation.JobPositionViewModelFactory
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.UiText
+import com.rogergcc.techjobspotter.ui.utils.extensions.showCustomSnackbar
 import com.rogergcc.techjobspotter.ui.utils.setTextHtml
 import kotlinx.coroutines.launch
 
@@ -187,15 +187,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
         setUpMarkedColor(isMarked)
         if (!isMarked) {
-            Snackbar.make(
-                binding.root, "\uD83D\uDE13 Unmark $title",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE13 Unmark $title" )
         } else {
-            Snackbar.make(
-                binding.root, "\uD83D\uDE0D Marked $title",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE0D Marked $title" )
         }
     }
 

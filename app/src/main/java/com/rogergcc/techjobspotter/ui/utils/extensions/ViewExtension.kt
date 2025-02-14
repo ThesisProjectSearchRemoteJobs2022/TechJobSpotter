@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.TranslateAnimation
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.snackbar.Snackbar
 import com.rogergcc.techjobspotter.R
 import java.util.concurrent.atomic.AtomicBoolean
@@ -71,6 +72,27 @@ fun View.toggleVisibility(): View {
     return this
 }
 
+fun View.showCustomSnackbar(message: String,
+                            duration: Int = Snackbar.LENGTH_SHORT,
+                            topMargin: Int = 200) {
+    val snackbar = Snackbar.make(this, message, duration)
+    val layoutParams = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+    layoutParams.setMargins(50, 0, 50, topMargin)
+    snackbar.view.layoutParams = layoutParams
+    snackbar.show()
+}
+
+fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_SHORT) {
+    Snackbar.make(this, message, duration).show()
+}
+
+fun Context.showSnackbarShort(view: View,message: String, duration: Int = Snackbar.LENGTH_SHORT) {
+    Snackbar.make(
+        view,
+        message,
+        duration
+    ).show()
+}
 fun Context.snackbar(view: View, msg: String, action: (() -> Unit)? = null) {
     Snackbar.make(
         view,
