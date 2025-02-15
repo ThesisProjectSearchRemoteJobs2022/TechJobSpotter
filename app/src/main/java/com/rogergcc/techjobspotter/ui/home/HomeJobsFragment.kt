@@ -147,23 +147,30 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         }
                         is GetJobsViewModel.UiState.Success -> {
                             hideLoadingState()
-                            state.remoteJobsPosition?.let { jobsOnfly ->
-                                Log.i(TAG, "observeRecommendPositions Jobs Found: ${jobsOnfly.count()}")
-                                if (jobsOnfly.isEmpty()) {
+
+                            state.remoteJobsPosition?.let { jobsRemote ->
+                                binding.recommendedTitle
+                                    .text = "${jobsRemote.size} Jobs Found"
+                                if (jobsRemote.isEmpty()) {
                                     showErrorState(
                                         Exception("No data found"),
                                         resources.getString(R.string.error_message_no_data)
                                     )
                                     return@collect
                                 }
-                                val jobsUpdateShowMarkedList = updateMarkedStatus(jobsOnfly, mAdapterMarkedJobs.mItems)
+                                val jobsUpdateShowMarkedList = updateMarkedStatus(
+                                    jobsRemote, mAdapterMarkedJobs.mItems)
                                 mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
                             }
-                            state.localJobsPosition?.let { jobsPositionCache ->
-                                Log.i(TAG, "observeLocalJobs Jobs Found: ${jobsPositionCache.count()}")
-                                mAdapterMarkedJobs.mItems = jobsPositionCache
+
+                            state.localJobsPosition?.let { jobsCache ->
+                                binding.markedTitle
+                                    .text = "${jobsCache.count()} Jobs Marked"
+                                mAdapterMarkedJobs.mItems = jobsCache
                             }
                             state.markedJobPosition?.let { job ->
+
+
                                 mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
                                 if (job.isMarked) {
                                     mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
@@ -175,6 +182,8 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                                     }
                                 }
                                 mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
+                                binding.markedTitle
+                                    .text = "${mAdapterMarkedJobs.itemCount} Jobs Marked"
                                 showMessage(job.isMarked, job.title)
                             }
                         }

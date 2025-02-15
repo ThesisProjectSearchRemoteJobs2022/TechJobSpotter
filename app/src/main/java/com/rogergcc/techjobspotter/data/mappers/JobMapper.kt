@@ -5,13 +5,12 @@ package com.rogergcc.techjobspotter.data.mappers
  * Created on enero.
  * year 2025 .
  */
+//import com.rogergcc.techjobspotter.data.model.JobDto
 import com.rogergcc.techjobspotter.data.cache.database.JobEntity
 import com.rogergcc.techjobspotter.data.model.JobDto
-//import com.rogergcc.techjobspotter.data.model.JobDto
 import com.rogergcc.techjobspotter.domain.mappers.Mapper
 import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
-import com.rogergcc.techjobspotter.ui.utils.extensions.toFormattedDate
 
 class JobMapper : Mapper<JobDto, JobPosition, JobPositionUi> {
     override fun dtoToDomain(dto: JobDto): JobPosition {
@@ -57,7 +56,7 @@ class JobMapper : Mapper<JobDto, JobPosition, JobPositionUi> {
             companyName = domain.companyName,
 //            companyLogoUrl = domain.companyLogoUrl,
             description = domain.description,
-            publicationDate = domain.publicationDate?.toFormattedDate(),
+            publicationDate = domain.publicationDate,
             salary = domain.salary,
             url = domain.url,
             tags = domain.tags,
