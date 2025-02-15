@@ -29,5 +29,6 @@
     <string name="item_location">item.location</string>
     <string name="item_company">item.company</string>
     <string name="item_companyurl">item.companyUrl</string>
-
+    <string name="jobs_found">"%1$d Jobs Found"</string>
+    <string name="jobs_marked">"%1$d Jobs Marked"</string>
 </resources>
