@@ -25,6 +25,7 @@ import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.UiText
 import com.rogergcc.techjobspotter.ui.utils.extensions.showCustomSnackbar
+import com.rogergcc.techjobspotter.ui.utils.extensions.toFormattedDateUi
 import com.rogergcc.techjobspotter.ui.utils.setTextHtml
 import kotlinx.coroutines.launch
 
@@ -144,6 +145,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding.description.setTextHtml(descriptionUiResult)
 
         binding.tvTitle.text = jobPosition.title
+        binding.tvPublicationDate.text = jobPosition.publicationDate?.toFormattedDateUi()
 //        binding.tvDescription.text = jobPosition?.description
         binding.tvLocationData.text = jobPosition.candidateRequiredLocation
 //        binding.tvSalary.text = jobPosition?.salary

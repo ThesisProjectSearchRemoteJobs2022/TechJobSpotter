@@ -12,6 +12,7 @@ import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.core.BaseViewHolder
 import com.rogergcc.techjobspotter.databinding.ItemJobBinding
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
+import com.rogergcc.techjobspotter.ui.utils.extensions.toFormattedDateUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -92,7 +93,7 @@ class JobsOkAdapter(
                 tvCompany.text = item.companyName
                 tvLocation.text = item.candidateRequiredLocation
                 tvType.text = item.jobType
-                tvDate.text = item.publicationDate
+                tvDate.text = item.publicationDate?.toFormattedDateUi()
 
                 coroutineScope.launch {
                     photoPreview.load(item.companyLogo) {
