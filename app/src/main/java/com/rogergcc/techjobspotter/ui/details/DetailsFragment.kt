@@ -172,7 +172,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding.description.setTextHtml(descriptionUiResult)
 
         binding.tvTitle.text = jobPosition.title
-        binding.tvPublicationDate.text = jobPosition.publicationDate?.toFormattedDateUi()
+        binding.tvPublicationDate.text = resources.getString(
+            R.string.posted_on,
+            jobPosition.publicationDate?.toFormattedDateUi()
+        )
+
 //        binding.tvDescription.text = jobPosition?.description
         binding.tvLocationData.text = jobPosition.candidateRequiredLocation
 //        binding.tvSalary.text = jobPosition?.salary

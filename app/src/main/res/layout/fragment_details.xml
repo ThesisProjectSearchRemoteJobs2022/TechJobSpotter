@@ -121,26 +121,27 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/tvPublicationDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16sp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="16sp"
-                        android:fontFamily="@font/bold"
-                        android:gravity="center_horizontal"
-                        android:text="@string/item_date"
-                        android:textColor="?attr/colorControlNormal"
-                        android:textSize="18sp" />
-                    <TextView
                         android:id="@+id/tvCompany"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16sp"
+                        android:layout_marginTop="@dimen/dim_8dp"
+                        android:layout_marginEnd="16sp"
+                        android:fontFamily="@font/bold"
+                        android:gravity="center_horizontal"
+                        android:text="@string/item_company"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/tvPublicationDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="@dimen/dim_6dp"
                         android:layout_marginEnd="16sp"
                         android:fontFamily="@font/book"
                         android:gravity="center_horizontal"
-                        android:text="@string/item_company"
+                        android:text="@string/item_date"
                         android:textColor="?attr/colorAccent"
                         android:textSize="14sp" />
 
