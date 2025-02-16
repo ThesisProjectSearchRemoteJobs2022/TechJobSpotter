@@ -208,7 +208,7 @@
 
                             <TextView
                                 android:layout_marginTop="@dimen/dim_14dp"
-                                android:id="@+id/description"
+                                android:id="@+id/tvDescription"
                                 android:text="@string/lorem"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

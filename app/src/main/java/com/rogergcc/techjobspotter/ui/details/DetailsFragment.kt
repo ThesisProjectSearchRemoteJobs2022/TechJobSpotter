@@ -169,7 +169,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 //            binding.tvTitle.setTextHtml(it)
 //        }
         val descriptionUiResult = UiText.DynamicString(jobPosition.description ?: "")
-        binding.description.setTextHtml(descriptionUiResult)
+        binding.tvDescription.setTextHtml(descriptionUiResult)
 
         binding.tvTitle.text = jobPosition.title
         binding.tvPublicationDate.text = resources.getString(
@@ -177,14 +177,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             jobPosition.publicationDate?.toFormattedDateUi()
         )
 
-//        binding.tvDescription.text = jobPosition?.description
         binding.tvLocationData.text = jobPosition.candidateRequiredLocation
 //        binding.tvSalary.text = jobPosition?.salary
         binding.tvCompany.text = jobPosition.companyName
         binding.tvCompanyData.text = jobPosition.companyName
         binding.tvWebsiteUrl.text = jobPosition.url
         binding.tvType.text = jobPosition.jobType
-//        binding.tvPublicationDate.text = jobPositionUi?.publicationDate
 
     }
 

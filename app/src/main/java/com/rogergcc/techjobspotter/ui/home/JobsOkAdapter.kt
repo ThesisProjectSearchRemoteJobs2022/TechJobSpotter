@@ -129,9 +129,7 @@ class JobsOkAdapter(
                     if (item.isMarked) R.drawable.ic_marked
                     else R.drawable.ic_mark
                 )
-//                mark.setOnClickListener() {
-//                                        Toast.makeText(context, "Marked", Toast.LENGTH_SHORT).show()
-//                }
+
 
             }
         }
