@@ -106,7 +106,7 @@ class JobDetailPositionViewModel(
 
 
     companion object {
-        private const val TAG = "JobDetailPositionViewModel"
+        private const val TAG = "DetailPositionViewModel"
     }
 
 }

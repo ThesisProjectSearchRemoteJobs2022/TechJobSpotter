@@ -26,9 +26,16 @@
     <string name="lorem">lorem</string>
     <string name="item_type">item.type</string>
     <string name="item_title">{item.title}</string>
+    <string name="item_date">{item.date}</string>
     <string name="item_location">item.location</string>
     <string name="item_company">item.company</string>
     <string name="item_companyurl">item.companyUrl</string>
     <string name="jobs_found">"%1$d Jobs Found"</string>
     <string name="jobs_marked">"%1$d Jobs Marked"</string>
+
+    <string name="confirmation">Confirmation</string>
+    <string name="redirect_message">You are about to leave the app. Do you want to continue?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>

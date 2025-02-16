@@ -1,5 +1,7 @@
 package com.rogergcc.techjobspotter.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
 import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
@@ -95,7 +98,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
 
         Log.d(TAG, "------------------------")
-        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi.companyLogo}")
 //        Log.d(TAG, "jobPositionUi: logo url ${jobPositionUi?.companyLogoUrl}")
 
 //        val person = arguments?.getParcelable<Person>("person")
@@ -133,6 +135,31 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         binding.btnMark.setOnClickListener {
             viewModel.markFavoriteJobPosition(jobPositionUi)
+        }
+        binding.btnHowToApply.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.confirmation)
+                .setMessage(R.string.redirect_message)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(jobPositionUi.url)
+                    startActivity(intent)
+                }
+                .setNegativeButton(R.string.no, null)
+                .show()
+
+//            AlertDialog.Builder(requireContext())
+//                .setTitle(R.string.confirmation)
+//                .setMessage(R.string.redirect_message)
+//                .setPositiveButton(R.string.yes) { _, _ ->
+//                    val intent = Intent(Intent.ACTION_VIEW)
+//                    intent.data = Uri.parse(jobPositionUi.url)
+//                    startActivity(intent)
+//                }
+//                .setNegativeButton(R.string.no, null)
+//                .show()
+
+
         }
 
     }

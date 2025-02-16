@@ -156,7 +156,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                                 )
                                 if (jobsRemote.isEmpty()) {
                                     showErrorState(
-                                        Exception("No data found"),
+                                        Exception(getString(R.string.message_data_not_found)),
                                         resources.getString(R.string.error_message_no_data)
                                     )
                                     return@collect
@@ -199,7 +199,10 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         }
                         is GetJobsViewModel.UiState.Failure -> {
                             hideLoadingState()
-                            showErrorState(state.errorMessage.asException(requireContext()), state.errorMessage.asString(requireContext()))
+                            showErrorState(
+                                state.errorMessage.asException(requireContext()),
+                                state.errorMessage.asString(requireContext())
+                            )
                         }
                     }
 
