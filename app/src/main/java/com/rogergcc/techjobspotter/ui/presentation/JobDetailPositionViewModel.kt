@@ -49,6 +49,7 @@ class JobDetailPositionViewModel(
     }
 
     fun checkJobMarked(jobPositionUi: JobPositionUi) {
+        _uiPositionDetailState.value = DetailUiState.Loading
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 val jobPositionDomain = jobsMapper.provider().presentationToDomain(jobPositionUi)

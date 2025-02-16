@@ -197,16 +197,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         binding.progress.stopShimmer()
                         binding.progress.visibility = View.GONE
                         binding.photoPreview.setImageDrawable(it)
-                        Log.d("DetailsFragment", "error loading image")
+                        Log.d(TAG, "photoPreview error loading image")
                     },
                     onStart = {
-                        Log.d("DetailsFragment", "start loading image")
+                        Log.d(TAG, "photoPreview start loading image")
                         binding.progress.startShimmer()
                         binding.progress.visibility = View.VISIBLE
                         binding.photoPreview.setImageDrawable(it)
                     },
                     onSuccess = {
-                        Log.d("DetailsFragment", "success loading image")
+                        Log.d(TAG, "photoPreview success loading image")
                         binding.progress.stopShimmer()
                         binding.progress.visibility = View.GONE
                         binding.photoPreview.setImageDrawable(it)
