@@ -20,12 +20,11 @@ class JobsRemoteRepository(
     override suspend fun geJobs(): List<JobPosition> {
         try {
             val responseJobsPosition = jobsApiService.getResponseJobsPosition(20)
-            val jobsList = responseJobsPosition.jobsData
+            val jobsList = responseJobsPosition.jobsData?.filterNotNull() ?: emptyList()
 
-            val jobsPositionDomain = jobsList?.mapNotNull { jobDto ->
-                jobDto?.let { jobsMapperProvider.provider().dtoToDomain(it) }
-            } ?: emptyList()
+            val jobsPositionDomain =  jobsMapperProvider.provider().listDtoToDomain(jobsList)
 
+//
             return jobsPositionDomain
         } catch (e: Exception) {
             return emptyList()

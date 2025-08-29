@@ -40,7 +40,6 @@ class JobDetailPositionViewModel(
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-//        _errorMessage.value = UiText.DynamicString(throwable.message ?: "Unknown error")
         showErrorState()
     }
 

@@ -147,6 +147,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         }
                         is GetJobsViewModel.UiState.Success -> {
                             hideLoadingState()
+                            Log.d(TAG, "observeUiState: remoteJobsPosition Success ${state.remoteJobsPosition}")
 
                             state.remoteJobsPosition?.let { jobsRemote ->
                                 binding.recommendedTitle
