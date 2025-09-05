@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dim_14dp">
+
+<!--    app:startIconDrawable="@drawable/ic_round_search_24"-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:boxBackgroundColor="?attr/colorPrimarySurface"
+        android:focusable="true"
+        android:clickable="true
+"
+        app:boxBackgroundMode="filled"
+
+        app:endIconMode="clear_text"
+        app:boxCollapsedPaddingTop="@dimen/dim_8dp"
+        app:boxCornerRadiusTopStart="@dimen/dim_8dp"
+        app:boxCornerRadiusTopEnd="@dimen/dim_8dp"
+        app:boxCornerRadiusBottomStart="@dimen/dim_8dp"
+        app:boxCornerRadiusBottomEnd="@dimen/dim_8dp"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="What are you looking for?"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:fontFamily="@font/bold"
+            android:singleLine="true"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+
+        android:id="@+id/searchButton"
+        style="@style/TextAppearance.AppCompat.Button"
+
+        app:backgroundTint="@color/teal_700"
+        app:rippleColor="?attr/colorOnPrimary"
+        app:cornerRadius="@dimen/dim_10dp"
+
+        android:fontFamily="@font/medium"
+        android:textSize="@dimen/size_14sp"
+        android:paddingVertical="@dimen/dim_16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:text="Search" />
+
+</LinearLayout>

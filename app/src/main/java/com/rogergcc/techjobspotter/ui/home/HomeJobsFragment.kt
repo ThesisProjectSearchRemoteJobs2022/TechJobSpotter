@@ -137,6 +137,13 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
         }
     }
     private fun observeUiState() {
+
+//        // Observar cambios en los datos filtrados
+//        viewModel.filteredJobs.observe(viewLifecycleOwner) { jobs ->
+//            // Actualizar tu RecyclerView con los trabajos filtrados
+//            updateJobsList(jobs)
+//        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
@@ -148,6 +155,30 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         is GetJobsViewModel.UiState.Success -> {
                             hideLoadingState()
                             Log.d(TAG, "observeUiState: remoteJobsPosition Success ${state.remoteJobsPosition}")
+
+                            state.searchedJobsPosition?.let { jobsSearched ->
+                                Log.d(TAG, "observeUiState: searchedJobsPosition ${jobsSearched.size}")
+                                binding.recommendedTitle
+                                    .text = resources.getString(
+                                    R.string.jobs_found,
+                                    jobsSearched.size
+                                )
+                                if (jobsSearched.isEmpty()) {
+                                    showErrorState(
+                                        Exception(getString(R.string.message_data_not_found)),
+                                        resources.getString(R.string.error_message_no_data_search)
+                                    )
+                                    mAdapterRecommendJobs.mItems = jobsSearched
+
+                                    return@let
+                                }
+
+                                val jobsUpdateShowMarkedList = updateMarkedStatus(
+                                    jobsSearched, mAdapterMarkedJobs.mItems
+                                )
+                                mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
+
+                            }
 
                             state.remoteJobsPosition?.let { jobsRemote ->
                                 binding.recommendedTitle
@@ -242,8 +273,23 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     }
 
+    private fun showSearchBottomSheet() {
+        val bottomSheet = SearchBottomSheetDialog(
+            onSearchQuery = { query ->
+                viewModel.filterJobs(query)
+            }
+        )
+
+        bottomSheet.show(parentFragmentManager, "SearchBottomSheet")
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Configurar el click listener en el TextView de búsqueda
+        binding.cardSearchJob.setOnClickListener {
+            showSearchBottomSheet()
+        }
         binding.rvRecommendedJobs.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)

@@ -32,4 +32,18 @@ class JobsRemoteRepository(
 
     }
 
+    override suspend fun searchJobs(query: String): List<JobPosition> {
+        try {
+            val responseJobsPosition = jobsApiService.searchJobsPosition(20,query)
+            val jobsList = responseJobsPosition.jobsData?.filterNotNull() ?: emptyList()
+
+            val jobsPositionDomain =  jobsMapperProvider.provider().listDtoToDomain(jobsList)
+            return jobsPositionDomain
+    }
+        catch (e: Exception) {
+            return emptyList()
+        }
+    }
+
+
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.domain.mappers.JobsMapperProvider
+import com.rogergcc.techjobspotter.domain.model.JobPosition
 import com.rogergcc.techjobspotter.domain.usecase.JobsPositionUseCase
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.utils.UiText
@@ -26,11 +27,13 @@ class GetJobsViewModel(
     private val jobsMapperProvider: JobsMapperProvider,
 ) : ViewModel() {
 
+
     sealed class UiState {
         object Loading : UiState()
         data class Success(
             val remoteJobsPosition: List<JobPositionUi>? = null,
             val localJobsPosition: List<JobPositionUi>? = null,
+            val searchedJobsPosition: List<JobPositionUi>? = null,
             val markedJobPosition: JobPositionUi? = null
         ) : UiState()
         data class Failure(val errorMessage: UiText) : UiState()
@@ -43,12 +46,38 @@ class GetJobsViewModel(
     val uiState: StateFlow<UiState> get() = _uiState
 
 
-
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
         _uiState.value = UiState.Failure(UiText.DynamicString(throwable.message ?: "Unknown error"))
     }
 
+
+//    private val _filteredJobs = MutableLiveData<List<Job>>()
+//    val filteredJobs: LiveData<List<Job>> get() = _filteredJobs
+
+//    private val allJobs = // Tu lista completa de trabajos
+
+    fun filterJobs(query: String) {
+        _uiState.value = UiState.Loading
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            try {
+                delay(500) // Simula un retardo para la búsqueda
+                val jobsPosition:List<JobPosition> = jobsPositionUseCase.searchJobs(query)
+                val jobsListUi = jobsPosition.map {
+                    jobsMapperProvider.provider().domainToPresentation(it)
+                }
+                _uiState.value = UiState.Success(searchedJobsPosition = jobsListUi)
+            } catch (e: Exception) {
+                handleException(e)
+            }
+        }
+//        val filtered = allJobs.filter { job ->
+//            job.title.contains(query, true) ||
+//                    job.company.contains(query, true) ||
+//                    job.description.contains(query, true)
+//        }
+//        _filteredJobs.value = filtered
+    }
 
     fun fetchRemoteJobsPositions() {
 //        _remoteJobsPosition.value = Resource.Loading()

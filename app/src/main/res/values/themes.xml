@@ -4,7 +4,7 @@
     <style name="Theme.TechJobSpotter" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_300</item>
-        <item name="colorPrimaryVariant">@color/blue_200</item>
+        <item name="colorPrimaryVariant">@color/navy_100</item>
         <item name="colorOnPrimary">@color/blue_050</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black</item>
@@ -104,15 +104,52 @@
         <item name="android:fontFamily">@font/medium</item>
     </style>
 
-    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppModalDialogStyleD" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_rounded_top</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+
     </style>
 
-    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_rounded_top</item>
+        <item name="backgroundTint">?attr/colorOnSecondary</item>
+    </style>
+
+    <!-- Theme for the whole dialog window -->
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <!-- Whether it floats above or below the activity -->
+        <item name="android:windowIsFloating">false</item>
+        <!-- Let the sheet resize for IME -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <!-- Optional: draw behind status bar -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Connect to our widget style below -->
+        <item name="bottomSheetStyle">@style/Widget.BottomSheet.Custom</item>
+        <!-- Optional: dim/scrim color over the background -->
+        <item name="android:backgroundDimAmount">0.5</item>
+
+    </style>
+
+    <style name="Widget.BottomSheet.Custom" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!-- Rounded top corners via MaterialShapeDrawable -->
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.BottomSheet</item>
+
+        <!-- Surface color; automatically handles elevation overlay in dark theme -->
+        <item name="backgroundTint">@color/gray_200</item>
+
+        <!-- Elevation for proper shadow -->
+        <item name="android:elevation">8dp</item>
+
     </style>
 
     <style name="viewParent.typeJobText" >
