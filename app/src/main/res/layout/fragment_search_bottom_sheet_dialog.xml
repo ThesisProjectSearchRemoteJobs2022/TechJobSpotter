@@ -4,51 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+
     android:padding="@dimen/dim_14dp">
 
 <!--    app:startIconDrawable="@drawable/ic_round_search_24"-->
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundMode="outline"
 
-        app:boxBackgroundColor="?attr/colorPrimarySurface"
-        android:focusable="true"
-        android:clickable="true
-"
-        app:boxBackgroundMode="filled"
-
-        app:endIconMode="clear_text"
-        app:boxCollapsedPaddingTop="@dimen/dim_8dp"
         app:boxCornerRadiusTopStart="@dimen/dim_8dp"
         app:boxCornerRadiusTopEnd="@dimen/dim_8dp"
         app:boxCornerRadiusBottomStart="@dimen/dim_8dp"
         app:boxCornerRadiusBottomEnd="@dimen/dim_8dp"
+        app:hintEnabled="false"
+        app:boxStrokeWidthFocused="@dimen/dim_2dp"
+        app:boxStrokeColor="@color/gray_200"
+        app:boxBackgroundColor="@color/gray_500"
+
+        app:endIconMode="clear_text"
 
         >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="What are you looking for?"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:fontFamily="@font/bold"
-            android:singleLine="true"
-            />
+<!--        android:textColorHighlight="@color/teal_700"-->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:textColorHint="@color/gray_050"
+        android:imeOptions="actionSearch"
+        android:hint="Search Job title, keywords, or company"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textColor="@color/gray_100"
+        android:fontFamily="@font/medium"/>
+</com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    app:strokeColor="@color/white"-->
+<!--    app:rippleColor="?attr/colorOnPrimary"-->
 
     <com.google.android.material.button.MaterialButton
-
         android:id="@+id/searchButton"
-        style="@style/TextAppearance.AppCompat.Button"
+        style="@style/Widget.MaterialButton.Custom"
 
-        app:backgroundTint="@color/teal_700"
-        app:rippleColor="?attr/colorOnPrimary"
-        app:cornerRadius="@dimen/dim_10dp"
-
-        android:fontFamily="@font/medium"
         android:textSize="@dimen/size_14sp"
         android:paddingVertical="@dimen/dim_16dp"
         android:layout_width="match_parent"

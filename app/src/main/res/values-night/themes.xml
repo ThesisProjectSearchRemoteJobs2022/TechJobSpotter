@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/blue_075</item>
         <item name="colorOnPrimary">@color/blue_400</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondary">@color/gray_100</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/gray_600</item>
         <!-- Status bar color. -->
@@ -117,16 +117,11 @@
 
     <!-- Theme for the whole dialog window -->
     <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <!-- Whether it floats above or below the activity -->
         <item name="android:windowIsFloating">false</item>
-        <!-- Let the sheet resize for IME -->
         <item name="android:windowSoftInputMode">adjustResize</item>
-        <!-- Optional: draw behind status bar -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- Connect to our widget style below -->
         <item name="bottomSheetStyle">@style/Widget.BottomSheet.Custom</item>
-        <!-- Optional: dim/scrim color over the background -->
-        <item name="android:backgroundDimAmount">0.5</item>
+<!--        <item name="android:backgroundDimAmount">0.5</item>-->
 
     </style>
 
@@ -135,39 +130,41 @@
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.BottomSheet</item>
 
         <!-- Surface color; automatically handles elevation overlay in dark theme -->
-        <item name="backgroundTint">@color/gray_700</item>
+        <item name="backgroundTint">@color/gray_800</item>
 
         <!-- Elevation for proper shadow -->
         <item name="android:elevation">8dp</item>
 
     </style>
 
-    <style name="Widget.MyApp.TextInputLayout.Filled"
-        parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <!-- Color del fondo de la caja -->
-        <item name="boxBackgroundColor">@color/blue_050</item>
-
-        <!-- Grosor/campo de línea casi invisible -->
-        <item name="boxStrokeColor">@color/purple_200</item>
+    <style name="Widget.TextInputLayout.Custom"
+        parent="Theme.TechJobSpotter">
+        <item name="boxBackgroundColor">@color/blue_025</item>
+        <item name="backgroundColor">#EC407A</item>
+        <item name="boxStrokeColor">@color/teal_200</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
-
         <!-- Radios (equivalente a tu 8dp) -->
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="boxCornerRadiusTopEnd">8dp</item>
         <item name="boxCornerRadiusBottomStart">8dp</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
-
         <!-- Hint animado y otros opcionales -->
         <item name="hintEnabled">true</item>
     </style>
 
+    <style name="Widget.MaterialButton.Custom" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/blue_300</item>
+        <item name="android:textColor">@color/gray_100</item>
+        <item name="cornerRadius">@dimen/dim_10dp</item>
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="elevation">0dp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
 
-    <style name="Widget.MyApp.TextInputEditText"
-        parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
-        <item name="android:fontFamily">@font/bold</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+
 
     <style name="viewParent.typeJobText">
     </style>

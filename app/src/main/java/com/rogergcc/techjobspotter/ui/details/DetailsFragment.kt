@@ -218,17 +218,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
         setUpMarkedColor(isMarked)
         if (!isMarked) {
-            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE13 Unmark $title" )
+            binding.bottomActions.showCustomSnackbar("\uD83D\uDE13 Unmark $title" )
         } else {
-            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE0D Marked $title" )
+            binding.bottomActions.showCustomSnackbar("\uD83D\uDE0D Marked $title" )
         }
     }
 
     private fun setUpMarkedColor(isMarked: Boolean){
-        binding.btnMark.setImageResource(
-            if (isMarked) R.drawable.ic_marked
-            else R.drawable.ic_mark
-        )
+        if (isMarked) {
+            binding.btnMark.setIconTintResource(R.color.green_200)
+            binding.btnMark.setIconResource(R.drawable.ic_marked)
+        } else {
+            binding.btnMark.setIconTintResource(R.color.gray_200)
+            binding.btnMark.setIconResource(R.drawable.ic_mark)
+        }
+
     }
     companion object {
         private const val TAG = "DetailsFragment"

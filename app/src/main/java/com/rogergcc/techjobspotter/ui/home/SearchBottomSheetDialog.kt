@@ -2,7 +2,6 @@ package com.rogergcc.techjobspotter.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -43,45 +42,45 @@ class SearchBottomSheetDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.searchButton.setOnClickListener {
-//            val query = binding.searchInput.text.toString().trim()
-//            if (query.isNotEmpty()) {
-//                onSearchQuery(query) // Llamada directa
-//                dismiss()
-//            }
-//        }
-
-        binding.searchButton.setOnTouchListener { v, event ->
+        binding.searchButton.setOnClickListener {
             val query = binding.searchInput.text.toString().trim()
             if (query.isNotEmpty()) {
                 onSearchQuery(query) // Llamada directa
                 dismiss()
             }
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate()
-                        .scaleX(0.9f)
-                        .scaleY(0.9f)
-                        .setDuration(120)
-                        .start()
-                }
-                MotionEvent.ACTION_UP -> {
-                    // vuelve a tamaño normal
-                    v.animate()
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(120)
-                        .start()
-
-                    // informa al sistema que hubo click (accesibilidad)
-                    v.performClick()
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(120).start()
-                }
-            }
-            true // indicamos que manejamos el touch completo
         }
+
+//        binding.searchButton.setOnTouchListener { v, event ->
+//            val query = binding.searchInput.text.toString().trim()
+//            if (query.isNotEmpty()) {
+//                onSearchQuery(query) // Llamada directa
+//                dismiss()
+//            }
+//            when (event.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    v.animate()
+//                        .scaleX(0.9f)
+//                        .scaleY(0.9f)
+//                        .setDuration(120)
+//                        .start()
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    // vuelve a tamaño normal
+//                    v.animate()
+//                        .scaleX(1f)
+//                        .scaleY(1f)
+//                        .setDuration(120)
+//                        .start()
+//
+//                    // informa al sistema que hubo click (accesibilidad)
+//                    v.performClick()
+//                }
+//                MotionEvent.ACTION_CANCEL -> {
+//                    v.animate().scaleX(1f).scaleY(1f).setDuration(120).start()
+//                }
+//            }
+//            true // indicamos que manejamos el touch completo
+//        }
 
 
         // Buscar al presionar enter en el teclado

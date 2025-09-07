@@ -20,11 +20,9 @@ import kotlinx.coroutines.launch
 
 
 class JobsOkAdapter(
-//    private val itemClickListener: OnMovieClickListener,
     val jobsPositionDetailsAction: (jobPositionDomain: JobPositionUi) -> Unit,
     val jobMarkClickAction: (jobPositionDomain: JobPositionUi) -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
-    //    private var mItemsMovieResponse = emptyList<MovieResponse>()
 
 
 
@@ -33,12 +31,7 @@ class JobsOkAdapter(
             ItemJobBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val holder = RemoteJobsSpotsViewHolder(itemBinding, parent.context)
 
-//        itemBinding.root.setOnClickListener {
-//            val position =
-//                holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }
-//                    ?: return@setOnClickListener
-//            movieDetailsAction(mItems[position])
-//        }
+
         itemBinding.mLinearLayoutContainer.setOnClickListener {
             val position =
                 holder.bindingAdapterPosition.takeIf { it != DiffUtil.DiffResult.NO_POSITION }

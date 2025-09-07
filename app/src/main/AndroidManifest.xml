@@ -34,6 +34,8 @@
         <activity
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:name=".MainActivity"
+            android:exported="false"
+
             android:theme="@style/Theme.TechJobSpotter.NoActionBar">
 
         </activity>
