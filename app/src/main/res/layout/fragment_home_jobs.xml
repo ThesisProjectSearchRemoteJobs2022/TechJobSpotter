@@ -48,7 +48,7 @@
                     android:layout_toStartOf="@id/notifyOptions"
                     android:fontFamily="@font/book"
                     android:text="@string/message_welcome"
-                    android:textColor="@color/black"
+                    android:textColor="@color/blue_500"
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView

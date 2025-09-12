@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/blue_400</item>
         <item name="colorOnSecondary">@color/blue_000</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/blue_400</item>
         <!-- Customize your theme here. -->
         <item name="snackbarStyle">@style/SnackbarStyle</item>
         <item name="android:windowBackground">@color/gray_600</item>

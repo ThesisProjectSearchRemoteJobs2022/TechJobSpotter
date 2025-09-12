@@ -96,7 +96,7 @@ fun Context.showSnackbarShort(view: View, message: String, duration: Int = Snack
     ).show()
 }
 
-fun Context.snackbar(view: View, msg: String, action: (() -> Unit)? = null) {
+fun Context.showSnackbarAction(view: View, msg: String, action: (() -> Unit)? = null) {
     Snackbar.make(
         view,
         msg,

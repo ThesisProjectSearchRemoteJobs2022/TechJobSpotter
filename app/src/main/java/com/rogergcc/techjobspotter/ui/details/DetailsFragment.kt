@@ -218,9 +218,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
         setUpMarkedColor(isMarked)
         if (!isMarked) {
-            binding.bottomActions.showCustomSnackbar("\uD83D\uDE13 Unmark $title" )
+            binding.bottomActions.showCustomSnackbar(
+                getString(R.string.unmarked_favorites,title) )
         } else {
-            binding.bottomActions.showCustomSnackbar("\uD83D\uDE0D Marked $title" )
+            binding.bottomActions.showCustomSnackbar(
+                getString(R.string.marked_favorites,title) )
         }
     }
 

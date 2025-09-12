@@ -12,25 +12,14 @@ import com.rogergcc.techjobspotter.databinding.FragmentSearchBottomSheetDialogBi
 
 class SearchBottomSheetDialog(
     private val onSearchQuery: (String) -> Unit) : BottomSheetDialogFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private var _binding: FragmentSearchBottomSheetDialogBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
     override fun getTheme(): Int = R.style.BottomSheetDialogTheme
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?,
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_search_bottom_sheet_dialog, container, false)
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -96,13 +85,6 @@ class SearchBottomSheetDialog(
             false
         }
     }
-    // Y en el HomeFragment:
-//    private fun showSearchBottomSheet() {
-//        val bottomSheet = SearchBottomSheetDialog { query ->
-//            viewModel.filterJobs(query)
-//        }
-//        bottomSheet.show(parentFragmentManager, "SearchBottomSheet")
-//    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

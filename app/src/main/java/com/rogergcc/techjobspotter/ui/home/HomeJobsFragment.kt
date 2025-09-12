@@ -29,6 +29,7 @@ import com.rogergcc.techjobspotter.ui.presentation.JobsPositionViewModelFactory
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.extensions.hideView
+import com.rogergcc.techjobspotter.ui.utils.extensions.setOnSingleClickListener
 import com.rogergcc.techjobspotter.ui.utils.extensions.showSnackbarShort
 import com.rogergcc.techjobspotter.ui.utils.extensions.showView
 import kotlinx.coroutines.launch
@@ -129,11 +130,9 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun showMessage(isMarked: Boolean, title: String? = "") {
         if (!isMarked) {
-            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE13 Unmark $title")
-
+            requireContext().showSnackbarShort(binding.root, getString(R.string.unmarked_favorites, title))
         } else {
-
-            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE0D Marked $title")
+            requireContext().showSnackbarShort(binding.root, getString(R.string.marked_favorites, title))
         }
     }
     private fun observeUiState() {
@@ -287,7 +286,7 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Configurar el click listener en el TextView de búsqueda
-        binding.cardSearchJob.setOnClickListener {
+        binding.cardSearchJob.setOnSingleClickListener() {
             showSearchBottomSheet()
         }
         binding.rvRecommendedJobs.apply {
