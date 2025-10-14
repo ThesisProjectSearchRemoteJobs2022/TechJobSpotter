@@ -10,4 +10,6 @@ import com.rogergcc.techjobspotter.domain.model.JobPosition
 
 interface IJobsPositionsRemoteRepository {
     suspend fun geJobs(): List<JobPosition>
+    suspend fun searchJobs(query: String): List<JobPosition>
+
 }

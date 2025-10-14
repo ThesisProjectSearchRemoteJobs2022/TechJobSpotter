@@ -4,17 +4,17 @@
     <style name="Theme.TechJobSpotter" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_300</item>
-        <item name="colorPrimaryVariant">@color/blue_200</item>
+        <item name="colorPrimaryVariant">@color/navy_100</item>
         <item name="colorOnPrimary">@color/blue_050</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondary">@color/gray_800</item>
         <item name="colorSecondaryVariant">@color/blue_400</item>
         <item name="colorOnSecondary">@color/blue_000</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/blue_400</item>
         <!-- Customize your theme here. -->
         <item name="snackbarStyle">@style/SnackbarStyle</item>
-                <item name="android:windowBackground">@color/gray_600</item>
+        <item name="android:windowBackground">@color/gray_600</item>
         <!--        <item name="android:textColorPrimary">@color/colorPrimary</item>-->
         <item name="android:windowContentTransitions">true</item>
         <item name="shimmerColor">@color/greyShimmerLight</item>
@@ -22,11 +22,11 @@
         <item name="shadeGrey">@color/gray_600</item>
         <item name="contentColor">@color/gray_050</item>
         <!--        <item name="colorOnSurface">@color/blue_050</item>-->
-<!--        <item name="colorSurface">@color/blue_050</item>-->
-<!--        <item name="fontFamily">@font/book</item>-->
+        <!--        <item name="colorSurface">@color/blue_050</item>-->
+        <!--        <item name="fontFamily">@font/book</item>-->
         <!--        <item name="windowActionModeOverlay">true</item>-->
-<!--        <item name="colorAccent">@color/green_100</item>-->
-<!--        <item name="colorPrimaryDark">@color/blue_500</item>-->
+        <!--        <item name="colorAccent">@color/green_100</item>-->
+        <!--        <item name="colorPrimaryDark">@color/blue_500</item>-->
 
     </style>
 
@@ -104,18 +104,64 @@
         <item name="android:fontFamily">@font/medium</item>
     </style>
 
-    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppModalDialogStyleD" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_rounded_top</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+
     </style>
 
-    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_rounded_top</item>
+        <item name="backgroundTint">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="viewParent.typeJobText" >
+    <!-- Theme for the whole dialog window -->
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <!-- Whether it floats above or below the activity -->
+        <item name="android:windowIsFloating">false</item>
+        <!-- Let the sheet resize for IME -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <!-- Optional: draw behind status bar -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Connect to our widget style below -->
+        <item name="bottomSheetStyle">@style/Widget.BottomSheet.Custom</item>
+        <!-- Optional: dim/scrim color over the background -->
+        <item name="android:backgroundDimAmount">0.5</item>
+
     </style>
+
+    <style name="Widget.BottomSheet.Custom" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!-- Rounded top corners via MaterialShapeDrawable -->
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.BottomSheet</item>
+        <!-- Surface color; automatically handles elevation overlay in dark theme -->
+        <item name="backgroundTint">@color/blue_400</item>
+        <!-- Elevation for proper shadow -->
+        <item name="android:elevation">8dp</item>
+    </style>
+
+    <style name="Widget.MaterialButton.Custom" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/blue_075</item>
+        <item name="android:textColor">@color/gray_800</item>
+        <item name="cornerRadius">@dimen/dim_10dp</item>
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="elevation">0dp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="viewParent.typeJobText"></style>
 
 </resources>

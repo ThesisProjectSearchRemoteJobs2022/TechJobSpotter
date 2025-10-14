@@ -17,6 +17,7 @@
     <string name="error_message">¡Lo siento! Algo salió mal. error: %1$s</string>
     <string name="error_message_no_internet">¡Lo siento! No tienes conexión a Internet.</string>
     <string name="error_message_no_data">¡Lo siento! No hay datos disponibles.</string>
+    <string name="error_message_no_data_search">¡Lo siento! No registros con esa busqueda.</string>
     <string name="error_jobs_not_found">¡Lo siento! No se encontraron trabajos.</string>
     <string name="ok">OK\n</string>
     <string name="txt_how_to_apply">How To Apply</string>
@@ -38,5 +39,10 @@
     <string name="redirect_message">You are about to leave the app. Do you want to continue?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+<!--    <string name="unmarked_favorites">\\uD83D\\uDE13 Unmark %1$s</string>-->
+    <string name="unmarked_favorites">😌 Unmark %1$s</string>
+
+<!--    <string name="marked_favorites">\\uD83D\\uDE0D Marked %1$s</string>-->
+    <string name="marked_favorites">😍 Marked %1$s</string>
 
 </resources>

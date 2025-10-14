@@ -32,4 +32,8 @@ class JobsAssetsRepository(
         }
     }
 
+    override suspend fun searchJobs(query: String): List<JobPosition> {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -22,5 +22,7 @@ class JobsPositionUseCase(
     suspend fun getJobByIdCache(id: Int): JobPosition = cacheJobsPositionCache.getJobById(id)
 
     suspend fun deleteJobCache(job: JobPosition) = cacheJobsPositionCache.deleteJob(job)
+    suspend fun searchJobs(query: String): List<JobPosition> =
+        remoteJosPositionRepository.searchJobs(query)
 
 }
