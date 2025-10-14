@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:padding="@dimen/dim_14dp">
+
+<!--    app:startIconDrawable="@drawable/ic_round_search_24"-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundMode="outline"
+
+        app:boxCornerRadiusTopStart="@dimen/dim_8dp"
+        app:boxCornerRadiusTopEnd="@dimen/dim_8dp"
+        app:boxCornerRadiusBottomStart="@dimen/dim_8dp"
+        app:boxCornerRadiusBottomEnd="@dimen/dim_8dp"
+        app:hintEnabled="false"
+        app:boxStrokeWidthFocused="@dimen/dim_2dp"
+        app:boxStrokeColor="@color/gray_200"
+        app:boxBackgroundColor="@color/gray_500"
+
+        app:endIconMode="clear_text"
+
+        >
+
+<!--        android:textColorHighlight="@color/teal_700"-->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:textColorHint="@color/gray_050"
+        android:imeOptions="actionSearch"
+        android:hint="Search Job title, keywords, or company"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textColor="@color/gray_100"
+        android:fontFamily="@font/medium"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+
+<!--    app:strokeColor="@color/white"-->
+<!--    app:rippleColor="?attr/colorOnPrimary"-->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/searchButton"
+        style="@style/Widget.MaterialButton.Custom"
+
+        android:textSize="@dimen/size_14sp"
+        android:paddingVertical="@dimen/dim_16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:text="Search" />
+
+</LinearLayout>

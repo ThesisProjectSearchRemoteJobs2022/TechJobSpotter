@@ -29,7 +29,7 @@ class JobDetailPositionViewModel(
         object Loading : DetailUiState()
         data class Success(
             val jobPositionDetailUi: JobPositionUi? = null,
-            val jobPositionFavoriteUi: JobPositionUi? = null,
+            val jobPositionFavoriteUi: JobPositionUi? = null
 
         ) : DetailUiState()
         data class Failure(val errorMessage: UiText) : DetailUiState()
@@ -40,7 +40,6 @@ class JobDetailPositionViewModel(
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-//        _errorMessage.value = UiText.DynamicString(throwable.message ?: "Unknown error")
         showErrorState()
     }
 
@@ -49,12 +48,11 @@ class JobDetailPositionViewModel(
     }
 
     fun checkJobMarked(jobPositionUi: JobPositionUi) {
+        _uiPositionDetailState.value = DetailUiState.Loading
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 val jobPositionDomain = jobsMapper.provider().presentationToDomain(jobPositionUi)
-
                 val jobPositionFound = jobsCacheUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
-
 
                 if (jobPositionFound.id != jobPositionDomain.id) {
                     _uiPositionDetailState.value = DetailUiState.Success(
@@ -63,9 +61,8 @@ class JobDetailPositionViewModel(
                 }
 
                 val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionFound)
-                jobsFoundUi.isMarked = true
                 _uiPositionDetailState.value = DetailUiState.Success(
-                    jobPositionDetailUi = jobsFoundUi)
+                    jobPositionDetailUi = jobsFoundUi.copy(isMarked = true))
 
             } catch (e: Exception) {
                 Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
@@ -78,22 +75,21 @@ class JobDetailPositionViewModel(
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 val jobPositionDomain = jobsMapper.provider().presentationToDomain(jobPositionUi)
-
                 val jobPositionFound = jobsCacheUseCase.getJobByIdCache(jobPositionDomain.id ?: 0)
+
+                val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
+
                 if (jobPositionFound.id == jobPositionDomain.id) {
                     jobsCacheUseCase.deleteJobCache(jobPositionDomain)
-                    val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
-                    jobsFoundUi.isMarked = false
+
                     _uiPositionDetailState.value = DetailUiState.Success(
-                        jobPositionFavoriteUi = jobsFoundUi)
+                        jobPositionFavoriteUi = jobsFoundUi.copy(isMarked = false))
                     return@launch
                 }
 
                 jobsCacheUseCase.insertJobCache(jobPositionDomain)
-                val jobsFoundUi = jobsMapper.provider().domainToPresentation(jobPositionDomain)
-                jobsFoundUi.isMarked = true
                 _uiPositionDetailState.value = DetailUiState.Success(
-                    jobPositionFavoriteUi = jobsFoundUi)
+                    jobPositionFavoriteUi = jobsFoundUi.copy(isMarked = true))
             } catch (e: Exception) {
                 Log.e(TAG, "markFavoriteJobPosition: ${e.message}")
                 _uiPositionDetailState.value = DetailUiState.Failure(
@@ -106,7 +102,7 @@ class JobDetailPositionViewModel(
 
 
     companion object {
-        private const val TAG = "JobDetailPositionViewModel"
+        private const val TAG = "DetailPositionViewModel"
     }
 
 }

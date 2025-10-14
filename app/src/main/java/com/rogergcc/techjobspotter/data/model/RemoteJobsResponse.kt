@@ -9,10 +9,13 @@ import com.google.gson.annotations.SerializedName
 data class RemoteJobsResponse(
     @SerializedName("job-count")
     val jobCount: Int? = 0,
+
     @SerializedName("jobs")
     val jobsData: List<JobDto?>? = listOf(),
+
     @SerializedName("0-legal-notice")
     val legalNotice: String? = "",
+
     @SerializedName("00-warning")
     val warning: String? = ""
 )

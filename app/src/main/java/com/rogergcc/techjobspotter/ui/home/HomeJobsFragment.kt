@@ -29,6 +29,7 @@ import com.rogergcc.techjobspotter.ui.presentation.JobsPositionViewModelFactory
 import com.rogergcc.techjobspotter.ui.presentation.model.JobPositionUi
 import com.rogergcc.techjobspotter.ui.provider.ContextProviderImpl
 import com.rogergcc.techjobspotter.ui.utils.extensions.hideView
+import com.rogergcc.techjobspotter.ui.utils.extensions.setOnSingleClickListener
 import com.rogergcc.techjobspotter.ui.utils.extensions.showSnackbarShort
 import com.rogergcc.techjobspotter.ui.utils.extensions.showView
 import kotlinx.coroutines.launch
@@ -129,14 +130,19 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     private fun showMessage(isMarked: Boolean, title: String? = "") {
         if (!isMarked) {
-            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE13 Unmark $title")
-
+            requireContext().showSnackbarShort(binding.root, getString(R.string.unmarked_favorites, title))
         } else {
-
-            requireContext().showSnackbarShort(binding.root, "\uD83D\uDE0D Marked $title")
+            requireContext().showSnackbarShort(binding.root, getString(R.string.marked_favorites, title))
         }
     }
     private fun observeUiState() {
+
+//        // Observar cambios en los datos filtrados
+//        viewModel.filteredJobs.observe(viewLifecycleOwner) { jobs ->
+//            // Actualizar tu RecyclerView con los trabajos filtrados
+//            updateJobsList(jobs)
+//        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
@@ -147,49 +153,87 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
                         }
                         is GetJobsViewModel.UiState.Success -> {
                             hideLoadingState()
+                            Log.d(TAG, "observeUiState: remoteJobsPosition Success ${state.remoteJobsPosition}")
+
+                            state.searchedJobsPosition?.let { jobsSearched ->
+                                Log.d(TAG, "observeUiState: searchedJobsPosition ${jobsSearched.size}")
+                                binding.recommendedTitle
+                                    .text = resources.getString(
+                                    R.string.jobs_found,
+                                    jobsSearched.size
+                                )
+                                if (jobsSearched.isEmpty()) {
+                                    showErrorState(
+                                        Exception(getString(R.string.message_data_not_found)),
+                                        resources.getString(R.string.error_message_no_data_search)
+                                    )
+                                    mAdapterRecommendJobs.mItems = jobsSearched
+
+                                    return@let
+                                }
+
+                                val jobsUpdateShowMarkedList = updateMarkedStatus(
+                                    jobsSearched, mAdapterMarkedJobs.mItems
+                                )
+                                mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
+
+                            }
 
                             state.remoteJobsPosition?.let { jobsRemote ->
                                 binding.recommendedTitle
-                                    .text = "${jobsRemote.size} Jobs Found"
+                                    .text = resources.getString(
+                                    R.string.jobs_found,
+                                    jobsRemote.size
+                                )
                                 if (jobsRemote.isEmpty()) {
                                     showErrorState(
-                                        Exception("No data found"),
+                                        Exception(getString(R.string.message_data_not_found)),
                                         resources.getString(R.string.error_message_no_data)
                                     )
                                     return@collect
                                 }
                                 val jobsUpdateShowMarkedList = updateMarkedStatus(
-                                    jobsRemote, mAdapterMarkedJobs.mItems)
+                                    jobsRemote, mAdapterMarkedJobs.mItems
+                                )
                                 mAdapterRecommendJobs.mItems = jobsUpdateShowMarkedList
                             }
 
                             state.localJobsPosition?.let { jobsCache ->
                                 binding.markedTitle
-                                    .text = "${jobsCache.count()} Jobs Marked"
+                                    .text = resources.getString(
+                                    R.string.jobs_marked,
+                                    jobsCache.size
+                                )
                                 mAdapterMarkedJobs.mItems = jobsCache
                             }
                             state.markedJobPosition?.let { job ->
-
-
                                 mAdapterMarkedJobs.updateMarkIcon(job, job.isMarked)
                                 if (job.isMarked) {
-                                    mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                                        add(job)
-                                    }
+                                    mAdapterMarkedJobs.mItems =
+                                        mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                            add(job)
+                                        }
                                 } else {
-                                    mAdapterMarkedJobs.mItems = mAdapterMarkedJobs.mItems.toMutableList().apply {
-                                        remove(job)
-                                    }
+                                    mAdapterMarkedJobs.mItems =
+                                        mAdapterMarkedJobs.mItems.toMutableList().apply {
+                                            remove(job)
+                                        }
                                 }
                                 mAdapterRecommendJobs.updateMarkIcon(job, job.isMarked)
                                 binding.markedTitle
-                                    .text = "${mAdapterMarkedJobs.itemCount} Jobs Marked"
+                                    .text = resources.getString(
+                                    R.string.jobs_marked,
+                                    mAdapterMarkedJobs.mItems.size
+                                )
                                 showMessage(job.isMarked, job.title)
                             }
                         }
                         is GetJobsViewModel.UiState.Failure -> {
                             hideLoadingState()
-                            showErrorState(state.errorMessage.asException(requireContext()), state.errorMessage.asString(requireContext()))
+                            showErrorState(
+                                state.errorMessage.asException(requireContext()),
+                                state.errorMessage.asString(requireContext())
+                            )
                         }
                     }
 
@@ -228,8 +272,23 @@ class HomeJobsFragment : Fragment(R.layout.fragment_home_jobs) {
 
     }
 
+    private fun showSearchBottomSheet() {
+        val bottomSheet = SearchBottomSheetDialog(
+            onSearchQuery = { query ->
+                viewModel.filterJobs(query)
+            }
+        )
+
+        bottomSheet.show(parentFragmentManager, "SearchBottomSheet")
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Configurar el click listener en el TextView de búsqueda
+        binding.cardSearchJob.setOnSingleClickListener() {
+            showSearchBottomSheet()
+        }
         binding.rvRecommendedJobs.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)

@@ -1,5 +1,7 @@
 package com.rogergcc.techjobspotter.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rogergcc.techjobspotter.R
 import com.rogergcc.techjobspotter.data.cache.JobsPositionCache
 import com.rogergcc.techjobspotter.data.cache.database.AppDatabase
@@ -95,7 +98,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
 
         Log.d(TAG, "------------------------")
-        Log.d(TAG, "jobPositionUi: logo ${jobPositionUi.companyLogo}")
 //        Log.d(TAG, "jobPositionUi: logo url ${jobPositionUi?.companyLogoUrl}")
 
 //        val person = arguments?.getParcelable<Person>("person")
@@ -134,6 +136,31 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding.btnMark.setOnClickListener {
             viewModel.markFavoriteJobPosition(jobPositionUi)
         }
+        binding.btnHowToApply.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.confirmation)
+                .setMessage(R.string.redirect_message)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(jobPositionUi.url)
+                    startActivity(intent)
+                }
+                .setNegativeButton(R.string.no, null)
+                .show()
+
+//            AlertDialog.Builder(requireContext())
+//                .setTitle(R.string.confirmation)
+//                .setMessage(R.string.redirect_message)
+//                .setPositiveButton(R.string.yes) { _, _ ->
+//                    val intent = Intent(Intent.ACTION_VIEW)
+//                    intent.data = Uri.parse(jobPositionUi.url)
+//                    startActivity(intent)
+//                }
+//                .setNegativeButton(R.string.no, null)
+//                .show()
+
+
+        }
 
     }
 
@@ -142,18 +169,20 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 //            binding.tvTitle.setTextHtml(it)
 //        }
         val descriptionUiResult = UiText.DynamicString(jobPosition.description ?: "")
-        binding.description.setTextHtml(descriptionUiResult)
+        binding.tvDescription.setTextHtml(descriptionUiResult)
 
         binding.tvTitle.text = jobPosition.title
-        binding.tvPublicationDate.text = jobPosition.publicationDate?.toFormattedDateUi()
-//        binding.tvDescription.text = jobPosition?.description
+        binding.tvPublicationDate.text = resources.getString(
+            R.string.posted_on,
+            jobPosition.publicationDate?.toFormattedDateUi()
+        )
+
         binding.tvLocationData.text = jobPosition.candidateRequiredLocation
 //        binding.tvSalary.text = jobPosition?.salary
         binding.tvCompany.text = jobPosition.companyName
         binding.tvCompanyData.text = jobPosition.companyName
         binding.tvWebsiteUrl.text = jobPosition.url
         binding.tvType.text = jobPosition.jobType
-//        binding.tvPublicationDate.text = jobPositionUi?.publicationDate
 
     }
 
@@ -168,16 +197,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         binding.progress.stopShimmer()
                         binding.progress.visibility = View.GONE
                         binding.photoPreview.setImageDrawable(it)
-                        Log.d("DetailsFragment", "error loading image")
+                        Log.d(TAG, "photoPreview error loading image")
                     },
                     onStart = {
-                        Log.d("DetailsFragment", "start loading image")
+                        Log.d(TAG, "photoPreview start loading image")
                         binding.progress.startShimmer()
                         binding.progress.visibility = View.VISIBLE
                         binding.photoPreview.setImageDrawable(it)
                     },
                     onSuccess = {
-                        Log.d("DetailsFragment", "success loading image")
+                        Log.d(TAG, "photoPreview success loading image")
                         binding.progress.stopShimmer()
                         binding.progress.visibility = View.GONE
                         binding.photoPreview.setImageDrawable(it)
@@ -189,17 +218,23 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun showMessageFavorite(isMarked: Boolean, title: String? = "") {
         setUpMarkedColor(isMarked)
         if (!isMarked) {
-            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE13 Unmark $title" )
+            binding.bottomActions.showCustomSnackbar(
+                getString(R.string.unmarked_favorites,title) )
         } else {
-            binding.bottomSheet.showCustomSnackbar("\uD83D\uDE0D Marked $title" )
+            binding.bottomActions.showCustomSnackbar(
+                getString(R.string.marked_favorites,title) )
         }
     }
 
     private fun setUpMarkedColor(isMarked: Boolean){
-        binding.btnMark.setImageResource(
-            if (isMarked) R.drawable.ic_marked
-            else R.drawable.ic_mark
-        )
+        if (isMarked) {
+            binding.btnMark.setIconTintResource(R.color.green_200)
+            binding.btnMark.setIconResource(R.drawable.ic_marked)
+        } else {
+            binding.btnMark.setIconTintResource(R.color.gray_200)
+            binding.btnMark.setIconResource(R.drawable.ic_mark)
+        }
+
     }
     companion object {
         private const val TAG = "DetailsFragment"
